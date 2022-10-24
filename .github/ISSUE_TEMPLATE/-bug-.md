@@ -1,13 +1,4 @@
 ---
-name: "[Bug]"
-about: Describe this issue template's purpose here.
-title: ''
-labels: ''
-assignees: ''
-
----
-
----
 name: Bug
 about: "\b어떤 버그가 발생했는지 알려주세요!"
 title: "[Bug]"

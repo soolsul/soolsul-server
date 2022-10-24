@@ -1,13 +1,4 @@
 ---
-name: "[Setting]"
-about: Describe this issue template's purpose here.
-title: ''
-labels: ''
-assignees: ''
-
----
-
----
 name: Setting
 about: "어떤 \b환경 세팅을 하는지 알려주세요!"
 title: "[Setting]"

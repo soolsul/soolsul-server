@@ -1,17 +1,8 @@
 ---
-name: "[Question]"
-about: Describe this issue template's purpose here.
-title: ''
-labels: ''
-assignees: ''
-
----
-
----
 name: Question
 about: 질문할 내용을 적어주세요!
 title: "[Question]"
-labels: "\U0001F64B\U0001F3FB‍♂️ Question"
+labels: "🙋️ Question"
 assignees: ''
 
 ---

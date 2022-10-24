@@ -1,13 +1,4 @@
 ---
-name: "[Share]"
-about: Describe this issue template's purpose here.
-title: ''
-labels: ''
-assignees: ''
-
----
-
----
 name: Share
 about: 공유할 내용을 적어주세요!
 title: "[Share]"
