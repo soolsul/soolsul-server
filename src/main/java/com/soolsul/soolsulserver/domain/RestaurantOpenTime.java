@@ -7,20 +7,19 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SnackMenu extends BaseTimeEntity {
+public class RestaurantOpenTime {
 
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
     private String id;
 
-    private double cost;
+    private LocalDateTime startTime;
 
-    private String snackId;
-
-    private String restaurantId;
+    private LocalDateTime endTime;
 
 }

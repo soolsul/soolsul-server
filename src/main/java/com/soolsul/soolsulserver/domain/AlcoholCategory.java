@@ -10,17 +10,13 @@ import javax.persistence.Id;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SnackMenu extends BaseTimeEntity {
+public class AlcoholCategory {
 
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
-    private String id;
+    private Long id;
 
-    private double cost;
-
-    private String snackId;
-
-    private String restaurantId;
+    private String name;
 
 }
