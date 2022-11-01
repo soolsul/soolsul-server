@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.domain.region;
 
+import com.soolsul.soolsulserver.domain.common.BaseEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -12,21 +13,11 @@ import javax.persistence.Id;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Region {
-
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
-    private String id;
-
+public class Region extends BaseEntity {
     @Column(nullable = false, length = 50)
     private String name;
-
     @Embedded
     private Location location;
-
-    private int depth;
-
+    private Integer depth;
     private String parentId;
-
 }

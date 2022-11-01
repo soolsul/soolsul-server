@@ -1,5 +1,7 @@
 package com.soolsul.soolsulserver.domain.restaurant;
 
+import com.soolsul.soolsulserver.domain.common.BaseTimeEntity;
+import com.soolsul.soolsulserver.domain.region.Location;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -11,18 +13,9 @@ import javax.persistence.Id;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Restaurant {
-
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
-    private String id;
-
+public class Restaurant extends BaseTimeEntity {
     @Embedded
     private Location location;
-
     private String regionId;
-
     private String restaurantCategoryId;
-
 }

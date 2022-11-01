@@ -11,11 +11,8 @@ import javax.persistence.Embeddable;
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Location {
-
     @Column(nullable = false)
     private double latitude;
-
     @Column(nullable = false)
     private double longitude;
-
 }
