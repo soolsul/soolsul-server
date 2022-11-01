@@ -8,13 +8,18 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserAuthority extends BaseEntity {
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @Getter
     private User user;
 
-    @Enumerated
+    @Enumerated(value = EnumType.STRING)
     private Authority authority;
+    public Role getAuthority() {
+        return authority.getRole();
+    }
+
+
 }

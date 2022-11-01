@@ -10,4 +10,6 @@ public class Authority implements GrantedAuthority {
     public String getAuthority() {
         return authority.name();
     }
+
+    public Role getRole(){return authority;}
 }
