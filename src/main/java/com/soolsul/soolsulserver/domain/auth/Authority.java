@@ -1,9 +1,13 @@
 package com.soolsul.soolsulserver.domain.auth;
 
+import com.soolsul.soolsulserver.domain.common.BaseEntity;
 import org.springframework.security.core.GrantedAuthority;
 
+import javax.persistence.Entity;
 
-public class Authority implements GrantedAuthority {
+
+@Entity
+public class Authority extends BaseEntity implements GrantedAuthority {
     private Role authority;
 
     @Override

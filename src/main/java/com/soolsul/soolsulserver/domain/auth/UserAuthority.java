@@ -15,11 +15,15 @@ public class UserAuthority extends BaseEntity {
     @Getter
     private User user;
 
-    @Enumerated(value = EnumType.STRING)
+    @JoinColumn
+    @ManyToOne(fetch = FetchType.LAZY)
     private Authority authority;
     public Role getAuthority() {
         return authority.getRole();
     }
 
+    public Authority getGrantedAuthority() {
+        return authority;
+    }
 
 }
