@@ -2,6 +2,7 @@ package com.soolsul.soolsulserver.domain.common;
 
 
 import com.soolsul.soolsulserver.domain.auth.User;
+import com.soolsul.soolsulserver.domain.auth.UserDetail;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,5 +22,5 @@ public abstract class OwnerEntity extends BaseTimeEntity{
     @CreatedBy
     @JoinColumn(name = "owner_id")
     @ManyToOne
-    private User owner;
+    private UserDetail owner;
 }
