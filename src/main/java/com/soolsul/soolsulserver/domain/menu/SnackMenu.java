@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.domain.restaurant.menu;
+package com.soolsul.soolsulserver.domain.menu;
 
 import com.soolsul.soolsulserver.domain.common.BaseTimeEntity;
 import lombok.AccessLevel;

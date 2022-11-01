@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.domain;
+package com.soolsul.soolsulserver.domain.common;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

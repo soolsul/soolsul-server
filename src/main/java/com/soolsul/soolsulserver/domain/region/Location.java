@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.domain;
+package com.soolsul.soolsulserver.domain.region;
 
 import lombok.AccessLevel;
 import lombok.Getter;
