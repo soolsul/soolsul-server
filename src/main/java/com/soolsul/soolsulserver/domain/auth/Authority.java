@@ -1,6 +1,9 @@
 package com.soolsul.soolsulserver.domain.auth;
 
 import com.soolsul.soolsulserver.domain.common.BaseEntity;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
@@ -9,6 +12,8 @@ import javax.persistence.Enumerated;
 
 
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Authority extends BaseEntity implements GrantedAuthority {
     @Enumerated(value = EnumType.STRING)
     private Role authority;
