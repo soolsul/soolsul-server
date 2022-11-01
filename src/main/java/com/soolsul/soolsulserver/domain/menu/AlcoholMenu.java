@@ -1,5 +1,6 @@
-package com.soolsul.soolsulserver.domain;
+package com.soolsul.soolsulserver.domain.restaurant.menu;
 
+import com.soolsul.soolsulserver.domain.common.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -10,7 +11,7 @@ import javax.persistence.Id;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SnackMenu extends BaseTimeEntity {
+public class AlcoholMenu extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -19,7 +20,7 @@ public class SnackMenu extends BaseTimeEntity {
 
     private double cost;
 
-    private String snackId;
+    private String alcoholId;
 
     private String restaurantId;
 

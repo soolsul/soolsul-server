@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.domain;
+package com.soolsul.soolsulserver.domain.restaurant.menu;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,7 @@ import javax.persistence.Id;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Snack {
+public class AlcoholCategory {
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -18,7 +18,5 @@ public class Snack {
     private Long id;
 
     private String name;
-
-    private Long snackCategoryId;
 
 }

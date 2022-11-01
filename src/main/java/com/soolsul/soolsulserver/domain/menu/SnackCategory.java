@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.domain;
+package com.soolsul.soolsulserver.domain.restaurant.menu;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

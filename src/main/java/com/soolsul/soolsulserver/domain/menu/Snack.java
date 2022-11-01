@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.domain;
+package com.soolsul.soolsulserver.domain.restaurant.menu;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -10,20 +10,15 @@ import javax.persistence.Id;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Curation extends BaseTimeEntity {
+public class Snack {
 
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
-    private String id;
+    private Long id;
 
-    private String title;
+    private String name;
 
-    private String mainPictureUrl;
-
-    private String content;
-
-    private String restaurantId;
+    private Long snackCategoryId;
 
 }
-
