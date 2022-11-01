@@ -12,13 +12,6 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RestaurantBookmark extends BaseTimeEntity {
-
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
-    private String id;
-
     private String userInfoId;
     private String restaurantId;
-
 }

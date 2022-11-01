@@ -13,11 +13,6 @@ import javax.persistence.Id;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Curation extends BaseTimeEntity {
 
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
-    private String id;
-
     private String title;
 
     private String mainPictureUrl;
@@ -25,6 +20,5 @@ public class Curation extends BaseTimeEntity {
     private String content;
 
     private String restaurantId;
-
 }
 
