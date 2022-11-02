@@ -14,8 +14,16 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Restaurant extends BaseTimeEntity {
-    @Embedded
-    private Location location;
+
     private String regionId;
     private String restaurantCategoryId;
+
+    @Embedded
+    private Location location;
+
+    public Restaurant(String regionId, String restaurantCategoryId, Location location) {
+        this.regionId = regionId;
+        this.restaurantCategoryId = restaurantCategoryId;
+        this.location = location;
+    }
 }
