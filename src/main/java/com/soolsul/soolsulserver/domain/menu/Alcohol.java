@@ -12,10 +12,10 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Alcohol extends BaseTimeEntity {
+
     private String name;
 
     private int alcoholPercent;
 
     private Long alcoholCategoryId;
-
 }

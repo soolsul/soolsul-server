@@ -12,6 +12,7 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Snack extends BaseTimeEntity {
+
     private String name;
     private Long snackCategoryId;
 }

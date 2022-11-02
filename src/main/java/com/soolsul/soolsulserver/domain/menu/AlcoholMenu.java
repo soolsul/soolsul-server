@@ -13,11 +13,6 @@ import javax.persistence.Id;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AlcoholMenu extends BaseTimeEntity {
 
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
-    private String id;
-
     private double cost;
 
     private String alcoholId;
