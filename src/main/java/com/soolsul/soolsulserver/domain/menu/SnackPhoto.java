@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SnackPhotos extends BaseEntity {
+public class SnackPhoto extends BaseEntity {
 
     @Column(nullable = false)
     private String snackId;
@@ -18,7 +18,7 @@ public class SnackPhotos extends BaseEntity {
     private String uuidFileUrl;
     private String extension;
 
-    public SnackPhotos(String snackId, String originalFileName, String uuidFileUrl, String extension) {
+    public SnackPhoto(String snackId, String originalFileName, String uuidFileUrl, String extension) {
         this.snackId = snackId;
         this.originalFileName = originalFileName;
         this.uuidFileUrl = uuidFileUrl;

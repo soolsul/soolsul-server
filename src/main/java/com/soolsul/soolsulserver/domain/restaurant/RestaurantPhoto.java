@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.domain.reply;
+package com.soolsul.soolsulserver.domain.restaurant;
 
 import com.soolsul.soolsulserver.domain.common.BaseEntity;
 import lombok.AccessLevel;
@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ReplyPhotos extends BaseEntity {
+public class RestaurantPhoto extends BaseEntity {
 
     @Column(nullable = false)
     private String restaurantId;
@@ -18,7 +18,7 @@ public class ReplyPhotos extends BaseEntity {
     private String uuidFileUrl;
     private String extension;
 
-    public ReplyPhotos(String restaurantId, String originalFileName, String uuidFileUrl, String extension) {
+    public RestaurantPhoto(String restaurantId, String originalFileName, String uuidFileUrl, String extension) {
         this.restaurantId = restaurantId;
         this.originalFileName = originalFileName;
         this.uuidFileUrl = uuidFileUrl;
