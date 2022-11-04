@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.domain.curation;
 
+import com.soolsul.soolsulserver.domain.common.BaseEntity;
 import com.soolsul.soolsulserver.domain.common.OwnerEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import javax.persistence.Entity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CurationPhoto extends OwnerEntity {
+public class CurationPhoto extends BaseEntity {
 
     @Column(nullable = false)
     private String curationId;
