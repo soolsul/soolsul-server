@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.post.presentation.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.hibernate.validator.constraints.URL;
 
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Getter
+@AllArgsConstructor
 public class PostCreateRequest {
 
     @NotBlank
@@ -36,13 +38,4 @@ public class PostCreateRequest {
 
     @Size(max = 10)
     private List<String> tags;
-
-    public PostCreateRequest(String restaurantId, String postContent, Float score, LocalDate visitedDate, List<String> images, List<String> tags) {
-        this.restaurantId = restaurantId;
-        this.postContent = postContent;
-        this.score = score;
-        this.visitedDate = visitedDate;
-        this.images = images;
-        this.tags = tags;
-    }
 }
