@@ -41,10 +41,10 @@ public class Post extends BaseTimeEntity {
         this.contents = contents;
     }
 
-    public static Post of(String userId, String restaurantId, PostCreateRequest request) {
-        Post post = new Post(userId, restaurantId, request.getScore(), request.getPostContent());
-        return post;
-    }
+    //    public static Post of(String userId, String restaurantId, PostCreateRequest request) {
+//        Post post = new Post(userId, restaurantId, request.getScore(), request.getPostContent());
+//        return post;
+//    }
 
     public void addPhoto(PostPhoto photo) {
         this.photos.addPhoto(photo);
