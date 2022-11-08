@@ -1,7 +1,7 @@
-package com.soolsul.soolsulserver.restaurant;
+package com.soolsul.soolsulserver.restaurant.domain;
 
 import com.soolsul.soolsulserver.common.domain.BaseTimeEntity;
-import com.soolsul.soolsulserver.region.Location;
+import com.soolsul.soolsulserver.region.domain.Location;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +17,13 @@ public class Restaurant extends BaseTimeEntity {
 
     @Embedded
     private Location location;
+
+    public Restaurant(String id, String regionId, String restaurantCategoryId, Location location) {
+        super(id);
+        this.regionId = regionId;
+        this.restaurantCategoryId = restaurantCategoryId;
+        this.location = location;
+    }
 
     public Restaurant(String regionId, String restaurantCategoryId, Location location) {
         this.regionId = regionId;

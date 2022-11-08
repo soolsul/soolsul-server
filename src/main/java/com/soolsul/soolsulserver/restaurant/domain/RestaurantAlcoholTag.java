@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.restaurant;
+package com.soolsul.soolsulserver.restaurant.domain;
 
 import com.soolsul.soolsulserver.common.domain.BaseEntity;
 import lombok.AccessLevel;
@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RestaurantMoodTag extends BaseEntity {
+public class RestaurantAlcoholTag extends BaseEntity {
 
     @Column(nullable = false)
     private String restaurantId;
@@ -17,14 +17,8 @@ public class RestaurantMoodTag extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    private boolean isCuration;
-
-    private Integer count;
-
-    public RestaurantMoodTag(String restaurantId, String name, boolean isCuration, Integer count) {
+    public RestaurantAlcoholTag(String restaurantId, String name) {
         this.restaurantId = restaurantId;
         this.name = name;
-        this.isCuration = isCuration;
-        this.count = count;
     }
 }

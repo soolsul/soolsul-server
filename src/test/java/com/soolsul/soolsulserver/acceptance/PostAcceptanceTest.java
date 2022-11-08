@@ -1,18 +1,14 @@
 package com.soolsul.soolsulserver.acceptance;
 
 import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
-import com.soolsul.soolsulserver.restaurant.Restaurant;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.List;
 

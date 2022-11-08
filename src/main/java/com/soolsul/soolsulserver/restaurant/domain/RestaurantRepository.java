@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.restaurant;
+package com.soolsul.soolsulserver.restaurant.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

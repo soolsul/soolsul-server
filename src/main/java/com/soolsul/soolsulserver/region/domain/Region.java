@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.region;
+package com.soolsul.soolsulserver.region.domain;
 
 import com.soolsul.soolsulserver.common.domain.BaseEntity;
 import lombok.AccessLevel;

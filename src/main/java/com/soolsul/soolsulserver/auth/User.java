@@ -2,6 +2,7 @@ package com.soolsul.soolsulserver.auth;
 
 import com.soolsul.soolsulserver.common.domain.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,10 +16,13 @@ import java.util.List;
 
 @Entity
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity implements UserDetails {
+
     private String email;
     private String password;
+
     @OneToMany(mappedBy = "user")
     private List<UserAuthority> authorities = new ArrayList<>();
 

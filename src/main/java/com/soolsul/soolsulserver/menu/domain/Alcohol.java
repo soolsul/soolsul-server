@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.curation;
+package com.soolsul.soolsulserver.menu.domain;
 
 import com.soolsul.soolsulserver.common.domain.BaseTimeEntity;
 import lombok.AccessLevel;
@@ -8,14 +8,11 @@ import javax.persistence.Entity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Curation extends BaseTimeEntity {
+public class Alcohol extends BaseTimeEntity {
 
-    private String title;
+    private String name;
 
-    private String mainPictureUrl;
+    private int alcoholPercent;
 
-    private String content;
-
-    private String restaurantId;
+    private Long alcoholCategoryId;
 }
-

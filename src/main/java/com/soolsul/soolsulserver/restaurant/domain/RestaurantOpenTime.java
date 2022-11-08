@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.restaurant;
+package com.soolsul.soolsulserver.restaurant.domain;
 
 import com.soolsul.soolsulserver.common.domain.BaseTimeEntity;
 import com.soolsul.soolsulserver.common.domain.Duration;

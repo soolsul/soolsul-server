@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.reply;
+package com.soolsul.soolsulserver.reply.domain;
 
 import com.soolsul.soolsulserver.common.domain.BaseTimeEntity;
 import lombok.AccessLevel;
