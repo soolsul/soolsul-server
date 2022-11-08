@@ -16,7 +16,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity implements UserDetails {
 
@@ -29,6 +28,13 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities.stream().map(UserAuthority::getGrantedAuthority).toList();
+    }
+
+    public User(String id, String email, String password, List<UserAuthority> authorities) {
+        super(id);
+        this.email = email;
+        this.password = password;
+        this.authorities = authorities;
     }
 
     @Override
