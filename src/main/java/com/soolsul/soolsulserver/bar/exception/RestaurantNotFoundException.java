@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.restaurant.exception;
+package com.soolsul.soolsulserver.bar.exception;
 
 import com.soolsul.soolsulserver.common.exception.SoolsulBusinessException;
 

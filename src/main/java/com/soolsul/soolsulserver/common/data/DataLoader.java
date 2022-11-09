@@ -1,7 +1,6 @@
 package com.soolsul.soolsulserver.common.data;
 
-import com.soolsul.soolsulserver.restaurant.domain.Restaurant;
-import com.soolsul.soolsulserver.restaurant.domain.RestaurantRepository;
+import com.soolsul.soolsulserver.bar.domain.RestaurantRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

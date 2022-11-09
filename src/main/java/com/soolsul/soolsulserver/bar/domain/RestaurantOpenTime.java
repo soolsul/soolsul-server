@@ -1,24 +1,26 @@
-package com.soolsul.soolsulserver.restaurant.domain;
+package com.soolsul.soolsulserver.bar.domain;
 
 import com.soolsul.soolsulserver.common.domain.BaseTimeEntity;
+import com.soolsul.soolsulserver.common.domain.Duration;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RestaurantBookmark extends BaseTimeEntity {
-
-    @Column(nullable = false)
-    private String userInfoId;
+public class RestaurantOpenTime extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String restaurantId;
 
-    public RestaurantBookmark(String userInfoId, String restaurantId) {
-        this.userInfoId = userInfoId;
+    @Embedded
+    private Duration duration;
+
+    public RestaurantOpenTime(String restaurantId, Duration duration) {
         this.restaurantId = restaurantId;
+        this.duration = duration;
     }
 }
