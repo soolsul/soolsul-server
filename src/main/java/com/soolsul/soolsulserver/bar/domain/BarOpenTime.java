@@ -11,16 +11,16 @@ import javax.persistence.Entity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RestaurantOpenTime extends BaseTimeEntity {
+public class BarOpenTime extends BaseTimeEntity {
 
     @Column(nullable = false)
-    private String restaurantId;
+    private String barId;
 
     @Embedded
     private Duration duration;
 
-    public RestaurantOpenTime(String restaurantId, Duration duration) {
-        this.restaurantId = restaurantId;
+    public BarOpenTime(String barId, Duration duration) {
+        this.barId = barId;
         this.duration = duration;
     }
 }

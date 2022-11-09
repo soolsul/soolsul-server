@@ -12,5 +12,5 @@ public class SnackMenu extends BaseTimeEntity {
 
     private Long cost;
     private String snackId;
-    private String restaurantId;
+    private String barId;
 }

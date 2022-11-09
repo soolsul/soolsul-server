@@ -20,7 +20,7 @@ import javax.persistence.ManyToOne;
 public class PostPhoto extends BaseEntity {
 
     @Column(nullable = false)
-    private String restaurantId;
+    private String barId;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "post_id")
@@ -32,8 +32,8 @@ public class PostPhoto extends BaseEntity {
 
     private Boolean deleted = Boolean.FALSE;
 
-    public PostPhoto(String restaurantId, String originalFileName, String uuidFileUrl, String extension) {
-        this.restaurantId = restaurantId;
+    public PostPhoto(String barId, String originalFileName, String uuidFileUrl, String extension) {
+        this.barId = barId;
         this.originalFileName = originalFileName;
         this.uuidFileUrl = uuidFileUrl;
         this.extension = extension;

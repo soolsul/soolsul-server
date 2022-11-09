@@ -12,14 +12,14 @@ import javax.persistence.Entity;
 public class ReplyPhoto extends BaseEntity {
 
     @Column(nullable = false)
-    private String restaurantId;
+    private String barId;
 
     private String originalFileName;
     private String uuidFileUrl;
     private String extension;
 
-    public ReplyPhoto(String restaurantId, String originalFileName, String uuidFileUrl, String extension) {
-        this.restaurantId = restaurantId;
+    public ReplyPhoto(String barId, String originalFileName, String uuidFileUrl, String extension) {
+        this.barId = barId;
         this.originalFileName = originalFileName;
         this.uuidFileUrl = uuidFileUrl;
         this.extension = extension;

@@ -9,17 +9,19 @@ import javax.persistence.Entity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RestaurantPhoto extends BaseEntity {
+public class BarPhoto extends BaseEntity {
 
     @Column(nullable = false)
-    private String restaurantId;
+    private String barId;
 
     private String originalFileName;
+
     private String uuidFileUrl;
+
     private String extension;
 
-    public RestaurantPhoto(String restaurantId, String originalFileName, String uuidFileUrl, String extension) {
-        this.restaurantId = restaurantId;
+    public BarPhoto(String barId, String originalFileName, String uuidFileUrl, String extension) {
+        this.barId = barId;
         this.originalFileName = originalFileName;
         this.uuidFileUrl = uuidFileUrl;
         this.extension = extension;

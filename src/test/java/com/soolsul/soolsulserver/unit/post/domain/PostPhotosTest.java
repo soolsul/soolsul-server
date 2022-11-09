@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class PostPhotosTest {
 
-    private static final String RESTAURANT_ID = "1";
+    private static final String BAR_ID = "1";
     private PostPhoto newPhoto1;
     private PostPhoto newPhoto2;
     private PostPhoto newPhoto3;
@@ -23,10 +23,10 @@ public class PostPhotosTest {
 
     @BeforeEach
     void setUp() {
-        newPhoto1 = new PostPhoto(RESTAURANT_ID, "file1", "uuid1", ".jpg");
-        newPhoto2 = new PostPhoto(RESTAURANT_ID, "file2", "uuid2", ".jpg");
-        newPhoto3 = new PostPhoto(RESTAURANT_ID, "file3", "uuid3", ".jpg");
-        post = new Post("temp_ip", "restaurant_id", 4.3f, "contents");
+        newPhoto1 = new PostPhoto(BAR_ID, "file1", "uuid1", ".jpg");
+        newPhoto2 = new PostPhoto(BAR_ID, "file2", "uuid2", ".jpg");
+        newPhoto3 = new PostPhoto(BAR_ID, "file3", "uuid3", ".jpg");
+        post = new Post("temp_ip", "bar_id", 4.3f, "contents");
     }
 
     @DisplayName("Photos에 Photo한장을 추가한다.")

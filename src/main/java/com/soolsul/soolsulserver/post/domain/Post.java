@@ -21,7 +21,7 @@ public class Post extends BaseTimeEntity {
     private String ownerId;
 
     @Column(nullable = false)
-    private String restaurantId;
+    private String barId;
 
     @Positive
     private Float score;
@@ -33,9 +33,9 @@ public class Post extends BaseTimeEntity {
     @Embedded
     private PostPhotos photos = new PostPhotos();
 
-    public Post(String ownerId, String restaurantId, Float score, String contents) {
+    public Post(String ownerId, String barId, Float score, String contents) {
         this.ownerId = ownerId;
-        this.restaurantId = restaurantId;
+        this.barId = barId;
         this.score = score;
         this.contents = contents;
     }
