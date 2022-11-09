@@ -9,10 +9,10 @@ import javax.persistence.Entity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RestaurantMoodTag extends BaseEntity {
+public class BarMoodTag extends BaseEntity {
 
     @Column(nullable = false)
-    private String restaurantId;
+    private String barId;
 
     @Column(nullable = false)
     private String name;
@@ -21,8 +21,8 @@ public class RestaurantMoodTag extends BaseEntity {
 
     private Integer count;
 
-    public RestaurantMoodTag(String restaurantId, String name, boolean isCuration, Integer count) {
-        this.restaurantId = restaurantId;
+    public BarMoodTag(String barId, String name, boolean isCuration, Integer count) {
+        this.barId = barId;
         this.name = name;
         this.isCuration = isCuration;
         this.count = count;

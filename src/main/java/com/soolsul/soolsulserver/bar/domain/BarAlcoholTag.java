@@ -9,16 +9,16 @@ import javax.persistence.Entity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RestaurantAlcoholTag extends BaseEntity {
+public class BarAlcoholTag extends BaseEntity {
 
     @Column(nullable = false)
-    private String restaurantId;
+    private String barId;
 
     @Column(nullable = false)
     private String name;
 
-    public RestaurantAlcoholTag(String restaurantId, String name) {
-        this.restaurantId = restaurantId;
+    public BarAlcoholTag(String barId, String name) {
+        this.barId = barId;
         this.name = name;
     }
 }

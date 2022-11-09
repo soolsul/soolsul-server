@@ -10,24 +10,25 @@ import javax.persistence.Entity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Restaurant extends BaseTimeEntity {
+public class Bar extends BaseTimeEntity {
 
     private String regionId;
-    private String restaurantCategoryId;
+
+    private String barCategoryId;
 
     @Embedded
     private Location location;
 
-    public Restaurant(String id, String regionId, String restaurantCategoryId, Location location) {
+    public Bar(String id, String regionId, String barCategoryId, Location location) {
         super(id);
         this.regionId = regionId;
-        this.restaurantCategoryId = restaurantCategoryId;
+        this.barCategoryId = barCategoryId;
         this.location = location;
     }
 
-    public Restaurant(String regionId, String restaurantCategoryId, Location location) {
+    public Bar(String regionId, String barCategoryId, Location location) {
         this.regionId = regionId;
-        this.restaurantCategoryId = restaurantCategoryId;
+        this.barCategoryId = barCategoryId;
         this.location = location;
     }
 }

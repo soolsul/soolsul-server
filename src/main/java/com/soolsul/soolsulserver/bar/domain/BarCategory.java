@@ -8,4 +8,4 @@ import javax.persistence.Entity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RestaurantCategory extends Category {}
+public class BarCategory extends Category {}
