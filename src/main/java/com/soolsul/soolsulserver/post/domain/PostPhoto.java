@@ -3,6 +3,8 @@ package com.soolsul.soolsulserver.post.domain;
 import com.soolsul.soolsulserver.common.domain.BaseEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,9 +12,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.util.Objects;
 
 @Entity
+@SQLDelete(sql = "update post_photo set deleted = true where id = ?")
+@Where(clause = "deleted = false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostPhoto extends BaseEntity {
 
@@ -27,6 +30,8 @@ public class PostPhoto extends BaseEntity {
     private String uuidFileUrl;
     private String extension;
 
+    private Boolean deleted = Boolean.FALSE;
+
     public PostPhoto(String restaurantId, String originalFileName, String uuidFileUrl, String extension) {
         this.restaurantId = restaurantId;
         this.originalFileName = originalFileName;
@@ -34,16 +39,7 @@ public class PostPhoto extends BaseEntity {
         this.extension = extension;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PostPhoto photo = (PostPhoto) o;
-        return Objects.equals(uuidFileUrl, photo.uuidFileUrl);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(uuidFileUrl);
+    public void setPost(Post post) {
+        this.post = post;
     }
 }

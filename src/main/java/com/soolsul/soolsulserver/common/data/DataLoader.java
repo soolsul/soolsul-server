@@ -20,7 +20,7 @@ public class DataLoader {
 
     public void loadData() {
         log.info("[call DataLoader]");
-        restaurantRepository.save(new Restaurant(STORE_UUID, "temp_region_id", "temp_category_id", null));
+        //restaurantRepository.save(new Restaurant(STORE_UUID, "temp_region_id", "temp_category_id", null));
         log.info("[init complete DataLoader]");
     }
 }

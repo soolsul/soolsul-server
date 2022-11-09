@@ -1,7 +1,6 @@
 package com.soolsul.soolsulserver.post.domain;
 
 import com.soolsul.soolsulserver.common.domain.BaseTimeEntity;
-import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -41,13 +40,9 @@ public class Post extends BaseTimeEntity {
         this.contents = contents;
     }
 
-    //    public static Post of(String userId, String restaurantId, PostCreateRequest request) {
-//        Post post = new Post(userId, restaurantId, request.getScore(), request.getPostContent());
-//        return post;
-//    }
-
     public void addPhoto(PostPhoto photo) {
         this.photos.addPhoto(photo);
+        photo.setPost(this);
     }
 
     public List<PostPhoto> getPhotos() {
@@ -57,11 +52,13 @@ public class Post extends BaseTimeEntity {
     public void addPhotoList(List<PostPhoto> photos) {
         for (PostPhoto photo : photos) {
             this.photos.addPhoto(photo);
+            photo.setPost(this);
         }
     }
 
     public void deletePhoto(PostPhoto photo) {
         this.photos.delete(photo);
+        photo.setPost(null);
     }
 
     public void clearAllPhotos() {

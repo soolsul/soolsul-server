@@ -1,6 +1,8 @@
 package com.soolsul.soolsulserver.post.domain;
 
 import com.soolsul.soolsulserver.post.exception.MinimumPhotoCountException;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
@@ -10,21 +12,20 @@ import java.util.Collections;
 import java.util.List;
 
 @Embeddable
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class PostPhotos {
 
     private static final int MINIMUM_PHOTO_COUNT = 1;
+
     @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private List<PostPhoto> photos = new ArrayList<>();
-
-    public PostPhotos() {
-    }
 
     public void addPhoto(PostPhoto photo) {
         this.photos.add(photo);
     }
 
     public List<PostPhoto> getPhotos() {
-        if(photos.isEmpty()) {
+        if (photos.isEmpty()) {
             return Collections.emptyList();
         }
 
@@ -35,7 +36,6 @@ public class PostPhotos {
         if (this.photos.size() <= MINIMUM_PHOTO_COUNT) {
             throw new MinimumPhotoCountException();
         }
-
         this.photos.remove(photo);
     }
 
