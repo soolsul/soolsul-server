@@ -4,6 +4,7 @@ import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ public class PostAcceptanceTest extends AcceptanceTest {
      * then: 성공적으로 저장되고, 피드 리스트 페이지로 이동한다.
      */
     @DisplayName("사용자가 피드를 작성후 작성 완료를 누르는 경우 서버에 정상저장 된다.")
+    @Disabled
     @Test
     public void create_post_test() {
         // given
