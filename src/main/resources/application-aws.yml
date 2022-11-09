@@ -1,0 +1,15 @@
+aws:
+  s3:
+    images:
+      bucket:
+        name: soolsul-images
+      region:
+        name: ap-northeast-2
+      endpoint:
+        url: https://soolsul-images.${aws.s3.images.region.name}.amazonaws.com/
+    credentials:
+      access:
+        key: access-key
+      secret:
+        key: password
+

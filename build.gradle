@@ -61,6 +61,10 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'io.rest-assured:rest-assured:4.2.0'
+
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.332'
+    testImplementation 'org.testcontainers:localstack:1.17.4'
+
 }
 
 tasks.named('test') {
