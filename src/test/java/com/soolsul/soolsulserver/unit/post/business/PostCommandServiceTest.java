@@ -9,6 +9,7 @@ import com.soolsul.soolsulserver.restaurant.domain.Restaurant;
 import com.soolsul.soolsulserver.restaurant.domain.RestaurantRepository;
 import com.soolsul.soolsulserver.restaurant.exception.RestaurantNotFoundException;
 import org.assertj.core.api.ThrowableAssert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -30,6 +32,8 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 public class PostCommandServiceTest {
 
+    private static final String RESTAURANT_ID = "restaurant_id";
+
     @InjectMocks
     private PostCommandService postCommandService;
 
@@ -39,18 +43,27 @@ public class PostCommandServiceTest {
     @Mock
     private RestaurantRepository restaurantRepository;
 
+    private List<String> postPhotos;
+    private User user;
+    private PostCreateRequest request;
+
+    @BeforeEach
+    void setUp() {
+        postPhotos = List.of("url1", "url2", "url3");
+        user = new User("user_uuid", "test@email.com", "1234", Collections.emptyList());
+        request = new PostCreateRequest("restaurant_id", "본문 내용", 4.3f, LocalDate.now(), postPhotos, null);
+    }
+
     @DisplayName("가게가 존재할 경우, 정상적으로 게시물을 생성한다.")
     @Test
     public void create_post_test() {
         // given
-        User user = new User("user_uuid", "test@email.com", "1234", Collections.emptyList());
-        Restaurant restaurant = new Restaurant("restaurant_id", "region_id", "category_id", null);
-        PostCreateRequest request = new PostCreateRequest("restaurant_id", "본문 내용", 4.3f, LocalDate.now(), null, null);
+        Restaurant restaurant = new Restaurant(RESTAURANT_ID, "region_id", "category_id", null);
 
         given(restaurantRepository.findById(anyString())).willReturn(Optional.of(restaurant));
 
         // when
-        postCommandService.create(user, request);
+        postCommandService.create(user.getId(), request);
 
         // then
         verify(postRepository, times(1)).save(any());
@@ -61,14 +74,12 @@ public class PostCommandServiceTest {
     @Test
     public void not_exists_restaurant_cant_create_post_test() {
         // given
-        User user = new User("user_uuid", "test@email.com", "1234", Collections.emptyList());
-        Restaurant restaurant = new Restaurant("restaurant_id", "region_id", "category_id", null);
-        PostCreateRequest request = new PostCreateRequest("restaurant_id", "본문 내용", 4.3f, LocalDate.now(), null, null);
+        PostCreateRequest request = new PostCreateRequest("restaurant_id", "본문 내용", 4.3f, LocalDate.now(), postPhotos, null);
 
         given(restaurantRepository.findById(anyString())).willReturn(Optional.empty());
 
         // when
-        ThrowableAssert.ThrowingCallable actual = () -> postCommandService.create(user, request);
+        ThrowableAssert.ThrowingCallable actual = () -> postCommandService.create(user.getId(), request);
 
         // then
         assertThatThrownBy(actual)
@@ -83,14 +94,12 @@ public class PostCommandServiceTest {
     @Test
     public void create_post_if_exists_user_test() {
         // given
-        User user = new User("user_uuid", "test@email.com", "1234", Collections.emptyList());
-        Restaurant restaurant = new Restaurant("restaurant_id", "region_id", "category_id", null);
-        PostCreateRequest request = new PostCreateRequest("restaurant_id", "본문 내용", 4.3f, LocalDate.now(), null, null);
+        Restaurant restaurant = new Restaurant(RESTAURANT_ID, "region_id", "category_id", null);
 
         given(restaurantRepository.findById(anyString())).willReturn(Optional.of(restaurant));
 
         // when
-        postCommandService.create(user, request);
+        postCommandService.create(user.getId(), request);
 
         // then
         verify(postRepository, times(1)).save(any());
@@ -102,10 +111,9 @@ public class PostCommandServiceTest {
     public void throw_exception_if_not_exists_user_test() {
         // given
         User user = new User(null, "test@email.com", "1234", Collections.emptyList());
-        PostCreateRequest request = new PostCreateRequest("restaurant_id", "본문 내용", 4.3f, LocalDate.now(), null, null);
 
         // when
-        ThrowableAssert.ThrowingCallable actual = () -> postCommandService.create(user, request);
+        ThrowableAssert.ThrowingCallable actual = () -> postCommandService.create(user.getId(), request);
 
         // then
         assertThatThrownBy(actual)

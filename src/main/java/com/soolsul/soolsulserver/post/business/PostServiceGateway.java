@@ -1,6 +1,5 @@
 package com.soolsul.soolsulserver.post.business;
 
-import com.soolsul.soolsulserver.auth.User;
 import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
 import com.soolsul.soolsulserver.post.presentation.dto.PostResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +12,8 @@ public class PostServiceGateway implements CommandService<PostCreateRequest>, Qu
     private final PostCommandService postCommandService;
 
     @Override
-    public void create(User user, PostCreateRequest request) {
-        postCommandService.create(user, request);
+    public void create(String id, PostCreateRequest request) {
+        postCommandService.create(id, request);
     }
 
     @Override

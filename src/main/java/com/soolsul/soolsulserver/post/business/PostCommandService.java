@@ -1,6 +1,5 @@
 package com.soolsul.soolsulserver.post.business;
 
-import com.soolsul.soolsulserver.auth.User;
 import com.soolsul.soolsulserver.auth.exception.UserNotFoundException;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.domain.PostPhoto;
@@ -25,15 +24,15 @@ public class PostCommandService {
     private final PostRepository postRepository;
     private final RestaurantRepository restaurantRepository;
 
-    public void create(User user, PostCreateRequest request) {
-        if (invalidUserId(user)) {
+    public void create(String userId, PostCreateRequest request) {
+        if (isInvalidUserId(userId)) {
             throw new UserNotFoundException();
         }
 
         Restaurant findRestaurant = restaurantRepository.findById(request.getRestaurantId())
                 .orElseThrow(RestaurantNotFoundException::new);
 
-        Post newPost = new Post(user.getId(),
+        Post newPost = new Post(userId,
                 findRestaurant.getId(),
                 request.getScore(),
                 request.getPostContent());
@@ -51,7 +50,7 @@ public class PostCommandService {
                 .collect(Collectors.toList());
     }
 
-    private boolean invalidUserId(User user) {
-        return !StringUtils.hasText(user.getId());
+    private boolean isInvalidUserId(String userId) {
+        return !StringUtils.hasText(userId);
     }
 }

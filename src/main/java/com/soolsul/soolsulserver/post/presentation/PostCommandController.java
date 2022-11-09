@@ -24,7 +24,7 @@ public class PostCommandController {
     @PostMapping
     public ResponseEntity<BaseResponse<Void>> createPost(@RequestBody PostCreateRequest request, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
-        postServiceGateway.create(user, request);
+        postServiceGateway.create(user.getId(), request);
         return new ResponseEntity<>(new BaseResponse<>(ResponseCodeAndMessages.FEED_CREATE_SUCCESS, null), HttpStatus.OK);
     }
 }
