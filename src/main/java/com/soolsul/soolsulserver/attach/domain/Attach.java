@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.bar.domain;
+package com.soolsul.soolsulserver.attach.domain;
 
 import com.soolsul.soolsulserver.common.domain.BaseEntity;
 import lombok.AccessLevel;
@@ -11,12 +11,16 @@ import javax.persistence.Entity;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BarAlcoholTag extends BaseEntity {
+public class Attach extends BaseEntity {
 
     @Column(nullable = false)
-    private String name;
+    private String postId;
 
-    public BarAlcoholTag(String name) {
-        this.name = name;
+    @Column(nullable = false)
+    private String tagId;
+
+    public Attach(String postId, String tagId) {
+        this.postId = postId;
+        this.tagId = tagId;
     }
 }
