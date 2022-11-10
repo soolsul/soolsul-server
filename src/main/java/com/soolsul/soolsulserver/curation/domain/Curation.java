@@ -16,6 +16,6 @@ public class Curation extends BaseTimeEntity {
 
     private String content;
 
-    private String restaurantId;
+    private String barId;
 }
 

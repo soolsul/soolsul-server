@@ -17,7 +17,7 @@ import java.util.List;
 public class PostCreateRequest {
 
     @NotBlank
-    private String restaurantId;
+    private String barId;
 
     @NotBlank
     @Size(min = 1, max = 500)

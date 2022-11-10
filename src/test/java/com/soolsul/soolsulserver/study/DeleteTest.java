@@ -19,26 +19,29 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class DeleteTest {
 
-    private static final String RESTAURANT_ID = "1";
+    private static final String BAR_ID = "1";
 
-    @Autowired PostRepository postRepository;
-    @Autowired EntityManager em;
+    @Autowired
+    PostRepository postRepository;
+
+    @Autowired
+    EntityManager entityManager;
 
     @Transactional
     @Rollback(value = false)
     @Test
     public void delete_test() {
         // given
-        Post post = new Post("ownerId", "restaurantId", 4.2f, "contents");
-        PostPhoto newPhoto1 = new PostPhoto(RESTAURANT_ID, "file1", "uuid1", ".jpg");
-        PostPhoto newPhoto2 = new PostPhoto(RESTAURANT_ID, "file2", "uuid2", ".jpg");
-        PostPhoto newPhoto3 = new PostPhoto(RESTAURANT_ID, "file3", "uuid3", ".jpg");
+        Post post = new Post("ownerId", "barId", 4.2f, "contents");
+        PostPhoto newPhoto1 = new PostPhoto(BAR_ID, "file1", "uuid1", ".jpg");
+        PostPhoto newPhoto2 = new PostPhoto(BAR_ID, "file2", "uuid2", ".jpg");
+        PostPhoto newPhoto3 = new PostPhoto(BAR_ID, "file3", "uuid3", ".jpg");
         post.addPhotoList(List.of(newPhoto1, newPhoto2, newPhoto3));
 
         postRepository.save(post);
 
-        em.flush();
-        em.clear();
+        entityManager.flush();
+        entityManager.clear();
 
         // when
         Post findPost = postRepository.findById(post.getId()).get();

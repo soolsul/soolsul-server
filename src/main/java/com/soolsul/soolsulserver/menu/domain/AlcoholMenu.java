@@ -14,6 +14,6 @@ public class AlcoholMenu extends BaseTimeEntity {
 
     private String alcoholId;
 
-    private String restaurantId;
+    private String barId;
 
 }
