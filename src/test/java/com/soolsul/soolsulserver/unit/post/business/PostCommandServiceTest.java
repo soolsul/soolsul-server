@@ -1,13 +1,14 @@
 package com.soolsul.soolsulserver.unit.post.business;
 
+import com.soolsul.soolsulserver.attach.domain.AttachRepository;
 import com.soolsul.soolsulserver.auth.User;
 import com.soolsul.soolsulserver.auth.exception.UserNotFoundException;
 import com.soolsul.soolsulserver.bar.domain.Bar;
+import com.soolsul.soolsulserver.bar.domain.BarRepository;
+import com.soolsul.soolsulserver.bar.exception.RestaurantNotFoundException;
 import com.soolsul.soolsulserver.post.business.PostCommandService;
 import com.soolsul.soolsulserver.post.domain.PostRepository;
 import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
-import com.soolsul.soolsulserver.bar.domain.BarRepository;
-import com.soolsul.soolsulserver.bar.exception.RestaurantNotFoundException;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,6 +25,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -43,15 +45,20 @@ public class PostCommandServiceTest {
     @Mock
     private BarRepository barRepository;
 
+    @Mock
+    private AttachRepository attachRepository;
+
     private List<String> postPhotos;
     private User user;
     private PostCreateRequest request;
+    private List<String> tags;
 
     @BeforeEach
     void setUp() {
         postPhotos = List.of("url1", "url2", "url3");
+        tags = List.of("mood_tag1", "mood_tag2", "alcohol_tag1");
         user = new User("user_uuid", "test@email.com", "1234", Collections.emptyList());
-        request = new PostCreateRequest("bar_id", "본문 내용", 4.3f, LocalDate.now(), postPhotos, null);
+        request = new PostCreateRequest("bar_id", "본문 내용", 4.3f, LocalDate.now(), postPhotos, tags);
     }
 
     @DisplayName("가게가 존재할 경우, 정상적으로 게시물을 생성한다.")
@@ -68,6 +75,7 @@ public class PostCommandServiceTest {
         // then
         verify(postRepository, times(1)).save(any());
         verify(barRepository, times(1)).findById(anyString());
+        verify(attachRepository, times(1)).saveAll(anyList());
     }
 
     @DisplayName("가게가 존재하지 않은 경우, 게시물 생성시 예외를 던진다.")
@@ -88,6 +96,7 @@ public class PostCommandServiceTest {
 
         verify(postRepository, times(0)).save(any());
         verify(barRepository, times(1)).findById(anyString());
+        verify(attachRepository, times(0)).saveAll(anyList());
     }
 
     @DisplayName("사용자의 id가 존재하는 경우에만 글을 생성할 수 있다.")
@@ -104,6 +113,7 @@ public class PostCommandServiceTest {
         // then
         verify(postRepository, times(1)).save(any());
         verify(barRepository, times(1)).findById(anyString());
+        verify(attachRepository, times(1)).saveAll(anyList());
     }
 
     @DisplayName("사용자의 id가 존재하지 않는 경우 예외를 던진다.")
@@ -122,5 +132,6 @@ public class PostCommandServiceTest {
 
         verify(postRepository, times(0)).save(any());
         verify(barRepository, times(0)).findById(anyString());
+        verify(attachRepository, times(0)).saveAll(anyList());
     }
 }

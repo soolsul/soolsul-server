@@ -37,5 +37,5 @@ public class PostCreateRequest {
     private List<String> images;
 
     @Size(max = 10)
-    private List<String> tags;
+    private List<String> tagIds;
 }

@@ -30,7 +30,7 @@ public class PostAcceptanceTest extends AcceptanceTest {
     public void create_post_test() {
         // given
         List<String> imagesUrl = List.of("url1", "url2", "url3");
-        List<String> tags = List.of("tag1", "tag2");
+        List<String> tags = List.of("mood_tag1", "mood_tag2", "alcohol_tag1");
         PostCreateRequest postCreateRequest = new PostCreateRequest(STORE_UUID, "본문 내용 입니다", 4.3f, LocalDate.now(), imagesUrl, tags);
 
         // when
