@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.post.presentation;
 
+import com.soolsul.soolsulserver.auth.User;
 import com.soolsul.soolsulserver.common.response.BaseResponse;
 import com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages;
 import com.soolsul.soolsulserver.post.business.PostServiceGateway;
@@ -22,7 +23,8 @@ public class PostQueryController {
 
     @GetMapping("/{postId}")
     public ResponseEntity<BaseResponse<PostDetailResponse>> findDetailPost(@PathVariable String postId, Authentication authentication) {
-        PostDetailResponse postDetailResponse = postServiceGateway.find(postId);
+        User user = (User) authentication.getPrincipal();
+        PostDetailResponse postDetailResponse = postServiceGateway.find(user.getId(), postId);
         return new ResponseEntity<>(new BaseResponse<>(ResponseCodeAndMessages.FEED_FIND_SUCCESS, postDetailResponse), HttpStatus.OK);
     }
 }

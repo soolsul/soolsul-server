@@ -51,7 +51,7 @@ public class PostQueryServiceTest {
         given(postRepository.findById(anyString())).willReturn(Optional.of(post));
 
         // when
-        PostDetailResponse response = postQueryService.findPostDetail("any_uuid");
+        PostDetailResponse response = postQueryService.findPostDetail(user.getId(), "any_uuid");
 
         // then
         assertAll(

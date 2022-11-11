@@ -28,7 +28,7 @@ public class PostServiceGateway implements CommandService<PostCreateRequest>, Qu
     }
 
     @Override
-    public PostDetailResponse find(String id) {
-        return null;
+    public PostDetailResponse find(String userId, String id) {
+        return postQueryService.findPostDetail(userId, id);
     }
 }

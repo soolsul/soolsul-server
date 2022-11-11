@@ -19,14 +19,15 @@ public class PostQueryService {
 
     private final PostRepository postRepository;
 
-    public PostDetailResponse findPostDetail(String postId) {
+    public PostDetailResponse findPostDetail(String loginUserId, String postId) {
         Post findPost = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
+        // TODO : userDetailService에서 Post의 주인을 찾아와야함
+        // TODO : Bar 정보 찾아와야 함, 아직 Bar 도메인 미구현
 
         List<String> urlList = convertImageUrlList(findPost);
 
-        // TODO : userDetailService에서 Post의 주인을 찾아와야함
-        return PostDetailResponse.of("test", findPost, urlList);
+        return PostDetailResponse.of(loginUserId, "test", findPost, urlList);
     }
 
     private List<String> convertImageUrlList(Post findPost) {
