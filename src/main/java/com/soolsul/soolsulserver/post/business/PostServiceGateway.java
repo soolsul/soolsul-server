@@ -1,15 +1,16 @@
 package com.soolsul.soolsulserver.post.business;
 
 import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
-import com.soolsul.soolsulserver.post.presentation.dto.PostResponse;
+import com.soolsul.soolsulserver.post.presentation.dto.PostDetailResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PostServiceGateway implements CommandService<PostCreateRequest>, QueryService<PostResponse> {
+public class PostServiceGateway implements CommandService<PostCreateRequest>, QueryService<PostDetailResponse> {
 
     private final PostCommandService postCommandService;
+    private final PostQueryService postQueryService;
 
     @Override
     public void create(String id, PostCreateRequest request) {
@@ -27,7 +28,7 @@ public class PostServiceGateway implements CommandService<PostCreateRequest>, Qu
     }
 
     @Override
-    public PostResponse find(String id) {
+    public PostDetailResponse find(String id) {
         return null;
     }
 }

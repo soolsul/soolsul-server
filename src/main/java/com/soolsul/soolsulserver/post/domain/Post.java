@@ -2,6 +2,7 @@ package com.soolsul.soolsulserver.post.domain;
 
 import com.soolsul.soolsulserver.common.domain.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseTimeEntity {
 
