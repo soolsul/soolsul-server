@@ -1,8 +1,8 @@
 package com.soolsul.soolsulserver.post.domain;
 
+import com.soolsul.soolsulserver.auth.User;
 import com.soolsul.soolsulserver.common.domain.BaseTimeEntity;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -13,7 +13,6 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Entity
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseTimeEntity {
 
@@ -34,6 +33,9 @@ public class Post extends BaseTimeEntity {
 
     @Embedded
     private PostPhotos photos = new PostPhotos();
+
+    @Embedded
+    private Likes likes = new Likes();
 
     public Post(String ownerId, String barId, Float score, String contents) {
         this.ownerId = ownerId;
@@ -65,5 +67,37 @@ public class Post extends BaseTimeEntity {
 
     public void clearAllPhotos() {
         this.photos.clear();
+    }
+
+    public void like(User user) {
+        this.likes.add(user.getId());
+    }
+
+    public void undoLike(User user) {
+        this.likes.remove(user.getId());
+    }
+
+    public int likeCount() {
+        return this.likes.size();
+    }
+
+    public boolean isLikeContain(String userId) {
+        return likes.contains(userId);
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public String getBarId() {
+        return barId;
+    }
+
+    public Float getScore() {
+        return score;
+    }
+
+    public String getContents() {
+        return contents;
     }
 }
