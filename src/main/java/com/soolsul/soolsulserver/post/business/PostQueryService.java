@@ -27,7 +27,7 @@ public class PostQueryService {
 
         List<String> urlList = convertImageUrlList(findPost);
 
-        return PostDetailResponse.of(loginUserId, "test", findPost, urlList);
+        return PostDetailResponse.of(loginUserId, "tempUserName", findPost, urlList);
     }
 
     private List<String> convertImageUrlList(Post findPost) {

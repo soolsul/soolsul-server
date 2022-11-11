@@ -47,6 +47,7 @@ public class PostQueryServiceTest {
         List<PostPhoto> postPhotos = List.of(new PostPhoto("barId", "", "uuid1", ""), new PostPhoto("barId", "", "uuid2", ""));
         Post post = new Post("user_uuid", "", 4.3f, "content!");
         post.addPhotoList(postPhotos);
+        post.like(user);
 
         given(postRepository.findById(anyString())).willReturn(Optional.of(post));
 
@@ -55,12 +56,13 @@ public class PostQueryServiceTest {
 
         // then
         assertAll(
-                () -> assertThat(response.getUserName()).isEqualTo("test"),
-                () -> assertThat(response.getScore()).isEqualTo(4.3f),
-                () -> assertThat(response.getImageUrls()).contains("uuid1", "uuid2"),
-                () -> assertThat(response.getContents()).isEqualTo("content!")
+                () -> assertThat(response.UserName()).isEqualTo("tempUserName"),
+                () -> assertThat(response.Score()).isEqualTo(4.3f),
+                () -> assertThat(response.Contents()).isEqualTo("content!"),
+                () -> assertThat(response.ImageUrls()).contains("uuid1", "uuid2"),
+                () -> assertThat(response.likeInfo().count()).isEqualTo(1),
+                () -> assertThat(response.likeInfo().userLikeStatus()).isTrue()
         );
         verify(postRepository, times(1)).findById(any());
-
     }
 }
