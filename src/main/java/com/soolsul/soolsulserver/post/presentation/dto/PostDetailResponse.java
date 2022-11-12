@@ -15,20 +15,20 @@ import java.util.Objects;
 public record PostDetailResponse(
 
         @NotNull
-        String UserName,
+        String userName,
 
         @NotNull
         @Pattern(regexp = "1-5")
-        Float Score,
+        Float score,
 
         @NotBlank
-        String Contents,
+        String contents,
 
         @URL
         @Size(max = 10)
-        List<String> ImageUrls,
+        List<String> imageUrls,
 
-        PostDetailLikeResponse likeInfo
+        PostDetailLikeResponse likesInfo
 ) {
 
     public static PostDetailResponse of(String loginUserId, String userName, Post post, List<String> urlList) {

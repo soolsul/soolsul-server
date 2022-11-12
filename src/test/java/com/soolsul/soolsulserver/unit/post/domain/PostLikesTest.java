@@ -2,10 +2,10 @@ package com.soolsul.soolsulserver.unit.post.domain;
 
 import com.soolsul.soolsulserver.auth.User;
 import com.soolsul.soolsulserver.post.domain.Post;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class PostLikesTest {
@@ -22,8 +22,8 @@ public class PostLikesTest {
 
         // then
         assertAll(
-                () -> Assertions.assertThat(post.isLikeContain(user.getId())).isTrue(),
-                () -> Assertions.assertThat(post.likeCount()).isEqualTo(1)
+                () -> assertThat(post.isLikeContain(user.getId())).isTrue(),
+                () -> assertThat(post.likeCount()).isEqualTo(1)
         );
     }
 
@@ -39,8 +39,8 @@ public class PostLikesTest {
 
         // then
         assertAll(
-                () -> Assertions.assertThat(post.isLikeContain(user.getId())).isFalse(),
-                () -> Assertions.assertThat(post.likeCount()).isEqualTo(0)
+                () -> assertThat(post.isLikeContain(user.getId())).isFalse(),
+                () -> assertThat(post.likeCount()).isEqualTo(0)
         );
     }
 
@@ -59,7 +59,7 @@ public class PostLikesTest {
         post.like(user3);
 
         // then
-        Assertions.assertThat(post.likeCount()).isEqualTo(3);
+        assertThat(post.likeCount()).isEqualTo(3);
     }
 
     @DisplayName("동일한 사용자가 같은 피드에 좋아요를 여러번 눌러도 한번만 카운트 된다")
@@ -79,9 +79,9 @@ public class PostLikesTest {
 
         // then
         assertAll(
-                () -> Assertions.assertThat(post.isLikeContain(user1.getId())).isTrue(),
-                () -> Assertions.assertThat(post.isLikeContain(user2.getId())).isTrue(),
-                () -> Assertions.assertThat(post.likeCount()).isEqualTo(2)
+                () -> assertThat(post.isLikeContain(user1.getId())).isTrue(),
+                () -> assertThat(post.isLikeContain(user2.getId())).isTrue(),
+                () -> assertThat(post.likeCount()).isEqualTo(2)
         );
     }
 }
