@@ -13,8 +13,8 @@ public class PostServiceGateway implements CommandService<PostCreateRequest>, Qu
     private final PostQueryService postQueryService;
 
     @Override
-    public void create(String id, PostCreateRequest request) {
-        postCommandService.create(id, request);
+    public void create(String userId, PostCreateRequest request) {
+        postCommandService.create(userId, request);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class PostServiceGateway implements CommandService<PostCreateRequest>, Qu
     }
 
     @Override
-    public PostDetailResponse find(String userId, String id) {
-        return postQueryService.findPostDetail(userId, id);
+    public PostDetailResponse find(String userId, String postId) {
+        return postQueryService.findPostDetail(userId, postId);
     }
 }
