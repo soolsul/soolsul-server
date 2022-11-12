@@ -42,4 +42,8 @@ public class PostPhoto extends BaseEntity {
     public void setPost(Post post) {
         this.post = post;
     }
+
+    public String getUrl() {
+        return uuidFileUrl;
+    }
 }
