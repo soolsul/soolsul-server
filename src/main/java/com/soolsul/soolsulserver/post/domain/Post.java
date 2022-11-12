@@ -3,6 +3,7 @@ package com.soolsul.soolsulserver.post.domain;
 import com.soolsul.soolsulserver.auth.User;
 import com.soolsul.soolsulserver.common.domain.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -18,15 +19,19 @@ public class Post extends BaseTimeEntity {
 
     private static final int LIMIT_LENGTH = 50;
 
+    @Getter
     @Column(nullable = false)
     private String ownerId;
 
+    @Getter
     @Column(nullable = false)
     private String barId;
 
+    @Getter
     @Positive
     private Float score;
 
+    @Getter
     @Lob
     @Column
     private String contents;
@@ -83,21 +88,5 @@ public class Post extends BaseTimeEntity {
 
     public boolean isLikeContain(String userId) {
         return likes.contains(userId);
-    }
-
-    public String getOwnerId() {
-        return ownerId;
-    }
-
-    public String getBarId() {
-        return barId;
-    }
-
-    public Float getScore() {
-        return score;
-    }
-
-    public String getContents() {
-        return contents;
     }
 }
