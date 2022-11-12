@@ -15,16 +15,21 @@ public class BarMoodTag extends BaseEntity {
     private String barId;
 
     @Column(nullable = false)
+    private String moodId;
+
+    @Column(nullable = false)
     private String name;
 
     private boolean isCuration;
 
     private Integer count;
 
-    public BarMoodTag(String barId, String name, boolean isCuration, Integer count) {
+    public BarMoodTag(String barId, String moodId, String name, boolean isCuration, Integer count) {
         this.barId = barId;
+        this.moodId = moodId;
         this.name = name;
         this.isCuration = isCuration;
         this.count = count;
     }
+
 }
