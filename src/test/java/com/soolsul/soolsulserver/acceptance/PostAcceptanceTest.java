@@ -22,7 +22,8 @@ public class PostAcceptanceTest extends AcceptanceTest {
     // TODO : RestAsured Auth 설정도 함께 해야 동작하는데, 아직 로그인이 없어 설정하지 않았다.
 
     /**
-     * given: 해당 가게가 이미 등록되어 있다.
+     * given: 사용자가 로그인 한 상태이다.
+     * and: 해당 가게가 이미 등록되어 있다.
      * and: 사용자가 본문을 작성하였다.
      * when: 작성 완료를 누르면
      * then: 성공적으로 저장되고, 피드 리스트 페이지로 이동한다.
@@ -41,7 +42,7 @@ public class PostAcceptanceTest extends AcceptanceTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(postCreateRequest)
                 .when()
-                .post("/api/posts")
+                .post("/posts")
                 .then().log().all()
                 .extract();
 
@@ -54,7 +55,8 @@ public class PostAcceptanceTest extends AcceptanceTest {
     }
 
     /**
-     * given: 사전에 등록된 피드들이 있으며
+     * given: 사용자가 로그인 한 상태이다.
+     * and: 사전에 등록된 피드들이 있으며
      * and: 사용자가 피드 목록을 보고 있다.
      * when: User가 리스트에서 특정 가게의 피드을 누른다.
      * then: 해당 피드로 이동한다.
@@ -67,15 +69,42 @@ public class PostAcceptanceTest extends AcceptanceTest {
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
-                .get("/api/posts/{postId}", 1)
+                .get("/posts/{postId}", 1)
                 .then().log().all()
                 .extract();
 
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("P004"),
+                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("P002"),
                 () -> assertThat(response.jsonPath().getString("message")).isEqualTo("피드 상세 조회 성공했습니다.")
+        );
+    }
+
+    /**
+     * given: 사용자가 로그인 한 상태이다.
+     * and: 사용자가 첫 지도화면에 있는 상태이다.
+     * when: 네비게이션의 피드를 누른다.
+     * then: 피드 리스트 페이지로 이동한다.
+     */
+    @DisplayName("사용자가 하단 네비게이션에서 피드 선택시 피드 목록이 보여진다")
+    @Test
+    public void find_post_list_test() {
+        // when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .get("/posts")
+                .then().log().all()
+                .extract();
+
+        // TODO: 리스트 본문 검증 테스트 아직 미구현
+        // then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("P004"),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("모든 피드를 찾는데 성공하였습니다.")
         );
     }
 }

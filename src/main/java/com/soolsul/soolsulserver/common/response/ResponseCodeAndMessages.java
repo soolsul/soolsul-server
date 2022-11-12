@@ -5,6 +5,7 @@ public enum ResponseCodeAndMessages {
     FEED_FIND_SUCCESS("P002", "피드 찾기에 성공하였습니다."),
     // POO2 : update
     // POO3 : delete
+    FEED_FIND_ALL_SUCCESS("P004", "모든 피드를 찾는데 성공하였습니다.");
 
     BAR_LOOK_UP_SUCCESS("B001", "술집 목록 조회에 성공하였습니다.");
 
