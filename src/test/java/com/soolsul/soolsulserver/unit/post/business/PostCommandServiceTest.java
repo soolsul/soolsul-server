@@ -7,7 +7,7 @@ import com.soolsul.soolsulserver.post.business.PostCommandService;
 import com.soolsul.soolsulserver.post.domain.PostRepository;
 import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
 import com.soolsul.soolsulserver.bar.domain.BarRepository;
-import com.soolsul.soolsulserver.bar.exception.RestaurantNotFoundException;
+import com.soolsul.soolsulserver.bar.exception.BarNotFoundException;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -83,7 +83,7 @@ public class PostCommandServiceTest {
 
         // then
         assertThatThrownBy(actual)
-                .isInstanceOf(RestaurantNotFoundException.class)
+                .isInstanceOf(BarNotFoundException.class)
                 .hasMessage("해당 가게를 찾을 수 없습니다.");
 
         verify(postRepository, times(0)).save(any());
