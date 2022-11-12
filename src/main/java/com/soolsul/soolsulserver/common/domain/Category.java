@@ -12,4 +12,9 @@ import javax.persistence.MappedSuperclass;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class Category extends BaseTimeEntity{
     private String name;
+
+    public Category(String name) {
+        this.name = name;
+    }
+
 }

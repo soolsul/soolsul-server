@@ -8,4 +8,10 @@ import javax.persistence.Entity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class AlcoholCategory extends Category { }
+public class AlcoholCategory extends Category {
+
+    public AlcoholCategory(String name) {
+        super(name);
+    }
+
+}
