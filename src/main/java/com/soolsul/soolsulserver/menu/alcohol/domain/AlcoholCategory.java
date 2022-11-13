@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.menu.domain;
+package com.soolsul.soolsulserver.menu.alcohol.domain;
 
 import com.soolsul.soolsulserver.common.domain.Category;
 import lombok.AccessLevel;
@@ -8,4 +8,10 @@ import javax.persistence.Entity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class AlcoholCategory extends Category { }
+public class AlcoholCategory extends Category {
+
+    public AlcoholCategory(String name) {
+        super(name);
+    }
+
+}

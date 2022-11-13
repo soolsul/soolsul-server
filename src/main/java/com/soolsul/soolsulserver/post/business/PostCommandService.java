@@ -7,7 +7,7 @@ import com.soolsul.soolsulserver.post.domain.PostRepository;
 import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
 import com.soolsul.soolsulserver.bar.domain.Bar;
 import com.soolsul.soolsulserver.bar.domain.BarRepository;
-import com.soolsul.soolsulserver.bar.exception.RestaurantNotFoundException;
+import com.soolsul.soolsulserver.bar.exception.BarNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +30,7 @@ public class PostCommandService {
         }
 
         Bar findBar = barRepository.findById(request.getBarId())
-                .orElseThrow(RestaurantNotFoundException::new);
+                .orElseThrow(BarNotFoundException::new);
 
         Post newPost = new Post(userId,
                 findBar.getId(),

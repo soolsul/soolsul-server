@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.menu.domain;
+package com.soolsul.soolsulserver.menu.alcohol.domain;
 
 import com.soolsul.soolsulserver.common.domain.BaseEntity;
 import lombok.AccessLevel;
@@ -9,17 +9,17 @@ import javax.persistence.Entity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SnackPhoto extends BaseEntity {
+public class AlcoholPhoto extends BaseEntity {
 
     @Column(nullable = false)
-    private String snackId;
+    private String alcoholId;
 
     private String originalFileName;
     private String uuidFileUrl;
     private String extension;
 
-    public SnackPhoto(String snackId, String originalFileName, String uuidFileUrl, String extension) {
-        this.snackId = snackId;
+    public AlcoholPhoto(String alcoholId, String originalFileName, String uuidFileUrl, String extension) {
+        this.alcoholId = alcoholId;
         this.originalFileName = originalFileName;
         this.uuidFileUrl = uuidFileUrl;
         this.extension = extension;

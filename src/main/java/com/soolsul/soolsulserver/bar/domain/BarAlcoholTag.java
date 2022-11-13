@@ -15,10 +15,15 @@ public class BarAlcoholTag extends BaseEntity {
     private String barId;
 
     @Column(nullable = false)
-    private String name;
+    private String alcoholCategoryId;
 
-    public BarAlcoholTag(String barId, String name) {
+    @Column(nullable = false)
+    private String alcoholCategoryName;
+
+    public BarAlcoholTag(String barId, String alcoholCategoryId, String alcoholCategoryName) {
         this.barId = barId;
-        this.name = name;
+        this.alcoholCategoryId = alcoholCategoryId;
+        this.alcoholCategoryName = alcoholCategoryName;
     }
+
 }

@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.menu.domain;
+package com.soolsul.soolsulserver.menu.alcohol.domain;
 
 import com.soolsul.soolsulserver.common.domain.BaseTimeEntity;
 import lombok.AccessLevel;
@@ -8,12 +8,11 @@ import javax.persistence.Entity;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class AlcoholMenu extends BaseTimeEntity {
+public class Alcohol extends BaseTimeEntity {
 
-    private double cost;
+    private String name;
 
-    private String alcoholId;
+    private int alcoholPercent;
 
-    private String barId;
-
+    private Long alcoholCategoryId;
 }

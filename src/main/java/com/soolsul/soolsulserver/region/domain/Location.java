@@ -11,8 +11,16 @@ import javax.persistence.Embeddable;
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Location {
+
     @Column(nullable = false)
     private double latitude;
+
     @Column(nullable = false)
     private double longitude;
+
+    public Location(double latitude, double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
 }

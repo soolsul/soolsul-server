@@ -16,6 +16,10 @@ public class Bar extends BaseTimeEntity {
 
     private String barCategoryId;
 
+    private String name;
+
+    private String description;
+
     @Embedded
     private Location location;
 
