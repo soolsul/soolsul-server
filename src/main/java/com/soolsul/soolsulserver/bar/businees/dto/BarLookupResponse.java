@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.bar.dto.response;
+package com.soolsul.soolsulserver.bar.businees.dto;
 
 import java.time.LocalDateTime;
 

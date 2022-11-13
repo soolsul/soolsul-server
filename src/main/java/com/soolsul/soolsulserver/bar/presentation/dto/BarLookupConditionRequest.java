@@ -1,14 +1,13 @@
-package com.soolsul.soolsulserver.bar.dto.request;
+package com.soolsul.soolsulserver.bar.presentation.dto;
 
 import javax.validation.constraints.NotEmpty;
-import java.util.List;
 
-public record BarLookupServiceConditionRequest(
+public record BarLookupConditionRequest(
         @NotEmpty double southWestLongitude,
         @NotEmpty double southWestLatitude,
         @NotEmpty double northEastLongitude,
         @NotEmpty double northEastLatitude,
-        @NotEmpty List<String> barMoodTagIds,
-        @NotEmpty List<String> barAlcoholTagIds
+        @NotEmpty String barMoodTagNames,
+        @NotEmpty String barAlcoholTagNames
 ) {
 }

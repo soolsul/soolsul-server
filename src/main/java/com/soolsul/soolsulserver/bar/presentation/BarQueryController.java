@@ -1,7 +1,7 @@
 package com.soolsul.soolsulserver.bar.presentation;
 
-import com.soolsul.soolsulserver.bar.dto.response.BarsLookupResponse;
-import com.soolsul.soolsulserver.bar.dto.request.BarLookupConditionRequest;
+import com.soolsul.soolsulserver.bar.presentation.dto.BarsLookupResponse;
+import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupConditionRequest;
 import com.soolsul.soolsulserver.bar.facade.BarQueryFacade;
 import com.soolsul.soolsulserver.common.response.BaseResponse;
 import com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages;

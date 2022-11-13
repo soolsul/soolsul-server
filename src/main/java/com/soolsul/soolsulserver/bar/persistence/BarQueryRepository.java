@@ -2,8 +2,8 @@ package com.soolsul.soolsulserver.bar.persistence;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.soolsul.soolsulserver.bar.dto.response.BarLookupResponse;
-import com.soolsul.soolsulserver.bar.dto.request.BarLookupServiceConditionRequest;
+import com.soolsul.soolsulserver.bar.businees.dto.BarLookupResponse;
+import com.soolsul.soolsulserver.bar.businees.dto.BarLookupServiceConditionRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
