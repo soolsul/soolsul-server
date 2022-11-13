@@ -37,7 +37,7 @@ public class BarQueryFacade {
                 getBarAlcoholTagIds(barLookupConditionRequest.barAlcoholTagNames())
         );
 
-        return barQueryService.findBarMeetingConditions(barLookupServiceConditionRequest);
+        return barQueryService.findBarFilteredByConditions(barLookupServiceConditionRequest);
     }
 
     private List<String> getBarMoodTagIds(String barMoodTagNames) {

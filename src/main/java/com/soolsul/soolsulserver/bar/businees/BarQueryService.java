@@ -16,7 +16,7 @@ public class BarQueryService {
 
     private final BarQueryRepository barQueryRepository;
 
-    public BarsLookupResponse findBarMeetingConditions(
+    public BarsLookupResponse findBarFilteredByConditions(
             @Valid BarLookupServiceConditionRequest barLookupServiceConditionRequest
     ) {
         List<BarLookupResponse> barLookupResponses
