@@ -1,7 +1,8 @@
 package com.soolsul.soolsulserver.post.presentation.dto;
 
 import com.soolsul.soolsulserver.post.business.dto.PostDetailLikeResponse;
-import com.soolsul.soolsulserver.post.domain.Post;
+import com.soolsul.soolsulserver.post.business.dto.PostDetailStoreResponse;
+import com.soolsul.soolsulserver.post.business.dto.PostDetailUserResponse;
 import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.NotBlank;
@@ -9,7 +10,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
-import java.util.Objects;
 
 
 public record PostDetailResponse(
@@ -28,17 +28,8 @@ public record PostDetailResponse(
         @Size(max = 10)
         List<String> imageUrls,
 
-        PostDetailLikeResponse likesInfo
+        PostDetailLikeResponse like,
+        PostDetailUserResponse user,
+        PostDetailStoreResponse store
 ) {
-
-    public static PostDetailResponse of(String loginUserId, String userName, Post post, List<String> urlList) {
-        boolean likeStatus = !Objects.isNull(loginUserId) && post.isLikeContain(loginUserId);
-        return new PostDetailResponse(
-                userName,
-                post.getScore(),
-                post.getContents(),
-                urlList,
-                new PostDetailLikeResponse(post.likeCount(), likeStatus)
-        );
-    }
 }
