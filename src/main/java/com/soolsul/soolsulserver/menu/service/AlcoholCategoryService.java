@@ -12,7 +12,7 @@ public class AlcoholCategoryService {
 
     private final AlcoholCategoryRepository alcoholCategoryRepository;
 
-    List<String> findAlcoholCategoryIdsByAlcoholCategoryNames(List<String> alcoholCategoryNames) {
+    public List<String> findAlcoholCategoryIdsByAlcoholCategoryNames(List<String> alcoholCategoryNames) {
         return alcoholCategoryRepository.findAlcoholCategoryIdsByAlcoholCategoryNames(alcoholCategoryNames);
     }
 
