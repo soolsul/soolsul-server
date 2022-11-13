@@ -1,6 +1,5 @@
 package com.soolsul.soolsulserver.post.business.dto;
 
-import com.soolsul.soolsulserver.auth.User;
 import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.NotNull;
@@ -18,7 +17,4 @@ public record PostDetailUserResponse(
         @URL
         String userProfileUrl
 ) {
-    public PostDetailUserResponse(User user) {
-        this(user.getId(), user.getUsername(), "프로필 이미지 링크 들어가야함");
-    }
 }
