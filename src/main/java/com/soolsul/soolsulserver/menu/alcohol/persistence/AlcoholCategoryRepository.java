@@ -6,7 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.soolsul.soolsulserver.menu.domain.QAlcoholCategory.alcoholCategory;
+import static com.soolsul.soolsulserver.menu.alcohol.domain.QAlcoholCategory.alcoholCategory;
+
 
 @Repository
 @RequiredArgsConstructor
