@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.menu.domain;
+package com.soolsul.soolsulserver.menu.alcohol.domain;
 
 import com.soolsul.soolsulserver.common.domain.Category;
 import lombok.AccessLevel;

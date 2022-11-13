@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.menu.persistence;
+package com.soolsul.soolsulserver.menu.alcohol.persistence;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

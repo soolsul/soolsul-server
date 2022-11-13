@@ -1,7 +1,8 @@
 package com.soolsul.soolsulserver.menu.persistence;
 
 import com.soolsul.soolsulserver.config.QueryDslConfig;
-import com.soolsul.soolsulserver.menu.domain.AlcoholCategory;
+import com.soolsul.soolsulserver.menu.alcohol.domain.AlcoholCategory;
+import com.soolsul.soolsulserver.menu.alcohol.persistence.AlcoholCategoryRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

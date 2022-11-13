@@ -6,7 +6,7 @@ import com.soolsul.soolsulserver.bar.businees.BarQueryService;
 import com.soolsul.soolsulserver.bar.dto.request.BarLookupConditionRequest;
 import com.soolsul.soolsulserver.bar.dto.request.BarLookupServiceConditionRequest;
 import com.soolsul.soolsulserver.bar.dto.response.BarsLookupResponse;
-import com.soolsul.soolsulserver.menu.service.AlcoholCategoryService;
+import com.soolsul.soolsulserver.menu.alcohol.service.AlcoholCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

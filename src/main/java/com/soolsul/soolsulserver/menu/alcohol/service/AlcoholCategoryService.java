@@ -1,6 +1,6 @@
-package com.soolsul.soolsulserver.menu.service;
+package com.soolsul.soolsulserver.menu.alcohol.service;
 
-import com.soolsul.soolsulserver.menu.persistence.AlcoholCategoryRepository;
+import com.soolsul.soolsulserver.menu.alcohol.persistence.AlcoholCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
