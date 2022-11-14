@@ -56,12 +56,12 @@ public class PostQueryServiceTest {
 
         // then
         assertAll(
-                () -> assertThat(response.UserName()).isEqualTo("tempUserName"),
-                () -> assertThat(response.Score()).isEqualTo(4.3f),
-                () -> assertThat(response.Contents()).isEqualTo("content!"),
-                () -> assertThat(response.ImageUrls()).contains("uuid1", "uuid2"),
-                () -> assertThat(response.likeInfo().count()).isEqualTo(1),
-                () -> assertThat(response.likeInfo().userLikeStatus()).isTrue()
+                () -> assertThat(response.userName()).isEqualTo("tempUserName"),
+                () -> assertThat(response.score()).isEqualTo(4.3f),
+                () -> assertThat(response.contents()).isEqualTo("content!"),
+                () -> assertThat(response.imageUrls()).contains("uuid1", "uuid2"),
+                () -> assertThat(response.likesInfo().count()).isEqualTo(1),
+                () -> assertThat(response.likesInfo().userLikeStatus()).isTrue()
         );
         verify(postRepository, times(1)).findById(any());
     }
