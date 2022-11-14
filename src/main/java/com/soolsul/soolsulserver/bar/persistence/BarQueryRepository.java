@@ -19,7 +19,7 @@ public class BarQueryRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public List<BarLookupResponse> findBarMeetingConditions(BarLookupServiceConditionRequest barLookupServiceConditionRequest) {
+    public List<FilteredBarLookupResponse> findBarFilteredByConditions(BarLookupServiceConditionRequest barLookupServiceConditionRequest) {
         double southWestLongitude = barLookupServiceConditionRequest.southWestLongitude();
         double southWestLatitude = barLookupServiceConditionRequest.southWestLatitude();
         double northEastLongitude = barLookupServiceConditionRequest.northEastLongitude();
