@@ -60,8 +60,8 @@ public class PostQueryServiceTest {
                 () -> assertThat(response.score()).isEqualTo(4.3f),
                 () -> assertThat(response.contents()).isEqualTo("content!"),
                 () -> assertThat(response.imageUrls()).contains("uuid1", "uuid2"),
-                () -> assertThat(response.likesInfo().count()).isEqualTo(1),
-                () -> assertThat(response.likesInfo().userLikeStatus()).isTrue()
+                () -> assertThat(response.like().count()).isEqualTo(1),
+                () -> assertThat(response.like().userLikeStatus()).isTrue()
         );
         verify(postRepository, times(1)).findById(any());
     }
