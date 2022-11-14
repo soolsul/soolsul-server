@@ -38,6 +38,13 @@ public class CustomUser implements UserDetails {
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Authority> userRoles = new HashSet<>();
 
+    public CustomUser(String id, String email, String password, Set<Authority> userRoles) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.userRoles = userRoles;
+    }
+
     public CustomUser(String email, String password, Set<Authority> userRoles) {
         this.email = email;
         this.password = password;

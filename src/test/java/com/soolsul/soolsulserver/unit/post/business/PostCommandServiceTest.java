@@ -1,6 +1,8 @@
 package com.soolsul.soolsulserver.unit.post.business;
 
-import com.soolsul.soolsulserver.auth.User;
+import com.soolsul.soolsulserver.auth.Authority;
+import com.soolsul.soolsulserver.auth.CustomUser;
+import com.soolsul.soolsulserver.auth.Role;
 import com.soolsul.soolsulserver.auth.exception.UserNotFoundException;
 import com.soolsul.soolsulserver.bar.domain.Bar;
 import com.soolsul.soolsulserver.post.business.PostCommandService;
@@ -21,6 +23,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -44,13 +47,13 @@ public class PostCommandServiceTest {
     private BarRepository barRepository;
 
     private List<String> postPhotos;
-    private User user;
+    private CustomUser customUser;
     private PostCreateRequest request;
 
     @BeforeEach
     void setUp() {
         postPhotos = List.of("url1", "url2", "url3");
-        user = new User("user_uuid", "test@email.com", "1234", Collections.emptyList());
+        customUser = new CustomUser("1", "test@email.com", "1234", Set.of(new Authority(Role.USER)));
         request = new PostCreateRequest("bar_id", "본문 내용", 4.3f, LocalDate.now(), postPhotos, null);
     }
 
@@ -63,7 +66,7 @@ public class PostCommandServiceTest {
         given(barRepository.findById(anyString())).willReturn(Optional.of(bar));
 
         // when
-        postCommandService.create(user.getId(), request);
+        postCommandService.create(customUser.getId(), request);
 
         // then
         verify(postRepository, times(1)).save(any());
@@ -79,7 +82,7 @@ public class PostCommandServiceTest {
         given(barRepository.findById(anyString())).willReturn(Optional.empty());
 
         // when
-        ThrowableAssert.ThrowingCallable actual = () -> postCommandService.create(user.getId(), request);
+        ThrowableAssert.ThrowingCallable actual = () -> postCommandService.create(customUser.getId(), request);
 
         // then
         assertThatThrownBy(actual)
@@ -99,7 +102,7 @@ public class PostCommandServiceTest {
         given(barRepository.findById(anyString())).willReturn(Optional.of(bar));
 
         // when
-        postCommandService.create(user.getId(), request);
+        postCommandService.create(customUser.getId(), request);
 
         // then
         verify(postRepository, times(1)).save(any());
@@ -110,10 +113,10 @@ public class PostCommandServiceTest {
     @Test
     public void throw_exception_if_not_exists_user_test() {
         // given
-        User user = new User(null, "test@email.com", "1234", Collections.emptyList());
+        CustomUser noEmailCustomUser = new CustomUser(null, "1234", Set.of(new Authority(Role.USER)));
 
         // when
-        ThrowableAssert.ThrowingCallable actual = () -> postCommandService.create(user.getId(), request);
+        ThrowableAssert.ThrowingCallable actual = () -> postCommandService.create(noEmailCustomUser.getId(), request);
 
         // then
         assertThatThrownBy(actual)
