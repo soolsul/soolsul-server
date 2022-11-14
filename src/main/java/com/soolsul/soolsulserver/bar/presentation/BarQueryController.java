@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.bar.presentation;
 
-import com.soolsul.soolsulserver.bar.presentation.dto.BarsLookupResponse;
+import com.soolsul.soolsulserver.bar.presentation.dto.FilteredBarsLookupResponse;
 import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupConditionRequest;
 import com.soolsul.soolsulserver.bar.facade.BarQueryFacade;
 import com.soolsul.soolsulserver.common.response.BaseResponse;
@@ -21,12 +21,12 @@ public class BarQueryController {
     private final BarQueryFacade barQueryFacade;
 
     @GetMapping
-    public ResponseEntity<BaseResponse<BarsLookupResponse>> findBarMeetingConditions (
+    public ResponseEntity<BaseResponse<FilteredBarsLookupResponse>> findBarMeetingConditions (
             @Valid BarLookupConditionRequest barLookupConditionRequest
     ) {
-        BarsLookupResponse barsLookupResponse = barQueryFacade.findBarMeetingConditions(barLookupConditionRequest);
-        BaseResponse<BarsLookupResponse> baseResponse = new BaseResponse<>(
-                ResponseCodeAndMessages.BAR_LOOK_UP_SUCCESS, barsLookupResponse
+        FilteredBarsLookupResponse filteredBarsLookupResponse = barQueryFacade.findBarMeetingConditions(barLookupConditionRequest);
+        BaseResponse<FilteredBarsLookupResponse> baseResponse = new BaseResponse<>(
+                ResponseCodeAndMessages.BAR_LOOK_UP_SUCCESS, filteredBarsLookupResponse
         );
 
         return ResponseEntity.ok(baseResponse);

@@ -8,7 +8,6 @@ import java.util.List;
 
 import static com.soolsul.soolsulserver.menu.alcohol.domain.QAlcoholCategory.alcoholCategory;
 
-
 @Repository
 @RequiredArgsConstructor
 public class AlcoholCategoryRepository {
