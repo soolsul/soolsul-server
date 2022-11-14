@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.auth.dto;
+package com.soolsul.soolsulserver.auth.filter.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

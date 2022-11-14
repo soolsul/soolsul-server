@@ -1,7 +1,7 @@
 package com.soolsul.soolsulserver.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.soolsul.soolsulserver.auth.dto.UserDto;
+import com.soolsul.soolsulserver.auth.filter.dto.UserDto;
 import com.soolsul.soolsulserver.auth.token.FirstLoginAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;

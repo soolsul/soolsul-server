@@ -1,45 +1,77 @@
 package com.soolsul.soolsulserver.config;
 
 
+import com.soolsul.soolsulserver.auth.Role;
+import com.soolsul.soolsulserver.auth.filter.FirstLoginAuthenticationFilter;
+import com.soolsul.soolsulserver.auth.handler.FirstLoginAuthenticationFailureHandler;
+import com.soolsul.soolsulserver.auth.handler.FirstLoginAuthenticationSuccessHandler;
+import com.soolsul.soolsulserver.auth.provider.FirstLoginAuthenticationProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] PUBLIC_URI = {
-            "/auth/**"
+            "/api/auth/register"
     };
 
-    @Bean
-    protected SecurityFilterChain configrure(HttpSecurity http) throws Exception {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
         http
-                // 개발 편의성을 위해 CSRF 프로텍션을 비활성화
-                .csrf()
-                .disable()
-                // HTTP 기본 인증 비활성화
-                .httpBasic()
-                .disable()
-                // 폼 기반 인증 비활성화
-                .formLogin()
-                .disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-        // stateless한 세션 정책 설정
-        // 리소스 별 허용 범위 설정
-        http
+                .csrf().disable()
+                .httpBasic().disable()
+                .formLogin().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
-                .antMatchers(PUBLIC_URI)
-                .permitAll()
+                .antMatchers(PUBLIC_URI).permitAll()
+                .antMatchers("/api/**").hasRole(Role.USER.name())
                 .anyRequest()
-                .authenticated();
+                .authenticated()
+                .and()
+                .addFilterBefore(firstLoginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
 
-        return http.build();
+    @Bean
+    public FirstLoginAuthenticationFilter firstLoginAuthenticationFilter() throws Exception {
+        FirstLoginAuthenticationFilter firstLoginAuthenticationFilter = new FirstLoginAuthenticationFilter();
+        firstLoginAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
+        firstLoginAuthenticationFilter.setAuthenticationSuccessHandler(firstLoginAuthenticationSuccessHandler());
+        firstLoginAuthenticationFilter.setAuthenticationFailureHandler(firstLoginAuthenticationFailureHandler());
+        return firstLoginAuthenticationFilter;
+    }
+
+    @Bean
+    public FirstLoginAuthenticationSuccessHandler firstLoginAuthenticationSuccessHandler() {
+        return new FirstLoginAuthenticationSuccessHandler();
+    }
+
+    @Bean
+    public FirstLoginAuthenticationFailureHandler firstLoginAuthenticationFailureHandler() {
+        return new FirstLoginAuthenticationFailureHandler();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationProvider firstLoginAuthenticationProvider() {
+        return new FirstLoginAuthenticationProvider();
     }
 }
