@@ -58,7 +58,7 @@ public class PostCommandServiceTest {
     @Test
     public void create_post_test() {
         // given
-        Bar bar = new Bar(BAR_ID, "region_id", "category_id", null);
+        Bar bar = new Bar(BAR_ID, "region_id", "category_id", "description", null);
 
         given(barRepository.findById(anyString())).willReturn(Optional.of(bar));
 
@@ -94,7 +94,7 @@ public class PostCommandServiceTest {
     @Test
     public void create_post_if_exists_user_test() {
         // given
-        Bar bar = new Bar(BAR_ID, "region_id", "category_id", null);
+        Bar bar = new Bar(BAR_ID, "region_id", "category_id", "name", "description", null);
 
         given(barRepository.findById(anyString())).willReturn(Optional.of(bar));
 
