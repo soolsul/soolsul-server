@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.post.domain;
 
-import com.soolsul.soolsulserver.auth.User;
+import com.soolsul.soolsulserver.auth.CustomUser;
 import com.soolsul.soolsulserver.common.domain.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -74,12 +74,12 @@ public class Post extends BaseTimeEntity {
         this.photos.clear();
     }
 
-    public void like(User user) {
-        this.likes.add(user.getId());
+    public void like(CustomUser customUser) {
+        this.likes.add(customUser.getId());
     }
 
-    public void undoLike(User user) {
-        this.likes.remove(user.getId());
+    public void undoLike(CustomUser customUser) {
+        this.likes.remove(customUser.getId());
     }
 
     public int likeCount() {
