@@ -15,6 +15,7 @@ import javax.validation.constraints.NotEmpty;
 import java.util.Arrays;
 import java.util.List;
 
+@Transactional(readOnly = true)
 @Component
 @RequiredArgsConstructor
 public class BarQueryFacade {
@@ -26,7 +27,6 @@ public class BarQueryFacade {
     private final BarMoodTagService barMoodTarService;
     private final AlcoholCategoryService alcoholCategoryService;
 
-    @Transactional(readOnly = true)
     public FilteredBarsLookupResponse findBarMeetingConditions(BarLookupConditionRequest barLookupConditionRequest) {
         BarLookupServiceConditionRequest barLookupServiceConditionRequest = new BarLookupServiceConditionRequest(
                 barLookupConditionRequest.southWestLongitude(),
