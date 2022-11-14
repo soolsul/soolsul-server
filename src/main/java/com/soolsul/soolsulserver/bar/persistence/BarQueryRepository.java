@@ -4,10 +4,12 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.soolsul.soolsulserver.bar.businees.dto.FilteredBarLookupResponse;
 import com.soolsul.soolsulserver.bar.businees.dto.BarLookupServiceConditionRequest;
+import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.soolsul.soolsulserver.bar.domain.QBar.bar;
 import static com.soolsul.soolsulserver.bar.domain.QBarAlcoholTag.barAlcoholTag;
@@ -18,6 +20,17 @@ import static com.soolsul.soolsulserver.bar.domain.QBarMoodTag.barMoodTag;
 public class BarQueryRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
+
+    public Optional<BarLookupResponse> findById(String barId) {
+        BarLookupResponse barLookupResponse = jpaQueryFactory.select(Projections.constructor(BarLookupResponse.class,
+                        bar.id,
+                        bar.regionId,
+                        bar.barCategoryId,
+                        bar.name,
+                        bar.description))
+                .fetchOne();
+        return Optional.ofNullable(barLookupResponse);
+    }
 
     public List<FilteredBarLookupResponse> findBarFilteredByConditions(BarLookupServiceConditionRequest barLookupServiceConditionRequest) {
         double southWestLongitude = barLookupServiceConditionRequest.southWestLongitude();
@@ -45,5 +58,4 @@ public class BarQueryRepository {
                         barMoodTag.id.in(barMoodTagIds))
                 .fetch();
     }
-
 }

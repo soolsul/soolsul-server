@@ -84,7 +84,7 @@ public class PostCommandServiceTest {
         // then
         assertThatThrownBy(actual)
                 .isInstanceOf(BarNotFoundException.class)
-                .hasMessage("해당 가게를 찾을 수 없습니다.");
+                .hasMessage("해당 술집을 찾을 수 없습니다.");
 
         verify(postRepository, times(0)).save(any());
         verify(barRepository, times(1)).findById(anyString());

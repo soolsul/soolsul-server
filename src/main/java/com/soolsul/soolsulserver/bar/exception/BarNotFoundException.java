@@ -4,7 +4,7 @@ import com.soolsul.soolsulserver.common.exception.SoolsulBusinessException;
 
 public class BarNotFoundException extends SoolsulBusinessException {
 
-    private static final String NOT_FOUND_MESSAGE = "해당 가게를 찾을 수 없습니다.";
+    private static final String NOT_FOUND_MESSAGE = "해당 술집를 찾을 수 없습니다.";
 
     public BarNotFoundException() {
         super(NOT_FOUND_MESSAGE);
