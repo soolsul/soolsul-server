@@ -2,7 +2,7 @@ package com.soolsul.soolsulserver.bar.persistence;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.soolsul.soolsulserver.bar.businees.dto.BarLookupResponse;
+import com.soolsul.soolsulserver.bar.businees.dto.FilteredBarLookupResponse;
 import com.soolsul.soolsulserver.bar.businees.dto.BarLookupServiceConditionRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -27,7 +27,7 @@ public class BarQueryRepository {
         List<String> barAlcoholTagIds = barLookupServiceConditionRequest.barAlcoholTagIds();
         List<String> barMoodTagIds = barLookupServiceConditionRequest.barMoodTagIds();
 
-        return jpaQueryFactory.select(Projections.constructor(BarLookupResponse.class,
+        return jpaQueryFactory.select(Projections.constructor(FilteredBarLookupResponse.class,
                         bar.id,
                         bar.name,
                         bar.description,

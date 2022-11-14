@@ -2,7 +2,7 @@ package com.soolsul.soolsulserver.bar.businees.dto;
 
 import java.time.LocalDateTime;
 
-public record BarLookupResponse (
+public record FilteredBarLookupResponse(
         String barId,
         String barName,
         String barDescription,

@@ -5,7 +5,7 @@ import com.soolsul.soolsulserver.bar.businees.BarMoodTagService;
 import com.soolsul.soolsulserver.bar.businees.BarQueryService;
 import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupConditionRequest;
 import com.soolsul.soolsulserver.bar.businees.dto.BarLookupServiceConditionRequest;
-import com.soolsul.soolsulserver.bar.presentation.dto.BarsLookupResponse;
+import com.soolsul.soolsulserver.bar.presentation.dto.FilteredBarsLookupResponse;
 import com.soolsul.soolsulserver.menu.alcohol.service.AlcoholCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -27,7 +27,7 @@ public class BarQueryFacade {
     private final AlcoholCategoryService alcoholCategoryService;
 
     @Transactional(readOnly = true)
-    public BarsLookupResponse findBarMeetingConditions(BarLookupConditionRequest barLookupConditionRequest) {
+    public FilteredBarsLookupResponse findBarMeetingConditions(BarLookupConditionRequest barLookupConditionRequest) {
         BarLookupServiceConditionRequest barLookupServiceConditionRequest = new BarLookupServiceConditionRequest(
                 barLookupConditionRequest.southWestLongitude(),
                 barLookupConditionRequest.southWestLatitude(),
