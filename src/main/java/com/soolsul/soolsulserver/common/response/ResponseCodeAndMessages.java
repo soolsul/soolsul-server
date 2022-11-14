@@ -2,7 +2,8 @@ package com.soolsul.soolsulserver.common.response;
 
 public enum ResponseCodeAndMessages {
     USER_CREATE_SUCCESS("U001", "유저 생성에 성공했습니다."),
-    USER_UNAUTHORIZED("U004", "해당 유저는 인증되지 않았습니다."),
+    USER_UNAUTHENTICATED("U004", "해당 유저는 인증되지 않았습니다."),
+    USER_UNAUTHORIZED("U005", "해당 유저는 권한이 없습니다."),
 
     FEED_CREATE_SUCCESS("P001", "피드 생성 성공했습니다."),
     FEED_FIND_SUCCESS("P002", "피드 찾기에 성공하였습니다."),
