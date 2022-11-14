@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.soolsul.soolsulserver.bar.businees.dto.FilteredBarLookupResponse;
 import com.soolsul.soolsulserver.bar.businees.dto.BarLookupServiceConditionRequest;
 import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupResponse;
+import com.soolsul.soolsulserver.bar.presentation.dto.LocationLookupResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -27,8 +28,15 @@ public class BarQueryRepository {
                         bar.regionId,
                         bar.barCategoryId,
                         bar.name,
-                        bar.description))
+                        bar.description,
+                        Projections.constructor(LocationLookupResponse.class,
+                                bar.location.latitude,
+                                bar.location.longitude
+                        )))
+                .from(bar)
+                .where(bar.id.eq(barId))
                 .fetchOne();
+
         return Optional.ofNullable(barLookupResponse);
     }
 

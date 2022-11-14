@@ -5,6 +5,7 @@ public record BarLookupResponse(
         String regionId,
         String barCategoryId,
         String name,
-        String description
+        String description,
+        LocationLookupResponse locationLookupResponse
 ) {
 }
