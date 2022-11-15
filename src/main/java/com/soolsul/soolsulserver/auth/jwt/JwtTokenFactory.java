@@ -1,6 +1,5 @@
 package com.soolsul.soolsulserver.auth.jwt;
 
-import com.soolsul.soolsulserver.auth.Authority;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -8,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -16,11 +16,15 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
-public class JwtTokenProvider implements TokenProviderSpec {
+public class JwtTokenFactory implements TokenFactorySpec {
 
     private final Key ACCESS_PRIVATE_KEY;
     private final Key REFRESH_PRIVATE_KEY;
@@ -31,7 +35,7 @@ public class JwtTokenProvider implements TokenProviderSpec {
     @Value("${jwt.refresh-length}")
     private Long refreshExpirationMillis;
 
-    public JwtTokenProvider(
+    public JwtTokenFactory(
             @Value("${jwt.access.private}") String accessPrivateKey,
             @Value("${jwt.refresh.private}") String refreshPrivateKey)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
@@ -57,22 +61,35 @@ public class JwtTokenProvider implements TokenProviderSpec {
 
     @Override
     public String getUserIdFromToken(String accessToken) {
-        Object userId = Jwts.parserBuilder()
+        return (String) Jwts.parserBuilder()
                 .setSigningKey(ACCESS_PRIVATE_KEY)
                 .build()
                 .parseClaimsJws(accessToken).getBody().get("userId");
-
-        return (String) userId;
     }
 
+    // 출처 : https://velog.io/@tlatldms/서버개발캠프-Spring-security-refreshing-JWT-DB접근없이-인증과-파싱하기
     @Override
-    public List<Authority> getRolesFromToken(String accessToken) {
-        Object roles = Jwts.parserBuilder()
+    public Collection<GrantedAuthority> getRolesFromToken(String accessToken) {
+        List<String> roles = (List) Jwts.parserBuilder()
                 .setSigningKey(ACCESS_PRIVATE_KEY)
                 .build()
                 .parseClaimsJws(accessToken).getBody().get("roles");
 
-        return (List<Authority>) roles;
+        return roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
+
+    public Map<String, Object> getUserParseInfo(String accessToken) {
+        Claims parseInfo = Jwts.parserBuilder()
+                .setSigningKey(ACCESS_PRIVATE_KEY)
+                .build()
+                .parseClaimsJws(accessToken).getBody();
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("userId", parseInfo.get("userId"));
+        result.put("roles", parseInfo.get("roles", List.class));
+        return result;
     }
 
     @Override
@@ -110,10 +127,17 @@ public class JwtTokenProvider implements TokenProviderSpec {
         Date createdDate = new Date();
         Date expirationDate = new Date(createdDate.getTime() + accessExpirationMillis);
 
+        Map<String, Object> claims = new HashMap<>();
+        List<String> roleList = roles.stream()
+                .map(role -> role.getAuthority())
+                .collect(Collectors.toList());
+
+        claims.put("roles", roleList);
+        claims.put("userId", userId);
+
         return Jwts.builder()
                 .setSubject(userId)
-                .claim("userId", userId)
-                .claim("roles", roles)
+                .setClaims(claims)
                 .setIssuedAt(createdDate)
                 .setExpiration(expirationDate)
                 .signWith(ACCESS_PRIVATE_KEY)

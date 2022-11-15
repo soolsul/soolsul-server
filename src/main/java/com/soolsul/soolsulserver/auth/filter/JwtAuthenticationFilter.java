@@ -1,14 +1,14 @@
 package com.soolsul.soolsulserver.auth.filter;
 
-import com.soolsul.soolsulserver.auth.Authority;
 import com.soolsul.soolsulserver.auth.CustomUser;
 import com.soolsul.soolsulserver.auth.business.CustomUserDetailsService;
-import com.soolsul.soolsulserver.auth.jwt.JwtTokenProvider;
+import com.soolsul.soolsulserver.auth.jwt.JwtTokenFactory;
 import com.soolsul.soolsulserver.auth.util.AuthorizationExtractor;
 import com.soolsul.soolsulserver.auth.util.AuthorizationType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -20,14 +20,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
+import java.util.Collection;
 
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenFactory jwtTokenFactory;
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
@@ -40,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String accessToken = convert(request);
         log.info("[AccessToken] > {}", accessToken);
 
-        if (!StringUtils.hasText(accessToken) || !jwtTokenProvider.isValidAccessToken(accessToken)) {
+        if (!StringUtils.hasText(accessToken) || !jwtTokenFactory.isValidAccessToken(accessToken)) {
             filterChain.doFilter(wrappingRequest, wrappingResponse);
             wrappingResponse.copyBodyToResponse();
             return;
@@ -58,11 +57,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private UsernamePasswordAuthenticationToken buildAuthentication(String accessToken) {
-        String userIdFromToken = jwtTokenProvider.getUserIdFromToken(accessToken);
-        List<Authority> rolesFromToken = jwtTokenProvider.getRolesFromToken(accessToken);
+        String userIdFromToken = jwtTokenFactory.getUserIdFromToken(accessToken);
+        Collection<GrantedAuthority> rolesFromToken = jwtTokenFactory.getRolesFromToken(accessToken);
         CustomUser findUser = userDetailsService.findUserForAuthentication(userIdFromToken);
         log.info("[User Info] : {}", findUser.getEmail());
         //TODO : 역할 인증이 안되는중
-        return new UsernamePasswordAuthenticationToken(findUser, "", Collections.emptyList());
+        return new UsernamePasswordAuthenticationToken(findUser, "", rolesFromToken);
     }
 }

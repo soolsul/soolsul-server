@@ -1,7 +1,6 @@
 package com.soolsul.soolsulserver.auth;
 
 import com.soolsul.soolsulserver.auth.presentation.dto.RegisterRequest;
-import com.soolsul.soolsulserver.common.domain.BaseEntity;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -1,6 +1,5 @@
 package com.soolsul.soolsulserver.auth.business;
 
-import com.soolsul.soolsulserver.auth.Authority;
 import com.soolsul.soolsulserver.auth.CustomUser;
 import com.soolsul.soolsulserver.auth.Role;
 import com.soolsul.soolsulserver.auth.UserContext;
@@ -20,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service

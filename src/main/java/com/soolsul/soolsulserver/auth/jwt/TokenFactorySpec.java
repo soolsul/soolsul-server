@@ -1,12 +1,12 @@
 package com.soolsul.soolsulserver.auth.jwt;
 
-import com.soolsul.soolsulserver.auth.Authority;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
 import java.util.List;
 
-public interface TokenProviderSpec {
+public interface TokenFactorySpec {
 
     JwtToken issue(String userId, List<GrantedAuthority> roles);
 
@@ -14,7 +14,7 @@ public interface TokenProviderSpec {
 
     String getUserIdFromToken(String accessToken);
 
-    List<Authority> getRolesFromToken(String accessToken);
+    Collection<GrantedAuthority> getRolesFromToken(String accessToken);
 
     boolean isValidRefreshToken(String refreshToken);
 

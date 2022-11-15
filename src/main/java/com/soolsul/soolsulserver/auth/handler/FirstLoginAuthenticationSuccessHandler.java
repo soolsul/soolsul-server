@@ -1,10 +1,9 @@
 package com.soolsul.soolsulserver.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.soolsul.soolsulserver.auth.Authority;
 import com.soolsul.soolsulserver.auth.CustomUser;
 import com.soolsul.soolsulserver.auth.jwt.JwtToken;
-import com.soolsul.soolsulserver.auth.jwt.JwtTokenProvider;
+import com.soolsul.soolsulserver.auth.jwt.JwtTokenFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,7 +24,7 @@ public class FirstLoginAuthenticationSuccessHandler implements AuthenticationSuc
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
-    private JwtTokenProvider tokenProvider;
+    private JwtTokenFactory tokenProvider;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {

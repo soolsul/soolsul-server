@@ -38,7 +38,7 @@ public class Authority implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return authority.name();
+        return authority.getRole();
     }
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "userRoles")

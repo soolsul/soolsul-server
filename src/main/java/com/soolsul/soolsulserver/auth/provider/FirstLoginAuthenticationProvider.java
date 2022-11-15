@@ -1,6 +1,5 @@
 package com.soolsul.soolsulserver.auth.provider;
 
-import com.soolsul.soolsulserver.auth.CustomUser;
 import com.soolsul.soolsulserver.auth.UserContext;
 import com.soolsul.soolsulserver.auth.business.CustomUserDetailsService;
 import com.soolsul.soolsulserver.auth.token.FirstLoginAuthenticationToken;
@@ -24,18 +23,17 @@ public class FirstLoginAuthenticationProvider implements AuthenticationProvider 
     @Override
     @Transactional
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        FirstLoginAuthenticationToken firstLoginAuthenticationToken = (FirstLoginAuthenticationToken) authentication;
-        String email = firstLoginAuthenticationToken.getName();
-        String password = (String) firstLoginAuthenticationToken.getCredentials();
+
+        String email = authentication.getName();
+        String password = (String) authentication.getCredentials();
 
         UserContext accountContext = (UserContext) userDetailsService.loadUserByUsername(email);
-        CustomUser user = accountContext.getUser();
 
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        if (!passwordEncoder.matches(password, accountContext.getPassword())) {
             throw new BadCredentialsException("Invalid password");
         }
 
-        return new FirstLoginAuthenticationToken(user, null, user.getAuthorities());
+        return new FirstLoginAuthenticationToken(accountContext.getUser(), null, accountContext.getAuthorities());
     }
 
     @Override

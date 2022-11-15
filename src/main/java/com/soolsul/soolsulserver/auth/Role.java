@@ -1,7 +1,14 @@
 package com.soolsul.soolsulserver.auth;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum Role {
-    USER,
-    ADMIN,
-    GUEST
+    USER("ROLE_USER"),
+    ADMIN("ROLE_ADMIN"),
+    GUEST("ROLE_GUEST");
+
+    private final String role;
 }
