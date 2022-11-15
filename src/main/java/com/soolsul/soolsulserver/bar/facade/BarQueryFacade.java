@@ -27,7 +27,7 @@ public class BarQueryFacade {
     private final BarMoodTagService barMoodTarService;
     private final AlcoholCategoryService alcoholCategoryService;
 
-    public FilteredBarsLookupResponse findBarMeetingConditions(BarLookupConditionRequest barLookupConditionRequest) {
+    public FilteredBarsLookupResponse findBarFilteredByConditions(BarLookupConditionRequest barLookupConditionRequest) {
         BarLookupServiceConditionRequest barLookupServiceConditionRequest = new BarLookupServiceConditionRequest(
                 barLookupConditionRequest.southWestLongitude(),
                 barLookupConditionRequest.southWestLatitude(),
