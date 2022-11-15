@@ -18,7 +18,7 @@ public class PostLikesTest {
     @Test
     public void add_like_test() {
         // given
-        CustomUser customUser = new CustomUser("test@email.com", "1234", Set.of(new Authority(Role.USER)));
+        CustomUser customUser = new CustomUser("test@email.com", "1234");
         Post post = new Post("temp_ip", "bar_id", 4.3f, "contents");
 
         // when
@@ -35,7 +35,7 @@ public class PostLikesTest {
     @Test
     public void delete_like_test() {
         // given
-        CustomUser customUser = new CustomUser("test@email.com", "1234", Set.of(new Authority(Role.USER)));
+        CustomUser customUser = new CustomUser("test@email.com", "1234");
         Post post = new Post("temp_ip", "bar_id", 4.3f, "contents");
 
         // when
@@ -52,9 +52,9 @@ public class PostLikesTest {
     @Test
     public void like_count_test() {
         // given
-        CustomUser customUser1 = new CustomUser("test@gamil.com", "1234", Set.of(new Authority(Role.USER)));
-        CustomUser customUser2 = new CustomUser("test@gamil.com", "1234", Set.of(new Authority(Role.USER)));
-        CustomUser customUser3 = new CustomUser("test@gamil.com", "1234", Set.of(new Authority(Role.USER)));
+        CustomUser customUser1 = new CustomUser("id1", "test@gamil.com", "1234");
+        CustomUser customUser2 = new CustomUser("id2", "test@gamil.com", "1234");
+        CustomUser customUser3 = new CustomUser("id3", "test@gamil.com", "1234");
         Post post = new Post("temp_ip", "bar_id", 4.3f, "contents");
 
         // when
@@ -70,8 +70,8 @@ public class PostLikesTest {
     @Test
     public void user_can_have_only_one_like_count_test() {
         // given
-        CustomUser customUser1 = new CustomUser("test@gamil.com", "1234", Set.of(new Authority(Role.USER)));
-        CustomUser customUser2 = new CustomUser("test@gamil.com", "1234", Set.of(new Authority(Role.USER)));
+        CustomUser customUser1 = new CustomUser("id1", "test@gamil.com", "1234");
+        CustomUser customUser2 = new CustomUser("id2", "test@gamil.com", "1234");
         Post post = new Post("temp_ip", "bar_id", 4.3f, "contents");
 
         // when

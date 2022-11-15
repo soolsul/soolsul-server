@@ -20,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -61,6 +62,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         List<Authority> rolesFromToken = jwtTokenProvider.getRolesFromToken(accessToken);
         CustomUser findUser = userDetailsService.findUserForAuthentication(userIdFromToken);
         log.info("[User Info] : {}", findUser.getEmail());
-        return new UsernamePasswordAuthenticationToken(findUser, "", rolesFromToken);
+        //TODO : 역할 인증이 안되는중
+        return new UsernamePasswordAuthenticationToken(findUser, "", Collections.emptyList());
     }
 }

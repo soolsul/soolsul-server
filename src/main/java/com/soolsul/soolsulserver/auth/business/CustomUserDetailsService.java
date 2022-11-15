@@ -52,8 +52,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public void register(RegisterRequest registerRequest) {
         String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
-        Authority authority = new Authority(Role.USER);
-        CustomUser savedUser = userRepository.save(new CustomUser(registerRequest.getEmail(), encodedPassword, Set.of(authority)));
+        CustomUser newUser = new CustomUser(registerRequest.getEmail(), encodedPassword);
+        newUser.addRole(Role.USER);
+        CustomUser savedUser = userRepository.save(newUser);
         userInfoRepository.save(UserInfo.of(savedUser.getId(), registerRequest));
     }
 

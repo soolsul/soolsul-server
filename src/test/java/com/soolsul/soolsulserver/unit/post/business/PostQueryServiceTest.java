@@ -45,7 +45,7 @@ public class PostQueryServiceTest {
     @Test
     public void find_detail_post_test() {
         // given
-        CustomUser customUser = new CustomUser("test@email.com", "1234", Set.of(new Authority(Role.USER)));
+        CustomUser customUser = new CustomUser("id1", "test@email.com", "1234");
         List<PostPhoto> postPhotos = List.of(new PostPhoto("barId", "", "uuid1", ""), new PostPhoto("barId", "", "uuid2", ""));
         Post post = new Post("user_uuid", "", 4.3f, "content!");
         post.addPhotoList(postPhotos);

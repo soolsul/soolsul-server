@@ -52,7 +52,7 @@ public class PostCommandServiceTest {
     @BeforeEach
     void setUp() {
         postPhotos = List.of("url1", "url2", "url3");
-        customUser = new CustomUser("1", "test@email.com", "1234", Set.of(new Authority(Role.USER)));
+        customUser = new CustomUser("1", "test@email.com", "1234");
         request = new PostCreateRequest("bar_id", "본문 내용", 4.3f, LocalDate.now(), postPhotos, null);
     }
 
@@ -112,7 +112,7 @@ public class PostCommandServiceTest {
     @Test
     public void throw_exception_if_not_exists_user_test() {
         // given
-        CustomUser noEmailCustomUser = new CustomUser(null, "1234", Set.of(new Authority(Role.USER)));
+        CustomUser noEmailCustomUser = new CustomUser(null, "1234");
 
         // when
         ThrowableAssert.ThrowingCallable actual = () -> postCommandService.create(noEmailCustomUser.getId(), request);
