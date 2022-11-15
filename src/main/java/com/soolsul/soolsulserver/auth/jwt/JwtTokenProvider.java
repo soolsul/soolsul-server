@@ -50,7 +50,7 @@ public class JwtTokenProvider implements TokenProviderSpec {
     @Override
     public JwtToken getTokenFromHeader(HttpServletRequest request) {
         return JwtToken.builder()
-                .accessToken(request.getHeader("Authorization"))
+                .accessToken(request.getHeader("authorization"))
                 .refreshToken(request.getHeader("x-refresh-token"))
                 .build();
     }
@@ -76,7 +76,7 @@ public class JwtTokenProvider implements TokenProviderSpec {
     }
 
     @Override
-    public boolean idValidRefreshToken(String refreshToken) {
+    public boolean isValidRefreshToken(String refreshToken) {
         if (StringUtils.hasText(refreshToken)) {
             try {
                 Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(REFRESH_PRIVATE_KEY).build()
@@ -91,7 +91,7 @@ public class JwtTokenProvider implements TokenProviderSpec {
     }
 
     @Override
-    public boolean idValidAccessToken(String accessToken) {
+    public boolean isValidAccessToken(String accessToken) {
         if (StringUtils.hasText(accessToken)) {
             try {
                 Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(ACCESS_PRIVATE_KEY).build()

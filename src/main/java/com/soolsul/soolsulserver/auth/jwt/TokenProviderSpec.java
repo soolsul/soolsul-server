@@ -16,9 +16,9 @@ public interface TokenProviderSpec {
 
     List<Authority> getRolesFromToken(String accessToken);
 
-    boolean idValidRefreshToken(String refreshToken);
+    boolean isValidRefreshToken(String refreshToken);
 
-    boolean idValidAccessToken(String accessToken);
+    boolean isValidAccessToken(String accessToken);
 
     String createAccessToken(String userId, List<GrantedAuthority> roles);
 

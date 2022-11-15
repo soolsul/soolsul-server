@@ -5,7 +5,6 @@ import com.soolsul.soolsulserver.auth.business.CustomUserDetailsService;
 import com.soolsul.soolsulserver.auth.presentation.dto.RegisterRequest;
 import com.soolsul.soolsulserver.auth.repository.dto.UserLookUpResponse;
 import com.soolsul.soolsulserver.common.response.BaseResponse;
-import com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +36,7 @@ public class AuthController {
     @GetMapping("/me")
     public ResponseEntity<BaseResponse<UserLookUpResponse>> searchUser(Authentication authentication) {
         CustomUser user = (CustomUser) authentication.getPrincipal();
-        UserLookUpResponse userLookUpResponse = userDetailsService.findUser(user.getId());
+        UserLookUpResponse userLookUpResponse = userDetailsService.findUserWithDetailInfo(user.getId());
         return ResponseEntity.ok(new BaseResponse<>(USER_LOOK_UP_SUCCESS, userLookUpResponse));
     }
 }

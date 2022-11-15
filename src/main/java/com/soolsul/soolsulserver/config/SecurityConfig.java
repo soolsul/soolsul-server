@@ -4,6 +4,7 @@ package com.soolsul.soolsulserver.config;
 import com.soolsul.soolsulserver.auth.Role;
 import com.soolsul.soolsulserver.auth.common.JwtAuthenticationEntryPoint;
 import com.soolsul.soolsulserver.auth.filter.FirstLoginAuthenticationFilter;
+import com.soolsul.soolsulserver.auth.filter.JwtAuthenticationFilter;
 import com.soolsul.soolsulserver.auth.handler.FirstLoginAuthenticationFailureHandler;
 import com.soolsul.soolsulserver.auth.handler.FirstLoginAuthenticationSuccessHandler;
 import com.soolsul.soolsulserver.auth.handler.JwtDeniedHandler;
@@ -24,7 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] PUBLIC_URI = {
-            "/api/auth/register", "/api/auth/me"
+            "/api/auth/register"
     };
 
     @Override
@@ -41,12 +42,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .addFilterBefore(firstLoginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAt(firstLoginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter(), FirstLoginAuthenticationFilter.class);
 
         http
                 .exceptionHandling()
                 .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                 .accessDeniedHandler(jwtDeniedHandler());
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
     }
 
     @Bean

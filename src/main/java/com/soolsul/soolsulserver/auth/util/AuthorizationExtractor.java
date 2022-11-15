@@ -10,7 +10,7 @@ import java.util.Enumeration;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AuthorizationExtractor {
 
-    public static final String AUTHORIZATION = "Authorization";
+    public static final String AUTHORIZATION = "authorization";
     public static final String ACCESS_TOKEN_TYPE = AuthorizationExtractor.class.getSimpleName() + ".ACCESS_TOKEN_TYPE";
 
     public static String extract(HttpServletRequest request, AuthorizationType type) {

@@ -57,8 +57,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         userInfoRepository.save(UserInfo.of(savedUser.getId(), registerRequest));
     }
 
-    public UserLookUpResponse findUser(String userId) {
+    public UserLookUpResponse findUserWithDetailInfo(String userId) {
         return userRepository.findUserDetailInfoById(userId)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    public CustomUser findUserForAuthentication(String userId) {
+        return userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
     }
 }

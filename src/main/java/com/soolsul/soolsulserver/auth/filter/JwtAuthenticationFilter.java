@@ -1,47 +1,66 @@
 package com.soolsul.soolsulserver.auth.filter;
 
 import com.soolsul.soolsulserver.auth.Authority;
-import com.soolsul.soolsulserver.auth.jwt.JwtToken;
+import com.soolsul.soolsulserver.auth.CustomUser;
+import com.soolsul.soolsulserver.auth.business.CustomUserDetailsService;
 import com.soolsul.soolsulserver.auth.jwt.JwtTokenProvider;
+import com.soolsul.soolsulserver.auth.util.AuthorizationExtractor;
+import com.soolsul.soolsulserver.auth.util.AuthorizationType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
+import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.ContentCachingRequestWrapper;
+import org.springframework.web.util.ContentCachingResponseWrapper;
 
+import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+@Slf4j
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    public JwtAuthenticationFilter() {
-        super(new AntPathRequestMatcher("/api/login"));
-    }
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        JwtToken token = jwtTokenProvider.getTokenFromHeader(request);
-        if (token.getAccessToken() == null) {
-            throw new IllegalStateException("Authentication is not supported");
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        ContentCachingRequestWrapper wrappingRequest = new ContentCachingRequestWrapper(request);
+        ContentCachingResponseWrapper wrappingResponse = new ContentCachingResponseWrapper(response);
+
+        String accessToken = convert(request);
+        log.info("[AccessToken] > {}", accessToken);
+
+        if (!StringUtils.hasText(accessToken) || !jwtTokenProvider.isValidAccessToken(accessToken)) {
+            filterChain.doFilter(wrappingRequest, wrappingResponse);
+            wrappingResponse.copyBodyToResponse();
+            return;
         }
 
-        String accessToken = token.getAccessToken();
-        String userId = String.valueOf(jwtTokenProvider.getUserIdFromToken(accessToken));
-        List<Authority> roles = jwtTokenProvider.getRolesFromToken(accessToken);
+        SecurityContextHolder.getContext().setAuthentication(buildAuthentication(accessToken));
+        log.info("[Authentication 등록 완료]");
 
-        if (StringUtils.isEmpty(userId)) {
-            throw new IllegalArgumentException("UserId is empty");
-        }
+        filterChain.doFilter(wrappingRequest, wrappingResponse);
+        wrappingResponse.copyBodyToResponse();
+    }
 
-        //JwtAuthenticationToken authenticationToken = new JwtAuthenticationToken(userId);
+    private String convert(HttpServletRequest request) {
+        return AuthorizationExtractor.extract(request, AuthorizationType.BEARER);
+    }
 
-        return getAuthenticationManager().authenticate(null);
+    private UsernamePasswordAuthenticationToken buildAuthentication(String accessToken) {
+        String userIdFromToken = jwtTokenProvider.getUserIdFromToken(accessToken);
+        List<Authority> rolesFromToken = jwtTokenProvider.getRolesFromToken(accessToken);
+        CustomUser findUser = userDetailsService.findUserForAuthentication(userIdFromToken);
+        log.info("[User Info] : {}", findUser.getEmail());
+        return new UsernamePasswordAuthenticationToken(findUser, "", rolesFromToken);
     }
 }
