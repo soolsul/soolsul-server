@@ -9,6 +9,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
@@ -21,8 +22,6 @@ import java.util.List;
 @Component
 public class JwtTokenProvider implements TokenProviderSpec {
 
-    private final Key ACCESS_PUBLIC_KEY;
-    private final Key REFRESH_PUBLIC_KEY;
     private final Key ACCESS_PRIVATE_KEY;
     private final Key REFRESH_PRIVATE_KEY;
 
@@ -34,14 +33,10 @@ public class JwtTokenProvider implements TokenProviderSpec {
 
     public JwtTokenProvider(
             @Value("${jwt.access.private}") String accessPrivateKey,
-            @Value("${jwt.refresh.private}") String refreshPrivateKey,
-            @Value("${jwt.access.public}") String accessPublicKey,
-            @Value("${jwt.refresh.public}") String refreshPublicKey)
+            @Value("${jwt.refresh.private}") String refreshPrivateKey)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
         ACCESS_PRIVATE_KEY = getPrivateKey(accessPrivateKey);
-        ACCESS_PUBLIC_KEY = getPublicKey(accessPublicKey);
         REFRESH_PRIVATE_KEY = getPrivateKey(refreshPrivateKey);
-        REFRESH_PUBLIC_KEY = getPublicKey(refreshPublicKey);
     }
 
     @Override
@@ -55,63 +50,70 @@ public class JwtTokenProvider implements TokenProviderSpec {
     @Override
     public JwtToken getTokenFromHeader(HttpServletRequest request) {
         return JwtToken.builder()
-                .accessToken(request.getHeader("x-access-token"))
+                .accessToken(request.getHeader("Authorization"))
                 .refreshToken(request.getHeader("x-refresh-token"))
                 .build();
     }
 
     @Override
-    public Long getUserIdFromToken(String accessToken) {
+    public String getUserIdFromToken(String accessToken) {
         Object userId = Jwts.parserBuilder()
-                .setSigningKey(ACCESS_PUBLIC_KEY)
+                .setSigningKey(ACCESS_PRIVATE_KEY)
                 .build()
                 .parseClaimsJws(accessToken).getBody().get("userId");
-        return (Long) userId;
+
+        return (String) userId;
     }
 
     @Override
     public List<Authority> getRolesFromToken(String accessToken) {
         Object roles = Jwts.parserBuilder()
-                .setSigningKey(ACCESS_PUBLIC_KEY)
+                .setSigningKey(ACCESS_PRIVATE_KEY)
                 .build()
                 .parseClaimsJws(accessToken).getBody().get("roles");
+
         return (List<Authority>) roles;
     }
 
     @Override
-    public void validateRefreshToken(String refreshToken) {
-        if (!refreshToken.isEmpty()) {
+    public boolean idValidRefreshToken(String refreshToken) {
+        if (StringUtils.hasText(refreshToken)) {
             try {
-                Jwts.parserBuilder().setSigningKey(REFRESH_PUBLIC_KEY).build()
+                Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(REFRESH_PRIVATE_KEY).build()
                         .parseClaimsJws(refreshToken);
-            } catch (ExpiredJwtException e) {//헤더, 페이로드, 시그니쳐 중 시그니쳐가 해석 불가능할 때
 
+                return !claims.getBody().getExpiration().before(new Date());
+            } catch (ExpiredJwtException e) {
+                return false;
             }
         }
+        return false;
     }
 
     @Override
-    public Jws<Claims> verifyAccessToken(String accessToken) {
-        if (!accessToken.isEmpty()) {
+    public boolean idValidAccessToken(String accessToken) {
+        if (StringUtils.hasText(accessToken)) {
             try {
-                return Jwts.parserBuilder().setSigningKey(ACCESS_PRIVATE_KEY).build()
+                Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(ACCESS_PRIVATE_KEY).build()
                         .parseClaimsJws(accessToken);
-            } catch (ExpiredJwtException e) {//헤더, 페이로드, 시그니쳐 중 시그니쳐가 해석 불가능할 때
-                return null;
+
+                return !claims.getBody().getExpiration().before(new Date());
+            } catch (ExpiredJwtException e) {
+                return false;
             }
         }
-        return null;
+        return false;
     }
 
     @Override
     public String createAccessToken(String userId, List<GrantedAuthority> roles) {
-        Claims claims = Jwts.claims().setSubject(userId).setSubject(roles.toString());
         Date createdDate = new Date();
         Date expirationDate = new Date(createdDate.getTime() + accessExpirationMillis);
 
         return Jwts.builder()
                 .setSubject(userId)
-                .setClaims(claims)
+                .claim("userId", userId)
+                .claim("roles", roles)
                 .setIssuedAt(createdDate)
                 .setExpiration(expirationDate)
                 .signWith(ACCESS_PRIVATE_KEY)
@@ -130,15 +132,7 @@ public class JwtTokenProvider implements TokenProviderSpec {
                 .compact();
     }
 
-    private Key getPublicKey(String publicKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        return Keys.hmacShaKeyFor(publicKey.getBytes(StandardCharsets.UTF_8));
-//        KeyFactory keyFactory = KeyFactory.getInstance("EC");
-//        return keyFactory.generatePublic(new X509EncodedKeySpec(publicKey.getBytes(StandardCharsets.UTF_8)));
-    }
-
     private Key getPrivateKey(String privateKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
         return Keys.hmacShaKeyFor(privateKey.getBytes(StandardCharsets.UTF_8));
-//        KeyFactory keyFactory = KeyFactory.getInstance("EC");
-//        return keyFactory.generatePrivate(new PKCS8EncodedKeySpec(privateKey.getBytes(StandardCharsets.UTF_8)));
     }
 }
