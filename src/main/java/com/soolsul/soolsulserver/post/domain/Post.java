@@ -1,23 +1,33 @@
 package com.soolsul.soolsulserver.post.domain;
 
 import com.soolsul.soolsulserver.auth.CustomUser;
-import com.soolsul.soolsulserver.common.domain.BaseTimeEntity;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Entity
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Post extends BaseTimeEntity {
+public class Post {
 
     private static final int LIMIT_LENGTH = 50;
+
+    @Id
+    @Getter
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    private String id;
 
     @Getter
     @Column(nullable = false)

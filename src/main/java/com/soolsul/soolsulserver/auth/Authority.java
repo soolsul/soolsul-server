@@ -1,6 +1,7 @@
 package com.soolsul.soolsulserver.auth;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -19,6 +20,7 @@ import java.util.Set;
 
 @Entity
 @Getter
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Authority implements GrantedAuthority {
 

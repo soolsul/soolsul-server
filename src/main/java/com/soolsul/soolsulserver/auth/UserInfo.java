@@ -3,15 +3,25 @@ package com.soolsul.soolsulserver.auth;
 import com.soolsul.soolsulserver.auth.presentation.dto.RegisterRequest;
 import com.soolsul.soolsulserver.common.domain.BaseEntity;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-@Entity
 @Getter
+@Entity
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserInfo extends BaseEntity {
+public class UserInfo {
+
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    private String id;
 
     private String userId;
     private String profileImage;
