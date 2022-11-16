@@ -1,6 +1,7 @@
 package com.soolsul.soolsulserver.post.business;
 
 
+import com.soolsul.soolsulserver.bar.businees.dto.BarLookupServiceConditionRequest;
 import com.soolsul.soolsulserver.bar.businees.dto.FilteredBarLookupResponse;
 import com.soolsul.soolsulserver.bar.persistence.BarQueryRepository;
 import com.soolsul.soolsulserver.common.userlocation.UserLocation;
@@ -14,13 +15,13 @@ import com.soolsul.soolsulserver.post.domain.PostRepository;
 import com.soolsul.soolsulserver.post.exception.PostNotFoundException;
 import com.soolsul.soolsulserver.post.presentation.dto.PostDetailResponse;
 import com.soolsul.soolsulserver.post.presentation.dto.PostListResponse;
-import com.soolsul.soolsulserver.post.presentation.dto.UserLocationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -31,7 +32,7 @@ import java.util.stream.Collectors;
 public class PostQueryService {
 
     private final PostRepository postRepository;
-    private final BarQueryRepository barRepository;
+    private final BarQueryRepository barQueryRepository;
 
     public PostDetailResponse findPostDetail(String loginUserId, String postId) {
         Post findPost = postRepository.findById(postId)
@@ -54,14 +55,15 @@ public class PostQueryService {
         );
     }
 
-    public PostListResponse findAllPostByLocation(String loginUserId, UserLocationRequest locationRequest, Pageable pageable) {
-        UserLocation userLocation = UserLocation.from(locationRequest);
+    public PostListResponse findAllPostByLocation(String loginUserId, UserLocation userLocation, Pageable pageable) {
         UserLocationBasedSquareRange squareRange = new UserLocationBasedSquareRange(userLocation);
 
-        // TODO : squareRange기반으로 bar목록을 찾아와야함, 아직 미구현 상태라 틀만 잡음
+        BarLookupServiceConditionRequest lookupCondition = new BarLookupServiceConditionRequest(
+                squareRange.getMaxX(), squareRange.getMaxY(),
+                squareRange.getMinX(), squareRange.getMinY(),
+                Collections.emptyList(), Collections.emptyList());
 
-        List<FilteredBarLookupResponse> findBars = barRepository.findBarFilteredByConditions(null);
-        List<String> barIds = extractBarIds(findBars);
+        List<String> barIds = extractBarIds(barQueryRepository.findBarFilteredByConditions(lookupCondition));
 
         Slice<Post> postListByLocation = postRepository.findPostListByLocation(barIds, pageable);
 

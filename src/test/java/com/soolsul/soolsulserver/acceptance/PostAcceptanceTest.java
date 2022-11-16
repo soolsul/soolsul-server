@@ -8,6 +8,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class PostAcceptanceTest extends AcceptanceTest {
     @BeforeEach
     public void setUp() {
         super.setUp();
-        Bar saveBar = barRepository.save(new Bar("region_id", "bar_category_id", "bar_name", "good", new Location(60.12, 123.123)));
+        Bar saveBar = barRepository.save(new Bar("region_id", "bar_category_id", "bar_name", "good", new Location(37.49909732361135d, 126.9459247225816d)));
         barId = saveBar.getId();
     }
 
@@ -76,15 +77,21 @@ public class PostAcceptanceTest extends AcceptanceTest {
      * when: User가 리스트에서 특정 가게의 피드을 누른다.
      * then: 해당 피드로 이동한다.
      */
+    @Disabled
     @DisplayName("사용자가 피드 목록에서 특정 피드를 누르면 해당 단일 피드를 보여준다.")
     @Test
     public void find_post_detail_test() {
+        // given
+        String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
+        피드_생성_요청(accessToken, 피드_생성_정보_생성());
+
         // when
         ExtractableResponse<Response> response = RestAssured
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .auth().oauth2(accessToken)
                 .when()
-                .get("/posts/{postId}", 1)
+                .get("/api/posts/{postId}", 1)
                 .then().log().all()
                 .extract();
 
@@ -105,16 +112,22 @@ public class PostAcceptanceTest extends AcceptanceTest {
     @DisplayName("사용자가 하단 네비게이션에서 피드 선택시 피드 목록이 보여진다")
     @Test
     public void find_post_list_test() {
+        // given
+        String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
+        피드_생성_요청(accessToken, 피드_생성_정보_생성());
+
         // when
         ExtractableResponse<Response> response = RestAssured
                 .given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .auth().oauth2(accessToken)
                 .when()
-                .get("/posts")
+                .pathParam("latitude", 37.49909732361135d)
+                .pathParam("longitude", 126.9459247225818d)
+                .pathParam("level", 1)
+                .get("/api/posts?latitude={latitude}&longitude={longitude}&level={level}")
                 .then().log().all()
                 .extract();
 
-        // TODO: 리스트 본문 검증 테스트 아직 미구현
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
