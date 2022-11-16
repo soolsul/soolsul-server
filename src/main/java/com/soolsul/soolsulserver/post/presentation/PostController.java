@@ -33,7 +33,7 @@ public class PostController {
     public ResponseEntity<BaseResponse<Void>> createPost(@Valid @RequestBody PostCreateRequest request, Authentication authentication) {
         CustomUser customUser = (CustomUser) authentication.getPrincipal();
         postServiceGateway.create(customUser.getId(), request);
-        return new ResponseEntity<>(new BaseResponse<>(ResponseCodeAndMessages.FEED_CREATE_SUCCESS, null), HttpStatus.OK);
+        return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.FEED_CREATE_SUCCESS, null));
     }
 
     @GetMapping("/{postId}")
@@ -44,7 +44,10 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<BaseResponse<PostListResponse>> findAllDetailPost(UserLocationRequest locationRequest, Pageable pageable, Authentication authentication) {
+    public ResponseEntity<BaseResponse<PostListResponse>> findAllDetailPost(
+            UserLocationRequest locationRequest,
+            Pageable pageable,
+            Authentication authentication) {
         CustomUser customUser = (CustomUser) authentication.getPrincipal();
         PostListResponse postListResponse = postServiceGateway.findAll(customUser.getId(), locationRequest, pageable);
         return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.FEED_FIND_ALL_SUCCESS, postListResponse));

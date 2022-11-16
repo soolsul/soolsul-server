@@ -1,13 +1,12 @@
 package com.soolsul.soolsulserver.post.business;
 
 import com.soolsul.soolsulserver.auth.exception.UserNotFoundException;
+import com.soolsul.soolsulserver.bar.businees.BarQueryService;
+import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupResponse;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.domain.PostPhoto;
 import com.soolsul.soolsulserver.post.domain.PostRepository;
 import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
-import com.soolsul.soolsulserver.bar.domain.Bar;
-import com.soolsul.soolsulserver.bar.domain.BarRepository;
-import com.soolsul.soolsulserver.bar.exception.BarNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,31 +21,29 @@ import java.util.stream.Collectors;
 public class PostCommandService {
 
     private final PostRepository postRepository;
-    private final BarRepository barRepository;
+    private final BarQueryService barQueryService;
 
     public void create(String userId, PostCreateRequest request) {
         if (isInvalidUserId(userId)) {
             throw new UserNotFoundException();
         }
 
-        Bar findBar = barRepository.findById(request.getBarId())
-                .orElseThrow(BarNotFoundException::new);
+        BarLookupResponse barLookupResponse = barQueryService.findById(request.getBarId());
 
         Post newPost = new Post(userId,
-                findBar.getId(),
+                barLookupResponse.id(),
                 request.getScore(),
                 request.getPostContent());
 
-        newPost.addPhotoList(convertPhotoList(request, findBar));
+        newPost.addPhotoList(convertPhotoList(request, barLookupResponse));
 
         postRepository.save(newPost);
     }
 
-    // TODO : 이미지 URL만 전달 받게 되는데, 이걸 PostPhoto로 저장하는 것이 맞는가?
-    private List<PostPhoto> convertPhotoList(PostCreateRequest request, Bar findBar) {
+    private List<PostPhoto> convertPhotoList(PostCreateRequest request, BarLookupResponse findBar) {
         return request.getImages()
                 .stream()
-                .map(url -> new PostPhoto(findBar.getId(), "origin", "imageUrl", "."))
+                .map(url -> new PostPhoto(findBar.id(), "origin", url, "."))
                 .collect(Collectors.toList());
     }
 

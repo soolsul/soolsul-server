@@ -2,17 +2,17 @@ package com.soolsul.soolsulserver.post.presentation.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.hibernate.validator.constraints.URL;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class PostCreateRequest {
 
@@ -24,15 +24,12 @@ public class PostCreateRequest {
     private String postContent;
 
     @NotNull
-    @Pattern(regexp = "1-5")
     private Float score;
 
     @NotNull
     @PastOrPresent
-    @Pattern(regexp = "yyyy-MM-dd")
     private LocalDate visitedDate;
 
-    @URL
     @Size(max = 8)
     private List<String> images;
 
