@@ -1,26 +1,43 @@
 package com.soolsul.soolsulserver.acceptance;
 
+import com.soolsul.soolsulserver.bar.domain.Bar;
+import com.soolsul.soolsulserver.bar.domain.BarRepository;
 import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
+import com.soolsul.soolsulserver.region.domain.Location;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그인_되어_있음;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@Disabled
+
 public class PostAcceptanceTest extends AcceptanceTest {
 
-    // TODO : RestAsured Auth 설정도 함께 해야 동작하는데, 아직 로그인이 없어 설정하지 않았다.
+    @Autowired
+    private BarRepository barRepository;
+
+    String barId;
+
+    @Override
+    @BeforeEach
+    public void setUp() {
+        super.setUp();
+        Bar saveBar = barRepository.save(new Bar("region_id", "bar_category_id", "bar_name", "good", new Location(60.12, 123.123)));
+        barId = saveBar.getId();
+    }
 
     /**
      * given: 사용자가 로그인 한 상태이다.
@@ -37,7 +54,8 @@ public class PostAcceptanceTest extends AcceptanceTest {
 
         List<String> imagesUrl = List.of("url1", "url2", "url3");
         List<String> tags = List.of("mood_tag1", "mood_tag2", "alcohol_tag1");
-        PostCreateRequest postCreateRequest = new PostCreateRequest(STORE_UUID, "본문 내용 입니다", 4.3f, LocalDate.now(), imagesUrl, tags);
+        LocalDate date = LocalDate.parse(LocalDate.now().toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        PostCreateRequest postCreateRequest = new PostCreateRequest(barId, "본문 내용 입니다", 4.3f, date, imagesUrl, tags);
 
         // when
         ExtractableResponse<Response> response = RestAssured
@@ -46,7 +64,7 @@ public class PostAcceptanceTest extends AcceptanceTest {
                 .auth().oauth2(accessToken)
                 .body(postCreateRequest)
                 .when()
-                .post("/posts")
+                .post("/api/posts")
                 .then().log().all()
                 .extract();
 
