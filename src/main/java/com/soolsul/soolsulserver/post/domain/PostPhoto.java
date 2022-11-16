@@ -1,8 +1,10 @@
 package com.soolsul.soolsulserver.post.domain;
 
-import com.soolsul.soolsulserver.common.domain.BaseEntity;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -10,14 +12,23 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+@Getter
 @Entity
 @SQLDelete(sql = "update post_photo set deleted = true where id = ?")
 @Where(clause = "deleted = false")
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PostPhoto extends BaseEntity {
+public class PostPhoto {
+
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    private String id;
 
     @Column(nullable = false)
     private String barId;

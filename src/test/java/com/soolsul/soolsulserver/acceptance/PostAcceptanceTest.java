@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.soolsul.soolsulserver.acceptance.AuthStep.로그인_되어_있음;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -32,6 +33,8 @@ public class PostAcceptanceTest extends AcceptanceTest {
     @Test
     public void create_post_test() {
         // given
+        String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
+
         List<String> imagesUrl = List.of("url1", "url2", "url3");
         List<String> tags = List.of("mood_tag1", "mood_tag2", "alcohol_tag1");
         PostCreateRequest postCreateRequest = new PostCreateRequest(STORE_UUID, "본문 내용 입니다", 4.3f, LocalDate.now(), imagesUrl, tags);
@@ -40,6 +43,7 @@ public class PostAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = RestAssured
                 .given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .auth().oauth2(accessToken)
                 .body(postCreateRequest)
                 .when()
                 .post("/posts")

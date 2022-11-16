@@ -1,6 +1,7 @@
 package com.soolsul.soolsulserver.post.business;
 
-import com.soolsul.soolsulserver.bar.businees.dto.BarLookupResponse;
+
+import com.soolsul.soolsulserver.bar.businees.dto.FilteredBarLookupResponse;
 import com.soolsul.soolsulserver.bar.persistence.BarQueryRepository;
 import com.soolsul.soolsulserver.common.userlocation.UserLocation;
 import com.soolsul.soolsulserver.common.userlocation.UserLocationBasedSquareRange;
@@ -59,7 +60,7 @@ public class PostQueryService {
 
         // TODO : squareRange기반으로 bar목록을 찾아와야함, 아직 미구현 상태라 틀만 잡음
 
-        List<BarLookupResponse> findBars = barRepository.findBarMeetingConditions(null);
+        List<FilteredBarLookupResponse> findBars = barRepository.findBarFilteredByConditions(null);
         List<String> barIds = extractBarIds(findBars);
 
         Slice<Post> postListByLocation = postRepository.findPostListByLocation(barIds, pageable);
@@ -97,7 +98,7 @@ public class PostQueryService {
                 .collect(Collectors.toList());
     }
 
-    private List<String> extractBarIds(List<BarLookupResponse> findBars) {
+    private List<String> extractBarIds(List<FilteredBarLookupResponse> findBars) {
         return findBars.stream()
                 .map(bar -> bar.barId())
                 .collect(Collectors.toList());

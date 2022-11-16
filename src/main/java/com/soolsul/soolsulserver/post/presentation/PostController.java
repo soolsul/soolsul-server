@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.post.presentation;
 
-import com.soolsul.soolsulserver.auth.User;
+import com.soolsul.soolsulserver.auth.CustomUser;
 import com.soolsul.soolsulserver.common.response.BaseResponse;
 import com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages;
 import com.soolsul.soolsulserver.post.business.PostServiceGateway;
@@ -31,22 +31,22 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<BaseResponse<Void>> createPost(@Valid @RequestBody PostCreateRequest request, Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
-        postServiceGateway.create(user.getId(), request);
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+        postServiceGateway.create(customUser.getId(), request);
         return new ResponseEntity<>(new BaseResponse<>(ResponseCodeAndMessages.FEED_CREATE_SUCCESS, null), HttpStatus.OK);
     }
 
     @GetMapping("/{postId}")
     public ResponseEntity<BaseResponse<PostDetailResponse>> findDetailPost(@PathVariable String postId, Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
-        PostDetailResponse postDetailResponse = postServiceGateway.find(user.getId(), postId);
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+        PostDetailResponse postDetailResponse = postServiceGateway.find(customUser.getId(), postId);
         return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.FEED_FIND_SUCCESS, postDetailResponse));
     }
 
     @GetMapping
     public ResponseEntity<BaseResponse<PostListResponse>> findAllDetailPost(UserLocationRequest locationRequest, Pageable pageable, Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
-        PostListResponse postListResponse = postServiceGateway.findAll(user.getId(), locationRequest, pageable);
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+        PostListResponse postListResponse = postServiceGateway.findAll(customUser.getId(), locationRequest, pageable);
         return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.FEED_FIND_ALL_SUCCESS, postListResponse));
     }
 }

@@ -1,6 +1,8 @@
 package com.soolsul.soolsulserver.unit.post.business;
 
-import com.soolsul.soolsulserver.auth.User;
+import com.soolsul.soolsulserver.auth.Authority;
+import com.soolsul.soolsulserver.auth.CustomUser;
+import com.soolsul.soolsulserver.auth.Role;
 import com.soolsul.soolsulserver.bar.domain.BarRepository;
 import com.soolsul.soolsulserver.post.business.PostQueryService;
 import com.soolsul.soolsulserver.post.domain.Post;
@@ -14,9 +16,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -43,16 +45,16 @@ public class PostQueryServiceTest {
     @Test
     public void find_detail_post_test() {
         // given
-        User user = new User("user_uuid", "test@email.com", "1234", Collections.emptyList());
+        CustomUser customUser = new CustomUser("id1", "test@email.com", "1234");
         List<PostPhoto> postPhotos = List.of(new PostPhoto("barId", "", "uuid1", ""), new PostPhoto("barId", "", "uuid2", ""));
         Post post = new Post("user_uuid", "", 4.3f, "content!");
         post.addPhotoList(postPhotos);
-        post.like(user);
+        post.like(customUser);
 
         given(postRepository.findById(anyString())).willReturn(Optional.of(post));
 
         // when
-        PostDetailResponse response = postQueryService.findPostDetail(user.getId(), "any_uuid");
+        PostDetailResponse response = postQueryService.findPostDetail(customUser.getId(), "any_uuid");
 
         // then
         assertAll(

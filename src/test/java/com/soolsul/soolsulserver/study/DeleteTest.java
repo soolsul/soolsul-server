@@ -28,7 +28,6 @@ public class DeleteTest {
     EntityManager entityManager;
 
     @Transactional
-    @Rollback(value = false)
     @Test
     public void delete_test() {
         // given

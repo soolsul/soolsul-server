@@ -1,9 +1,13 @@
 package com.soolsul.soolsulserver.unit.post.domain;
 
-import com.soolsul.soolsulserver.auth.User;
+import com.soolsul.soolsulserver.auth.Authority;
+import com.soolsul.soolsulserver.auth.CustomUser;
+import com.soolsul.soolsulserver.auth.Role;
 import com.soolsul.soolsulserver.post.domain.Post;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -14,15 +18,15 @@ public class PostLikesTest {
     @Test
     public void add_like_test() {
         // given
-        User user = new User("user_id", "test@gamil.com", "1234", null);
+        CustomUser customUser = new CustomUser("test@email.com", "1234");
         Post post = new Post("temp_ip", "bar_id", 4.3f, "contents");
 
         // when
-        post.like(user);
+        post.like(customUser);
 
         // then
         assertAll(
-                () -> assertThat(post.isLikeContain(user.getId())).isTrue(),
+                () -> assertThat(post.isLikeContain(customUser.getId())).isTrue(),
                 () -> assertThat(post.likeCount()).isEqualTo(1)
         );
     }
@@ -31,15 +35,15 @@ public class PostLikesTest {
     @Test
     public void delete_like_test() {
         // given
-        User user = new User("user_id", "test@gamil.com", "1234", null);
+        CustomUser customUser = new CustomUser("test@email.com", "1234");
         Post post = new Post("temp_ip", "bar_id", 4.3f, "contents");
 
         // when
-        post.undoLike(user);
+        post.undoLike(customUser);
 
         // then
         assertAll(
-                () -> assertThat(post.isLikeContain(user.getId())).isFalse(),
+                () -> assertThat(post.isLikeContain(customUser.getId())).isFalse(),
                 () -> assertThat(post.likeCount()).isEqualTo(0)
         );
     }
@@ -48,15 +52,15 @@ public class PostLikesTest {
     @Test
     public void like_count_test() {
         // given
-        User user1 = new User("user_id1", "test@gamil.com", "1234", null);
-        User user2 = new User("user_id2", "test@gamil.com", "1234", null);
-        User user3 = new User("user_id3", "test@gamil.com", "1234", null);
+        CustomUser customUser1 = new CustomUser("id1", "test@gamil.com", "1234");
+        CustomUser customUser2 = new CustomUser("id2", "test@gamil.com", "1234");
+        CustomUser customUser3 = new CustomUser("id3", "test@gamil.com", "1234");
         Post post = new Post("temp_ip", "bar_id", 4.3f, "contents");
 
         // when
-        post.like(user1);
-        post.like(user2);
-        post.like(user3);
+        post.like(customUser1);
+        post.like(customUser2);
+        post.like(customUser3);
 
         // then
         assertThat(post.likeCount()).isEqualTo(3);
@@ -66,21 +70,21 @@ public class PostLikesTest {
     @Test
     public void user_can_have_only_one_like_count_test() {
         // given
-        User user1 = new User("user_id1", "test@gamil.com", "1234", null);
-        User user2 = new User("user_id2", "test@gamil.com", "1234", null);
+        CustomUser customUser1 = new CustomUser("id1", "test@gamil.com", "1234");
+        CustomUser customUser2 = new CustomUser("id2", "test@gamil.com", "1234");
         Post post = new Post("temp_ip", "bar_id", 4.3f, "contents");
 
         // when
-        post.like(user1);
-        post.like(user1);
-        post.like(user1);
-        post.like(user2);
-        post.like(user2);
+        post.like(customUser1);
+        post.like(customUser1);
+        post.like(customUser1);
+        post.like(customUser2);
+        post.like(customUser2);
 
         // then
         assertAll(
-                () -> assertThat(post.isLikeContain(user1.getId())).isTrue(),
-                () -> assertThat(post.isLikeContain(user2.getId())).isTrue(),
+                () -> assertThat(post.isLikeContain(customUser1.getId())).isTrue(),
+                () -> assertThat(post.isLikeContain(customUser2.getId())).isTrue(),
                 () -> assertThat(post.likeCount()).isEqualTo(2)
         );
     }
