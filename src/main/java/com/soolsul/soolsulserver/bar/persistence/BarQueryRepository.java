@@ -55,7 +55,9 @@ public class BarQueryRepository {
                         barAlcoholTag.id,
                         barAlcoholTag.alcoholCategoryName,
                         barMoodTag.id,
-                        barMoodTag.name))
+                        barMoodTag.name,
+                        bar.createdAt
+                        ))
                 .from(bar)
                 .leftJoin(barAlcoholTag).on(bar.id.eq(barAlcoholTag.barId))
                 .leftJoin(barMoodTag).on(bar.id.eq(barMoodTag.barId))
