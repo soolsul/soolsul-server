@@ -15,11 +15,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그인_되어_있음;
+import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_요청;
+import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_응답_확인;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -51,29 +52,21 @@ public class PostAcceptanceTest extends AcceptanceTest {
     public void create_post_test() {
         // given
         String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
+        PostCreateRequest postCreateRequest = 피드_생성_정보_생성();
 
+        // when
+        var response = 피드_생성_요청(accessToken, postCreateRequest);
+
+        // then
+        피드_생성_응답_확인(response);
+    }
+
+    private PostCreateRequest 피드_생성_정보_생성() {
         List<String> imagesUrl = List.of("url1", "url2", "url3");
         List<String> tags = List.of("mood_tag1", "mood_tag2", "alcohol_tag1");
         LocalDate date = LocalDate.parse(LocalDate.now().toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         PostCreateRequest postCreateRequest = new PostCreateRequest(barId, "본문 내용 입니다", 4.3f, date, imagesUrl, tags);
-
-        // when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .auth().oauth2(accessToken)
-                .body(postCreateRequest)
-                .when()
-                .post("/api/posts")
-                .then().log().all()
-                .extract();
-
-        // then
-        assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("P001"),
-                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("피드 생성 성공했습니다.")
-        );
+        return postCreateRequest;
     }
 
     /**
