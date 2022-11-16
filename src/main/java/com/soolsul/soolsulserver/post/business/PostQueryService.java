@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.post.business;
 
+
 import com.soolsul.soolsulserver.bar.businees.dto.FilteredBarLookupResponse;
 import com.soolsul.soolsulserver.bar.persistence.BarQueryRepository;
 import com.soolsul.soolsulserver.common.userlocation.UserLocation;

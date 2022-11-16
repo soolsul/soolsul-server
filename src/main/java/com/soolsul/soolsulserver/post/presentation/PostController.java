@@ -1,7 +1,6 @@
 package com.soolsul.soolsulserver.post.presentation;
 
 import com.soolsul.soolsulserver.auth.CustomUser;
-
 import com.soolsul.soolsulserver.common.response.BaseResponse;
 import com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages;
 import com.soolsul.soolsulserver.post.business.PostServiceGateway;

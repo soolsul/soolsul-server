@@ -46,7 +46,7 @@ public class PostAcceptanceTest extends AcceptanceTest {
                 .auth().oauth2(accessToken)
                 .body(postCreateRequest)
                 .when()
-                .post("/api/posts")
+                .post("/posts")
                 .then().log().all()
                 .extract();
 
