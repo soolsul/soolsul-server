@@ -39,10 +39,10 @@ public class UserLocationBasedSquareRange {
         double meterForLongitude = (1 / (Math.toRadians(EARTH_RADIUS) * Math.cos(Math.toRadians(
                 locationInfo.getLongitude())))) / 1000;
 
-        this.maxX = calculateMaxPoint(locationInfo.getLatitude(), locationInfo.getLevel(), meterForLongitude);
-        this.maxY = calculateMaxPoint(locationInfo.getLongitude(), locationInfo.getLevel(), meterForLatitude);
-        this.minX = calculateMinPoint(locationInfo.getLatitude(), locationInfo.getLevel(), meterForLongitude);
-        this.minY = calculateMinPoint(locationInfo.getLongitude(), locationInfo.getLevel(), meterForLatitude);
+        this.maxX = calculateMaxPoint(locationInfo.getLongitude(), locationInfo.getLevel(), meterForLongitude);
+        this.maxY = calculateMaxPoint(locationInfo.getLatitude(), locationInfo.getLevel(), meterForLatitude);
+        this.minX = calculateMinPoint(locationInfo.getLongitude(), locationInfo.getLevel(), meterForLongitude);
+        this.minY = calculateMinPoint(locationInfo.getLatitude(), locationInfo.getLevel(), meterForLatitude);
     }
 
     private double calculateMaxPoint(double point, int level, double meterForPoint) {

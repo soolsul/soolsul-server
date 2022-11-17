@@ -20,7 +20,7 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
         List<Post> postList = queryFactory
                 .select(post)
                 .from(post)
-                .where(post.id.in(barIds))
+                .where(post.barId.in(barIds))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

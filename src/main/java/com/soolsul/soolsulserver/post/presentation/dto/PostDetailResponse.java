@@ -14,8 +14,8 @@ import java.util.List;
 
 public record PostDetailResponse(
 
-        @NotNull
-        String userName,
+        @NotBlank
+        String postId,
 
         @NotNull
         @Pattern(regexp = "1-5")
