@@ -32,13 +32,14 @@ public class PostStep {
                 .extract();
     }
 
-    public static void 피드_조회_응답_확인(ExtractableResponse<Response> response) {
+    public static String 피드_조회_응답_확인(ExtractableResponse<Response> response) {
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(response.jsonPath().getString("code")).isEqualTo("P004"),
                 () -> assertThat(response.jsonPath().getString("message")).isEqualTo("모든 피드를 찾는데 성공하였습니다."),
                 () -> assertThat(response.jsonPath().getList("data.postList").size()).isNotEqualTo(0)
         );
+        return response.jsonPath().getString("data.postList[0].postId");
     }
 
     public static ExtractableResponse<Response> 피드_목록_조회_요청(String accessToken) {
@@ -52,5 +53,23 @@ public class PostStep {
                 .get("/api/posts?latitude={latitude}&longitude={longitude}&level={level}")
                 .then().log().all()
                 .extract();
+    }
+
+    public static ExtractableResponse<Response> 피드_단건_조회_요청(String accessToken, String 첫_피드_아이디) {
+        return RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .when()
+                .get("/api/posts/{postId}", 첫_피드_아이디)
+                .then().log().all()
+                .extract();
+    }
+
+    public static void 피드_단건_조회_응답_확인(ExtractableResponse<Response> 피드_단건_조회_응답) {
+        assertAll(
+                () -> assertThat(피드_단건_조회_응답.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(피드_단건_조회_응답.jsonPath().getString("code")).isEqualTo("P002"),
+                () -> assertThat(피드_단건_조회_응답.jsonPath().getString("message")).isEqualTo("피드 찾기에 성공하였습니다.")
+        );
     }
 }

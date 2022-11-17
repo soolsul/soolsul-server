@@ -58,7 +58,6 @@ public class PostQueryServiceTest {
 
         // then
         assertAll(
-                () -> assertThat(response.userName()).isEqualTo("tempUserName"),
                 () -> assertThat(response.score()).isEqualTo(4.3f),
                 () -> assertThat(response.contents()).isEqualTo("content!"),
                 () -> assertThat(response.imageUrls()).contains("uuid1", "uuid2"),
