@@ -31,4 +31,26 @@ public class PostStep {
                 .then().log().all()
                 .extract();
     }
+
+    public static void 피드_조회_응답_확인(ExtractableResponse<Response> response) {
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("P004"),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("모든 피드를 찾는데 성공하였습니다."),
+                () -> assertThat(response.jsonPath().getList("data.postList").size()).isNotEqualTo(0)
+        );
+    }
+
+    public static ExtractableResponse<Response> 피드_목록_조회_요청(String accessToken) {
+        return RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .when()
+                .pathParam("latitude", 37.49909732361135d)
+                .pathParam("longitude", 126.9459247225818d)
+                .pathParam("level", 5)
+                .get("/api/posts?latitude={latitude}&longitude={longitude}&level={level}")
+                .then().log().all()
+                .extract();
+    }
 }

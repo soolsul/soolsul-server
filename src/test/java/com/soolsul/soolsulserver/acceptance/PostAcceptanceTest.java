@@ -20,8 +20,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그인_되어_있음;
+import static com.soolsul.soolsulserver.acceptance.PostStep.피드_목록_조회_요청;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_요청;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_응답_확인;
+import static com.soolsul.soolsulserver.acceptance.PostStep.피드_조회_응답_확인;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -117,22 +119,10 @@ public class PostAcceptanceTest extends AcceptanceTest {
         피드_생성_요청(accessToken, 피드_생성_정보_생성());
 
         // when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .when()
-                .pathParam("latitude", 37.49909732361135d)
-                .pathParam("longitude", 126.9459247225818d)
-                .pathParam("level", 1)
-                .get("/api/posts?latitude={latitude}&longitude={longitude}&level={level}")
-                .then().log().all()
-                .extract();
+        var response = 피드_목록_조회_요청(accessToken);
 
         // then
-        assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("P004"),
-                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("모든 피드를 찾는데 성공하였습니다.")
-        );
+        피드_조회_응답_확인(response);
     }
+
 }
