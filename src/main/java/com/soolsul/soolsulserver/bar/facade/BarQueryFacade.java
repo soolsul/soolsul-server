@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -53,6 +54,9 @@ public class BarQueryFacade {
     }
 
     private List<String> parseTagNames(String tagNames) {
+        if(tagNames == null || tagNames.isEmpty()) {
+            return new ArrayList<>();
+        }
         return Arrays.stream(tagNames.split(TAG_NAME_DELIMITER)).toList();
     }
 
