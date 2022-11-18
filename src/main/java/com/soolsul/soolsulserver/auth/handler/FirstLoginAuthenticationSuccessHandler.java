@@ -1,9 +1,12 @@
 package com.soolsul.soolsulserver.auth.handler;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soolsul.soolsulserver.auth.CustomUser;
 import com.soolsul.soolsulserver.auth.jwt.JwtToken;
 import com.soolsul.soolsulserver.auth.jwt.JwtTokenFactory;
+import com.soolsul.soolsulserver.common.response.BaseResponse;
+import com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,6 +33,7 @@ public class FirstLoginAuthenticationSuccessHandler implements AuthenticationSuc
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         CustomUser user = (CustomUser) authentication.getPrincipal();
 
+        response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
@@ -45,6 +49,8 @@ public class FirstLoginAuthenticationSuccessHandler implements AuthenticationSuc
                 .refreshToken(tokenProvider.createRefreshToken())
                 .build();
 
-        objectMapper.writeValue(response.getWriter(), jwtToken);
+        BaseResponse<JwtToken> tokenResponse = new BaseResponse<>(ResponseCodeAndMessages.USER_LOGIN_SUCCESS, jwtToken);
+
+        objectMapper.writeValue(response.getWriter(), tokenResponse);
     }
 }
