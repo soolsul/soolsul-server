@@ -1,6 +1,5 @@
 package com.soolsul.soolsulserver.post.domain;
 
-import com.soolsul.soolsulserver.common.domain.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,7 @@ import javax.persistence.Id;
 @Entity
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PostScrap extends BaseTimeEntity {
+public class PostScrap {
 
     @Id
     @GeneratedValue(generator = "uuid")

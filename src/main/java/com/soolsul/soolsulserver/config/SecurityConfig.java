@@ -25,7 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] PUBLIC_URI = {
-            "/api/auth/register"
+            "/api/auth/register", "/actuator/**"
     };
 
     @Override
