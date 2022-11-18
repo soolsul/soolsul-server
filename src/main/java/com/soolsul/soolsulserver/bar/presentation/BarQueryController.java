@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/api/bars")
@@ -30,8 +30,8 @@ public class BarQueryController {
             @RequestParam double latitude,
             @RequestParam double longitude,
             @RequestParam(defaultValue = "3") int level,
-            @RequestParam @NotEmpty String barMoodTagNames,
-            @RequestParam @NotEmpty String barAlcoholTagNames
+            @RequestParam @NotNull String barMoodTagNames,
+            @RequestParam @NotNull String barAlcoholTagNames
     ) {
         UserLocation userLocation = UserLocation.of(latitude, longitude, level);
         UserLocationBasedSquareRange squareRange = new UserLocationBasedSquareRange(userLocation);

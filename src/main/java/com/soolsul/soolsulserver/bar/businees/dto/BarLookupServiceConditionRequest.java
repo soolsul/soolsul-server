@@ -1,6 +1,7 @@
 package com.soolsul.soolsulserver.bar.businees.dto;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public record BarLookupServiceConditionRequest(
@@ -8,7 +9,7 @@ public record BarLookupServiceConditionRequest(
         @NotEmpty double northEastLatitude, // maxY
         @NotEmpty double southWestLongitude, // minX
         @NotEmpty double southWestLatitude, // minY
-        @NotEmpty List<String> barMoodTagIds,
-        @NotEmpty List<String> barAlcoholTagIds
+        @NotNull List<String> barMoodTagIds,
+        @NotNull List<String> barAlcoholTagIds
 ) {
 }
