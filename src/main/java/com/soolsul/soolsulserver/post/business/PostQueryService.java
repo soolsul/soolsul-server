@@ -64,9 +64,8 @@ public class PostQueryService {
     public PostListResponse findAllPostByLocation(String loginUserId, UserLocation userLocation, Pageable pageable) {
         UserLocationBasedSquareRange squareRange = new UserLocationBasedSquareRange(userLocation);
 
-        // TODO : 위경도 순서가 뭔가 이상함, 우선 작동하게 배치함
         BarLookupServiceConditionRequest lookupCondition = new BarLookupServiceConditionRequest(
-                squareRange.getMinX(), squareRange.getMaxY(), squareRange.getMaxX(), squareRange.getMinY(),
+                squareRange.getMaxX(), squareRange.getMaxY(), squareRange.getMinX(), squareRange.getMinY(),
                 null, null);
 
         List<FilteredBarLookupResponse> filteredBars = barQueryRepository.findBarFilteredByConditions(lookupCondition);

@@ -36,8 +36,8 @@ public class UserLocationBasedSquareRange {
     //참고 : https://wildeveloperetrain.tistory.com/171
     public UserLocationBasedSquareRange(UserLocation locationInfo) {
         double meterForLatitude = (1 / Math.toRadians(EARTH_RADIUS)) / 1000;
-        double meterForLongitude = (1 / (Math.toRadians(EARTH_RADIUS) * Math.cos(Math.toRadians(
-                locationInfo.getLongitude())))) / 1000;
+        double meterForLongitude = Math.abs((1 / (Math.toRadians(EARTH_RADIUS) * Math.cos(Math.toRadians(
+                locationInfo.getLongitude())))) / 1000);
 
         this.maxX = calculateMaxPoint(locationInfo.getLongitude(), locationInfo.getLevel(), meterForLongitude);
         this.maxY = calculateMaxPoint(locationInfo.getLatitude(), locationInfo.getLevel(), meterForLatitude);
