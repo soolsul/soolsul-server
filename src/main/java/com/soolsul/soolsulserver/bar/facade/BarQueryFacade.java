@@ -33,8 +33,8 @@ public class BarQueryFacade {
                 barLookupConditionRequest.southWestLatitude(),
                 barLookupConditionRequest.northEastLongitude(),
                 barLookupConditionRequest.northEastLatitude(),
-                getBarMoodTagIds(barLookupConditionRequest.barMoodTagNames()),
-                getBarAlcoholTagIds(barLookupConditionRequest.barAlcoholTagNames())
+                null,
+                null
         );
 
         return barQueryService.findBarFilteredByConditions(barLookupServiceConditionRequest);
