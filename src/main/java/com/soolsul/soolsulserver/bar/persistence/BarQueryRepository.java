@@ -52,6 +52,8 @@ public class BarQueryRepository {
                         bar.id,
                         bar.name,
                         bar.description,
+                        bar.location.latitude,
+                        bar.location.longitude,
                         barAlcoholTag.id,
                         barAlcoholTag.alcoholCategoryName,
                         barMoodTag.id,
