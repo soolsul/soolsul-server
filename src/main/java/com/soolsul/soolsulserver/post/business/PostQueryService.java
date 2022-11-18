@@ -16,6 +16,7 @@ import com.soolsul.soolsulserver.post.business.dto.PostDetailUserResponse;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.domain.PostPhoto;
 import com.soolsul.soolsulserver.post.domain.PostRepository;
+import com.soolsul.soolsulserver.post.domain.dto.FilteredPostLookupResponse;
 import com.soolsul.soolsulserver.post.exception.PostNotFoundException;
 import com.soolsul.soolsulserver.post.presentation.dto.PostDetailResponse;
 import com.soolsul.soolsulserver.post.presentation.dto.PostListResponse;
@@ -46,34 +47,27 @@ public class PostQueryService {
         BarLookupResponse findBar = barQueryRepository.findById(findPost.getBarId())
                 .orElseThrow(BarNotFoundException::new);
 
-        List<String> urlList = convertImageUrlList(findPost);
 
+        List<String> imageUrlList = convertImageUrlList(findPost);
         boolean userClickedLike = isLoginUserClickedLike(loginUserId, findPost);
 
-        return new PostDetailResponse(
-                findUser.nickName(),
-                findPost.getScore(),
-                findPost.getContents(),
-                urlList,
-                new PostDetailLikeResponse(findPost.likeCount(), userClickedLike),
-                new PostDetailUserResponse(findUser.userId(), findUser.nickName(), findUser.profileImage()),
-                new PostDetailStoreResponse(findBar.id(), findBar.name(), findBar.description())
-        );
+        return new PostDetailResponse(findPost, findUser, findBar, imageUrlList, userClickedLike);
     }
 
     public PostListResponse findAllPostByLocation(String loginUserId, UserLocation userLocation, Pageable pageable) {
         UserLocationBasedSquareRange squareRange = new UserLocationBasedSquareRange(userLocation);
 
         BarLookupServiceConditionRequest lookupCondition = new BarLookupServiceConditionRequest(
-                squareRange.getMaxX(), squareRange.getMaxY(), squareRange.getMinX(), squareRange.getMinY(),
+                squareRange.getMaxX(), squareRange.getMaxY(),
+                squareRange.getMinX(), squareRange.getMinY(),
                 null, null);
 
         List<FilteredBarLookupResponse> filteredBars = barQueryRepository.findBarFilteredByConditions(lookupCondition);
         List<String> barIds = extractBarIds(filteredBars);
 
-        Slice<Post> postListByLocation = postRepository.findPostListByLocation(barIds, pageable);
+        Slice<FilteredPostLookupResponse> postListByLocation = postRepository.findPostListByLocation(barIds, pageable);
 
-        return new PostListResponse(lookUpPostDetails(loginUserId, postListByLocation, filteredBars));
+        return new PostListResponse(buildPostDetailResponse(loginUserId, postListByLocation, filteredBars));
     }
 
     private boolean isLoginUserClickedLike(String loginUserId, Post findPost) {
@@ -93,24 +87,27 @@ public class PostQueryService {
                 .collect(Collectors.toList());
     }
 
-    private List<PostDetailResponse> lookUpPostDetails(String loginUserId, Slice<Post> postListByLocation, List<FilteredBarLookupResponse> filteredBarList) {
+    private List<PostDetailResponse> buildPostDetailResponse(
+            String loginUserId,
+            Slice<FilteredPostLookupResponse> postListByLocation,
+            List<FilteredBarLookupResponse> filteredBarList
+    ) {
         return postListByLocation.stream()
-                .map(post -> {
-                    boolean userClickedLike = isLoginUserClickedLike(loginUserId, post);
-                    List<String> urlList = convertImageUrlList(post);
+                .map(postDto -> {
+                    boolean userClickedLike = isLoginUserClickedLike(loginUserId, postDto.post());
 
                     FilteredBarLookupResponse matchedBar = filteredBarList.stream()
-                            .filter(f -> Objects.equals(f.barId(), post.getBarId()))
+                            .filter(f -> Objects.equals(f.barId(), postDto.post().getBarId()))
                             .findFirst()
                             .orElseThrow(BarNotFoundException::new);
 
                     return new PostDetailResponse(
-                            post.getId(),
-                            post.getScore(),
-                            post.getContents(),
-                            urlList,
-                            new PostDetailLikeResponse(post.likeCount(), userClickedLike),
-                            new PostDetailUserResponse("tempPostOwnerId", "tempPostOwnerName", "url"),
+                            postDto.post().getId(),
+                            postDto.post().getScore(),
+                            postDto.post().getContents(),
+                            convertImageUrlList(postDto.post()),
+                            new PostDetailLikeResponse(postDto.post().likeCount(), userClickedLike),
+                            new PostDetailUserResponse(postDto.userInfo().getUserId(), postDto.userInfo().getNickname(), postDto.userInfo().getProfileImage()),
                             new PostDetailStoreResponse(matchedBar.barId(), matchedBar.barName(), matchedBar.barDescription())
                     );
                 })
