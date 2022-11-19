@@ -1,22 +1,7 @@
 package com.soolsul.soolsulserver.location.persistence;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.soolsul.soolsulserver.location.domain.LocationMagnificationLevel;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import static com.soolsul.soolsulserver.location.domain.QLocationMagnificationLevel.locationMagnificationLevel;
-
-@Repository
-@RequiredArgsConstructor
-public class LocationMagnificationLevelRepository {
-
-    private final JPAQueryFactory jpaQueryFactory;
-
-    public LocationMagnificationLevel findByMagnificationLevel(int level) {
-        return jpaQueryFactory.selectFrom(locationMagnificationLevel)
-                .where(locationMagnificationLevel.level.eq(level))
-                .fetchOne();
-    }
-
+public interface LocationMagnificationLevelRepository extends JpaRepository<LocationMagnificationLevel, Long> {
 }

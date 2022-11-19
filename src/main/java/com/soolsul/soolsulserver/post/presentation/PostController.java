@@ -3,12 +3,11 @@ package com.soolsul.soolsulserver.post.presentation;
 import com.soolsul.soolsulserver.auth.CustomUser;
 import com.soolsul.soolsulserver.common.response.BaseResponse;
 import com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages;
-import com.soolsul.soolsulserver.common.userlocation.UserLocation;
+import com.soolsul.soolsulserver.location.request.LocationSquareRangeRequest;
 import com.soolsul.soolsulserver.post.business.PostServiceGateway;
 import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
 import com.soolsul.soolsulserver.post.presentation.dto.PostDetailResponse;
 import com.soolsul.soolsulserver.post.presentation.dto.PostListResponse;
-import com.soolsul.soolsulserver.post.presentation.dto.UserLocationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -51,10 +50,12 @@ public class PostController {
             @RequestParam double longitude,
             @RequestParam(defaultValue = "3") int level,
             @PageableDefault(size = 6) Pageable pageable,
-            Authentication authentication) {
+            Authentication authentication
+    ) {
         CustomUser customUser = (CustomUser) authentication.getPrincipal();
-        UserLocation userLocation = UserLocation.of(latitude, longitude, level);
-        PostListResponse postListResponse = postServiceGateway.findAll(customUser.getId(), userLocation, pageable);
+        LocationSquareRangeRequest locationSquareRangeRequest = new LocationSquareRangeRequest(latitude, longitude, level);
+        PostListResponse postListResponse = postServiceGateway.findAll(customUser.getId(), locationSquareRangeRequest, pageable);
         return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.FEED_FIND_ALL_SUCCESS, postListResponse));
     }
+
 }

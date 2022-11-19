@@ -60,6 +60,6 @@ class BarMoodTagRepositoryTest {
         List<String> barMoodTagIds = barMoodTagRepository.findBarMoodTagIdsByMoodNames(List.of(mood01.getName(), mood02.getName(), mood03.getName()));
 
         //then
-        assertThat(barMoodTagIds).hasSize(2);
+        assertThat(barMoodTagIds).hasSize(5);
     }
 }

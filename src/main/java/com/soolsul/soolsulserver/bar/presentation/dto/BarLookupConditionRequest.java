@@ -4,10 +4,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public record BarLookupConditionRequest(
-        @NotEmpty double southWestLongitude,
-        @NotEmpty double southWestLatitude,
-        @NotEmpty double northEastLongitude,
-        @NotEmpty double northEastLatitude,
+        @NotEmpty double latitude,
+        @NotEmpty double longitude,
+        @NotEmpty int level,
         @NotNull String barMoodTagNames,
         @NotNull String barAlcoholTagNames
 ) {

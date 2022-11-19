@@ -5,10 +5,10 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public record BarLookupServiceConditionRequest(
-        @NotEmpty double northEastLongitude, // maxX
-        @NotEmpty double northEastLatitude, // maxY
-        @NotEmpty double southWestLongitude, // minX
-        @NotEmpty double southWestLatitude, // minY
+        @NotEmpty double southWestLatitude, //남서위도 (minX)
+        @NotEmpty double southWestLongitude, //남서경도 (minY)
+        @NotEmpty double northEastLatitude, //북동위도 (maxX)
+        @NotEmpty double northEastLongitude, //북동경도 (maxY)
         @NotNull List<String> barMoodTagIds,
         @NotNull List<String> barAlcoholTagIds
 ) {

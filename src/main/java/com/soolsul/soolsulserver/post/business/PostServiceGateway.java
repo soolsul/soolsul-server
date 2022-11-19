@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.post.business;
 
-import com.soolsul.soolsulserver.common.userlocation.UserLocation;
+import com.soolsul.soolsulserver.location.request.LocationSquareRangeRequest;
 import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
 import com.soolsul.soolsulserver.post.presentation.dto.PostDetailResponse;
 import com.soolsul.soolsulserver.post.presentation.dto.PostListResponse;
@@ -36,7 +36,8 @@ public class PostServiceGateway implements CommandService<PostCreateRequest>, Qu
     }
 
     @Override
-    public PostListResponse findAll(String userId, UserLocation userLocation, Pageable pageable) {
-        return postQueryService.findAllPostByLocation(userId, userLocation, pageable);
+    public PostListResponse findAll(String userId, LocationSquareRangeRequest locationSquareRangeRequest, Pageable pageable) {
+        return postQueryService.findAllPostByLocation(userId, locationSquareRangeRequest, pageable);
     }
+
 }

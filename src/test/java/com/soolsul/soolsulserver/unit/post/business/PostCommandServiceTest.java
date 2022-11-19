@@ -1,15 +1,13 @@
 package com.soolsul.soolsulserver.unit.post.business;
 
-import com.soolsul.soolsulserver.auth.Authority;
 import com.soolsul.soolsulserver.auth.CustomUser;
-import com.soolsul.soolsulserver.auth.Role;
 import com.soolsul.soolsulserver.auth.exception.UserNotFoundException;
 import com.soolsul.soolsulserver.bar.domain.Bar;
+import com.soolsul.soolsulserver.bar.domain.BarRepository;
+import com.soolsul.soolsulserver.bar.exception.BarNotFoundException;
 import com.soolsul.soolsulserver.post.business.PostCommandService;
 import com.soolsul.soolsulserver.post.domain.PostRepository;
 import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
-import com.soolsul.soolsulserver.bar.domain.BarRepository;
-import com.soolsul.soolsulserver.bar.exception.BarNotFoundException;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +20,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
