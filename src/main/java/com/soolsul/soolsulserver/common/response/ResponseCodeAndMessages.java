@@ -2,6 +2,7 @@ package com.soolsul.soolsulserver.common.response;
 
 public enum ResponseCodeAndMessages {
     USER_CREATE_SUCCESS("U001", "유저 생성에 성공했습니다."),
+    USER_LOGIN_SUCCESS("U002", "로그인에 성공했습니다."),
     USER_UNAUTHENTICATED("U004", "해당 유저는 인증되지 않았습니다."),
     USER_UNAUTHORIZED("U005", "해당 유저는 권한이 없습니다."),
     USER_LOOK_UP_SUCCESS("U006", "해당 유저 정보를 찾는데 성공했습니다."),

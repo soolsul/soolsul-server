@@ -41,10 +41,10 @@ public class BarQueryRepository {
     }
 
     public List<FilteredBarLookupResponse> findBarFilteredByConditions(BarLookupServiceConditionRequest barLookupServiceConditionRequest) {
-        double southWestLongitude = barLookupServiceConditionRequest.southWestLongitude();
-        double southWestLatitude = barLookupServiceConditionRequest.southWestLatitude();
-        double northEastLongitude = barLookupServiceConditionRequest.northEastLongitude();
-        double northEastLatitude = barLookupServiceConditionRequest.northEastLatitude();
+        double northEastLongitude = barLookupServiceConditionRequest.northEastLongitude(); // maxX
+        double northEastLatitude = barLookupServiceConditionRequest.northEastLatitude(); // maxY
+        double southWestLongitude = barLookupServiceConditionRequest.southWestLongitude(); // minX
+        double southWestLatitude = barLookupServiceConditionRequest.southWestLatitude(); // minY
         List<String> barAlcoholTagIds = barLookupServiceConditionRequest.barAlcoholTagIds();
         List<String> barMoodTagIds = barLookupServiceConditionRequest.barMoodTagIds();
 
@@ -52,18 +52,20 @@ public class BarQueryRepository {
                         bar.id,
                         bar.name,
                         bar.description,
+                        bar.location.latitude,
+                        bar.location.longitude,
                         barAlcoholTag.id,
                         barAlcoholTag.alcoholCategoryName,
                         barMoodTag.id,
-                        barMoodTag.name))
+                        barMoodTag.name,
+                        bar.createdAt
+                ))
                 .from(bar)
                 .leftJoin(barAlcoholTag).on(bar.id.eq(barAlcoholTag.barId))
                 .leftJoin(barMoodTag).on(bar.id.eq(barMoodTag.barId))
                 .where(
-                        bar.location.longitude.between(southWestLongitude, northEastLongitude),
-                        bar.location.latitude.between(southWestLatitude, northEastLatitude),
-                        barAlcoholTag.id.in(barAlcoholTagIds),
-                        barMoodTag.id.in(barMoodTagIds))
-                .fetch();
+                        bar.location.longitude.between(southWestLongitude, northEastLongitude), // minX, maxX
+                        bar.location.latitude.between(southWestLatitude, northEastLatitude) // minY, maxY
+                ).fetch();
     }
 }

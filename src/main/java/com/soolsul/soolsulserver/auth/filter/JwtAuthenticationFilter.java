@@ -37,7 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         ContentCachingResponseWrapper wrappingResponse = new ContentCachingResponseWrapper(response);
 
         String accessToken = convert(request);
-        log.info("[AccessToken] > {}", accessToken);
+        log.info("[AccessToken] : {}", accessToken);
 
         if (!StringUtils.hasText(accessToken) || !jwtTokenFactory.isValidAccessToken(accessToken)) {
             filterChain.doFilter(wrappingRequest, wrappingResponse);
@@ -61,7 +61,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Collection<GrantedAuthority> rolesFromToken = jwtTokenFactory.getRolesFromToken(accessToken);
         CustomUser findUser = userDetailsService.findUserForAuthentication(userIdFromToken);
         log.info("[User Info] : {}", findUser.getEmail());
-        //TODO : 역할 인증이 안되는중
         return new UsernamePasswordAuthenticationToken(findUser, "", rolesFromToken);
     }
 }

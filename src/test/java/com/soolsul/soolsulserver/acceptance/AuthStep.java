@@ -30,7 +30,7 @@ public class AuthStep {
 
     public static String 로그인_되어_있음(String email, String password) {
         ExtractableResponse<Response> response = 로그인_요청(email, password);
-        return response.jsonPath().getString("accessToken");
+        return response.jsonPath().getString("data.accessToken");
     }
 
     public static ExtractableResponse<Response> 베어러_인증으로_내_회원_정보_조회_요청(String accessToken) {

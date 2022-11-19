@@ -10,23 +10,23 @@ public class UserLocation {
     private static final double MIN_LATITUDE_RANGE = -90.0;
     private static final double MAX_LONGITUDE_RANGE = 180.0;
     private static final double MIN_LONGITUDE_RANGE = -180.0;
-    private static final int MAX_RADIUS_RANGE = 20000;
-    private static final int MIN_RADIUS_RANGE = 100;
+    private static final int MAX_RADIUS_RANGE = 14;
+    private static final int MIN_RADIUS_RANGE = 1;
 
     private double latitude; // x
     private double longitude; // y
-    private int radius;
+    private int level;
 
-    private UserLocation(double latitude, double longitude, int radius) {
-        if (!(validateLongitude(latitude) && validateLatitude(longitude) && validateRadius(radius))) {
+    private UserLocation(double latitude, double longitude, int level) {
+        if (!(validateLatitude(latitude) && validateLongitude(longitude) && validateLevel(level))) {
             throw new IllegalArgumentException();
         }
         this.latitude = latitude;
         this.longitude = longitude;
-        this.radius = radius;
+        this.level = level;
     }
 
-    private static boolean validateRadius(int radius) {
+    private static boolean validateLevel(int radius) {
         return MIN_RADIUS_RANGE <= radius && radius <= MAX_RADIUS_RANGE;
     }
 
@@ -38,7 +38,7 @@ public class UserLocation {
         return MIN_LATITUDE_RANGE <= latitude && latitude <= MAX_LATITUDE_RANGE;
     }
 
-    public static UserLocation from(UserLocationRequest locationRequest) {
-        return new UserLocation(locationRequest.latitude(), locationRequest.longitude(), locationRequest.radius());
+    public static UserLocation of(double latitude, double longitude, int level) {
+        return new UserLocation(latitude, longitude, level);
     }
 }

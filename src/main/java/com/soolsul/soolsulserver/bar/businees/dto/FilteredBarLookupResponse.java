@@ -6,6 +6,8 @@ public record FilteredBarLookupResponse(
         String barId,
         String barName,
         String barDescription,
+        double latitude,
+        double longitude,
         String alcoholTagId,
         String alcoholTagName,
         String alcoholMoodId,
