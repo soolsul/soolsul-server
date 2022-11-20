@@ -1,7 +1,5 @@
 package com.soolsul.soolsulserver.location.service;
 
-import com.soolsul.soolsulserver.common.userlocation.UserLocation;
-import com.soolsul.soolsulserver.common.userlocation.UserLocationBasedSquareRange;
 import com.soolsul.soolsulserver.location.domain.LocationMagnificationLevel;
 import com.soolsul.soolsulserver.location.persistence.LocationMagnificationLevelRepositoryDsl;
 import com.soolsul.soolsulserver.location.request.LocationSquareRangeRequest;
@@ -36,13 +34,9 @@ class LocationRangeServiceTest {
     void calculate_location_square_range () {
         //given
         LocationMagnificationLevel magnificationLevel3 = new LocationMagnificationLevel(3, 250);
-        given(locationMagnificationLevelRepositoryDsl.findByMagnificationLevel(anyInt())).willReturn(magnificationLevel3);
-
         LocationSquareRangeRequest locationRangeRequest = new LocationSquareRangeRequest(37.565494, 126.992493, magnificationLevel3.getLevel());
 
-        UserLocation userLocation = UserLocation.of(37.565494, 126.992493, magnificationLevel3.getLevel());
-        UserLocationBasedSquareRange userLocationBasedSquareRange = new UserLocationBasedSquareRange(userLocation);
-
+        given(locationMagnificationLevelRepositoryDsl.findByMagnificationLevel(anyInt())).willReturn(magnificationLevel3);
 
         //when
         LocationSquareRangeCondition locationSquareRangeCondition
