@@ -1,6 +1,5 @@
 package com.soolsul.soolsulserver.auth.handler;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soolsul.soolsulserver.auth.CustomUser;
 import com.soolsul.soolsulserver.auth.jwt.JwtToken;
@@ -46,7 +45,7 @@ public class FirstLoginAuthenticationSuccessHandler implements AuthenticationSuc
 
         JwtToken jwtToken = JwtToken.builder()
                 .accessToken(tokenProvider.createAccessToken(user.getId(), collect))
-                .refreshToken(tokenProvider.createRefreshToken())
+                .refreshToken(tokenProvider.createRefreshToken(user.getId()))
                 .build();
 
         BaseResponse<JwtToken> tokenResponse = new BaseResponse<>(ResponseCodeAndMessages.USER_LOGIN_SUCCESS, jwtToken);

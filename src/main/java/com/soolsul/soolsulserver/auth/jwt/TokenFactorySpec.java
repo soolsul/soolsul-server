@@ -22,5 +22,5 @@ public interface TokenFactorySpec {
 
     String createAccessToken(String userId, List<GrantedAuthority> roles);
 
-    String createRefreshToken();
+    String createRefreshToken(String userId);
 }

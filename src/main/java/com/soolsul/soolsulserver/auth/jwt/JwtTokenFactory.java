@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.auth.jwt;
 
+import com.soolsul.soolsulserver.auth.redis.RedisService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -16,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenFactory implements TokenFactorySpec {
 
+    private final RedisService redisService;
     private final Key ACCESS_PRIVATE_KEY;
     private final Key REFRESH_PRIVATE_KEY;
 
@@ -37,17 +40,19 @@ public class JwtTokenFactory implements TokenFactorySpec {
 
     public JwtTokenFactory(
             @Value("${jwt.access.private}") String accessPrivateKey,
-            @Value("${jwt.refresh.private}") String refreshPrivateKey)
+            @Value("${jwt.refresh.private}") String refreshPrivateKey,
+            RedisService redisService)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
-        ACCESS_PRIVATE_KEY = getPrivateKey(accessPrivateKey);
-        REFRESH_PRIVATE_KEY = getPrivateKey(refreshPrivateKey);
+        this.ACCESS_PRIVATE_KEY = getPrivateKey(accessPrivateKey);
+        this.REFRESH_PRIVATE_KEY = getPrivateKey(refreshPrivateKey);
+        this.redisService = redisService;
     }
 
     @Override
     public JwtToken issue(String userId, List<GrantedAuthority> roles) {
         return JwtToken.builder()
                 .accessToken(createAccessToken(userId, roles))
-                .refreshToken(createRefreshToken())
+                .refreshToken(createRefreshToken(userId))
                 .build();
     }
 
@@ -145,15 +150,19 @@ public class JwtTokenFactory implements TokenFactorySpec {
     }
 
     @Override
-    public String createRefreshToken() {
+    public String createRefreshToken(String userId) {
         Date createdDate = new Date();
         Date expirationDate = new Date(createdDate.getTime() + refreshExpirationMillis);
 
-        return Jwts.builder()
+        String refreshToken = Jwts.builder()
                 .setIssuedAt(createdDate)
                 .setExpiration(expirationDate)
                 .signWith(REFRESH_PRIVATE_KEY)
                 .compact();
+
+        redisService.setValuesWithDuration(userId, refreshToken, Duration.ofMillis(refreshExpirationMillis));
+
+        return refreshToken;
     }
 
     private Key getPrivateKey(String privateKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
