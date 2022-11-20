@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+
+  redis:
+    container_name: "redis"
+    image: redis
+    ports:
+      - "6379:6379"
+
+  localstack:
+    container_name: "localstack"
+    image: localstack/localstack:1.2.0
+    network_mode: bridge
+    ports:
+      - "4572:4572"  # external service port range
+    environment:
+      - SERVICES=${SERVICES- }
+      - DEBUG=${DEBUG-0}
+      - DATA_DIR=${DATA_DIR-}
+      - DOCKER_HOST=unix:///var/run/docker.sock # docker.sock: 도커 컨테이너 내부에서 데몬과 상호 작용을 할 수 있게 해주는 Unix 소캣
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=ap-northeast-2
+    volumes:
+      - "${TMPDIR-/tmp/localstack}:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  mysql:
+    image: mysql:8.0
+    ports:
+      - '3306:3306'
+    volumes:
+      - '../../var/lib:/var/lib/mysql'
+    environment:
+      - MYSQL_USER=soolsul-user
+      - MYSQL_PASSWORD=20221201
+      - MYSQL_DATABASE=soolsul
