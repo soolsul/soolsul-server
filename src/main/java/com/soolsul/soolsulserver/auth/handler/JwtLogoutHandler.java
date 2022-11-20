@@ -32,12 +32,12 @@ public class JwtLogoutHandler implements LogoutHandler {
         String accessToken = convert(request);
         log.info("[AccessToken] : {}", accessToken);
 
-        if (!StringUtils.hasText(accessToken) || !jwtTokenFactory.isValidAccessToken(accessToken)) {
+        if (isInvalidAccessToken(accessToken)) {
             return;
         }
 
         String userIdFromToken = jwtTokenFactory.getUserIdFromToken(accessToken);
-        if (StringUtils.hasText(userIdFromToken) && StringUtils.hasText(redisService.getValues(userIdFromToken))) {
+        if (StringUtils.hasText(userIdFromToken) && isHasRefreshToken(userIdFromToken)) {
             // delete refresh token
             redisService.deleteValues(userIdFromToken);
 
@@ -46,8 +46,14 @@ public class JwtLogoutHandler implements LogoutHandler {
 
             SecurityContextHolder.clearContext();
         }
+    }
 
-        return;
+    private boolean isHasRefreshToken(String userIdFromToken) {
+        return StringUtils.hasText(redisService.getValues(userIdFromToken));
+    }
+
+    private boolean isInvalidAccessToken(String accessToken) {
+        return !StringUtils.hasText(accessToken) || !jwtTokenFactory.isValidAccessToken(accessToken);
     }
 
     private String convert(HttpServletRequest request) {

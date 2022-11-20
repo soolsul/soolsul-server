@@ -29,13 +29,17 @@ public class FirstLoginAuthenticationFilter extends AbstractAuthenticationProces
         }
 
         UserDto userDto = objectMapper.readValue(request.getReader(), UserDto.class);
-        if (StringUtils.isEmpty(userDto.getEmail()) || StringUtils.isEmpty(userDto.getPassword())) {
+        if (isNoUserInformation(userDto)) {
             throw new IllegalArgumentException("UserId is empty");
         }
 
         FirstLoginAuthenticationToken authenticationToken = new FirstLoginAuthenticationToken(userDto.getEmail(), userDto.getPassword());
 
         return getAuthenticationManager().authenticate(authenticationToken);
+    }
+
+    private boolean isNoUserInformation(UserDto userDto) {
+        return StringUtils.isEmpty(userDto.getEmail()) || StringUtils.isEmpty(userDto.getPassword());
     }
 
     private boolean isJsonLogin(HttpServletRequest request) {

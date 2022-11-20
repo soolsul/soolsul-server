@@ -46,11 +46,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String accessToken = convert(request);
         log.info("[AccessToken] : {}", accessToken);
 
-        if (StringUtils.hasText(accessToken) && redisService.getValues(accessToken).equals(LOGOUT_KEY)) {
+        if (isAlreadyLogout(accessToken)) {
             throw new UserUnauthorizedException();
         }
 
-        if (!StringUtils.hasText(accessToken) || !jwtTokenFactory.isValidAccessToken(accessToken)) {
+        if (isInvalidAccessToken(accessToken)) {
             filterChain.doFilter(wrappingRequest, wrappingResponse);
             wrappingResponse.copyBodyToResponse();
             return;
@@ -61,6 +61,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(wrappingRequest, wrappingResponse);
         wrappingResponse.copyBodyToResponse();
+    }
+
+    private boolean isInvalidAccessToken(String accessToken) {
+        return !StringUtils.hasText(accessToken) || !jwtTokenFactory.isValidAccessToken(accessToken);
+    }
+
+    private boolean isAlreadyLogout(String accessToken) {
+        return StringUtils.hasText(accessToken) && redisService.getValues(accessToken).equals(LOGOUT_KEY);
     }
 
     private String convert(HttpServletRequest request) {
