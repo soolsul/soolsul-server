@@ -42,10 +42,11 @@ public class BarQueryRepository {
     }
 
     public List<FilteredBarLookupResponse> findBarFilteredByConditions(BarLookupServiceConditionRequest barLookupServiceConditionRequest) {
-        double northEastLongitude = barLookupServiceConditionRequest.northEastLongitude(); // maxX
-        double northEastLatitude = barLookupServiceConditionRequest.northEastLatitude(); // maxY
-        double southWestLongitude = barLookupServiceConditionRequest.southWestLongitude(); // minX
         double southWestLatitude = barLookupServiceConditionRequest.southWestLatitude(); // minY
+        double southWestLongitude = barLookupServiceConditionRequest.southWestLongitude(); // minX
+        double northEastLatitude = barLookupServiceConditionRequest.northEastLatitude(); // maxY
+        double northEastLongitude = barLookupServiceConditionRequest.northEastLongitude(); // maxX
+
         List<String> barAlcoholTagIds = barLookupServiceConditionRequest.barAlcoholTagIds();
         List<String> barMoodTagIds = barLookupServiceConditionRequest.barMoodTagIds();
 
