@@ -1,19 +1,15 @@
 package com.soolsul.soolsulserver.acceptance;
 
-import io.restassured.RestAssured;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
+import static com.soolsul.soolsulserver.acceptance.AuthStep.권한_없는_요청;
+import static com.soolsul.soolsulserver.acceptance.AuthStep.로그아웃_요청;
+import static com.soolsul.soolsulserver.acceptance.AuthStep.로그아웃_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그인_되어_있음;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.베어러_인증으로_내_회원_정보_조회_요청;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.회원_정보_조회;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_목록_조회_요청;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class AuthAcceptanceTest extends AcceptanceTest {
 
@@ -51,28 +47,15 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
 
         // when
-        ExtractableResponse<Response> response = RestAssured.given().log().all()
-                .auth().oauth2(accessToken)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/api/logout")
-                .then().log().all()
-                .statusCode(HttpStatus.OK.value())
-                .extract();
+        var 로그아웃_응답 = 로그아웃_요청(accessToken);
 
         // then
-        assertAll(
-                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("U007"),
-                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("로그아웃에 성공하였습니다.")
-        );
+        로그아웃_응답_확인(로그아웃_응답);
 
         // when
         var 피드_목록_조회_응답 = 피드_목록_조회_요청(accessToken);
 
         // then
-        assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value()),
-                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("U004"),
-                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("해당 유저는 인증되지 않았습니다.")
-        );
+        권한_없는_요청(피드_목록_조회_응답);
     }
 }
