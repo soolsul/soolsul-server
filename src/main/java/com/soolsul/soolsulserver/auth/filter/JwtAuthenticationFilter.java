@@ -27,8 +27,6 @@ import java.util.Collection;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final String LOGOUT_KEY = "logout";
-
     @Autowired
     private JwtTokenFactory jwtTokenFactory;
 
@@ -68,7 +66,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private boolean isAlreadyLogout(String accessToken) {
-        return StringUtils.hasText(accessToken) && redisService.getValues(accessToken).equals(LOGOUT_KEY);
+        return StringUtils.hasText(accessToken) && redisService.getValues(accessToken) != null;
     }
 
     private String convert(HttpServletRequest request) {
