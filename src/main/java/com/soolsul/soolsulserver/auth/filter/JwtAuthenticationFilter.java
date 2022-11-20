@@ -2,7 +2,9 @@ package com.soolsul.soolsulserver.auth.filter;
 
 import com.soolsul.soolsulserver.auth.CustomUser;
 import com.soolsul.soolsulserver.auth.business.CustomUserDetailsService;
+import com.soolsul.soolsulserver.auth.exception.UserUnauthorizedException;
 import com.soolsul.soolsulserver.auth.jwt.JwtTokenFactory;
+import com.soolsul.soolsulserver.auth.redis.RedisService;
 import com.soolsul.soolsulserver.auth.util.AuthorizationExtractor;
 import com.soolsul.soolsulserver.auth.util.AuthorizationType;
 import lombok.extern.slf4j.Slf4j;
@@ -25,11 +27,16 @@ import java.util.Collection;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private static final String LOGOUT_KEY = "logout";
+
     @Autowired
     private JwtTokenFactory jwtTokenFactory;
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
+
+    @Autowired
+    private RedisService redisService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -38,6 +45,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String accessToken = convert(request);
         log.info("[AccessToken] : {}", accessToken);
+
+        if (StringUtils.hasText(accessToken) && redisService.getValues(accessToken).equals(LOGOUT_KEY)) {
+            throw new UserUnauthorizedException();
+        }
 
         if (!StringUtils.hasText(accessToken) || !jwtTokenFactory.isValidAccessToken(accessToken)) {
             filterChain.doFilter(wrappingRequest, wrappingResponse);
