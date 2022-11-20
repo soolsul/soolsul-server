@@ -27,6 +27,13 @@ public class Curation extends BaseTimeEntity {
 
     private String barId;
 
+    public Curation(String title, String mainPictureUrl, String content, String barId) {
+        this.title = title;
+        this.mainPictureUrl = mainPictureUrl;
+        this.content = content;
+        this.barId = barId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
