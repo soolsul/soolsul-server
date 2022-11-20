@@ -36,7 +36,7 @@ class CurationQueryServiceTest {
         //given
         List<CurationLookupResponse> curationLookupResponses = initCurationLookupResponses();
 
-        given(curationQueryRepository.findAllSingleTagCurationsByLocationRange(any())).willReturn(curationLookupResponses);
+        given(curationQueryRepository.findAllCurationsInLocationRange(any())).willReturn(curationLookupResponses);
 
         //when
         List<CurationLookupResponse> SingleTagCurationLookupResponses

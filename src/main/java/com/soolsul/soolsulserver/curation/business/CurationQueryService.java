@@ -21,7 +21,7 @@ public class CurationQueryService {
             LocationSquareRangeCondition locationSquareRangeCondition
     ) {
         List<CurationLookupResponse> curationLookupResponses
-                = curationQueryRepository.findAllSingleTagCurationsByLocationRange(locationSquareRangeCondition);
+                = curationQueryRepository.findAllCurationsInLocationRange(locationSquareRangeCondition);
 
         Map<String, Boolean> curationIdMap = createCurationIdMap(curationLookupResponses);
         return getFilteredSingleTagCuration(curationLookupResponses, curationIdMap);
