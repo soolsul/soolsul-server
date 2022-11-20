@@ -5,14 +5,23 @@ import com.soolsul.soolsulserver.region.domain.Location;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Bar extends BaseTimeEntity {
+
+    @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    private String id;
 
     private String regionId;
 
@@ -26,7 +35,7 @@ public class Bar extends BaseTimeEntity {
     private Location location;
 
     public Bar(String id, String regionId, String barCategoryId, String name, String description, Location location) {
-        super(id);
+        this.id = id;
         this.regionId = regionId;
         this.barCategoryId = barCategoryId;
         this.name = name;
@@ -41,4 +50,18 @@ public class Bar extends BaseTimeEntity {
         this.description = description;
         this.location = location;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Bar that = (Bar) o;
+        return Objects.equals(this.id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
+    }
+
 }
