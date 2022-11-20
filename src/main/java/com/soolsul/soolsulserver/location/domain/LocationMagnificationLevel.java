@@ -1,9 +1,6 @@
 package com.soolsul.soolsulserver.location.domain;
 
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,5 +21,9 @@ public class LocationMagnificationLevel {
 
     private int meter;
 
+    public LocationMagnificationLevel(int level, int meter) {
+        this.level = level;
+        this.meter = meter;
+    }
 
 }

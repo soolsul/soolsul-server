@@ -25,8 +25,6 @@ public class BarMoodTagRepository {
         return jpaQueryFactory.select(barMoodTag.id)
                 .from(barMoodTag)
                 .where(barMoodTag.moodId.in(moodTagIds))
-                .groupBy(barMoodTag.barId)
-                .orderBy(OrderByNull.DEFAULT)
                 .fetch();
     }
 

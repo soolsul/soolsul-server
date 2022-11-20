@@ -8,8 +8,9 @@ import com.soolsul.soolsulserver.bar.businees.dto.FilteredBarLookupResponse;
 import com.soolsul.soolsulserver.bar.exception.BarNotFoundException;
 import com.soolsul.soolsulserver.bar.persistence.BarQueryRepository;
 import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupResponse;
-import com.soolsul.soolsulserver.common.userlocation.UserLocation;
-import com.soolsul.soolsulserver.common.userlocation.UserLocationBasedSquareRange;
+import com.soolsul.soolsulserver.location.request.LocationSquareRangeRequest;
+import com.soolsul.soolsulserver.location.response.LocationSquareRangeCondition;
+import com.soolsul.soolsulserver.location.service.LocationRangeService;
 import com.soolsul.soolsulserver.post.business.dto.PostDetailLikeResponse;
 import com.soolsul.soolsulserver.post.business.dto.PostDetailStoreResponse;
 import com.soolsul.soolsulserver.post.business.dto.PostDetailUserResponse;
@@ -26,6 +27,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -38,6 +40,7 @@ public class PostQueryService {
     private final PostRepository postRepository;
     private final BarQueryRepository barQueryRepository;
     private final CustomUserDetailsService userDetailsService;
+    private final LocationRangeService locationRangeService;
 
     public PostDetailResponse findPostDetail(String loginUserId, String postId) {
         Post findPost = postRepository.findById(postId)
@@ -54,15 +57,21 @@ public class PostQueryService {
         return new PostDetailResponse(findPost, findUser, findBar, imageUrlList, userClickedLike);
     }
 
-    public PostListResponse findAllPostByLocation(String loginUserId, UserLocation userLocation, Pageable pageable) {
-        UserLocationBasedSquareRange squareRange = new UserLocationBasedSquareRange(userLocation);
+    public PostListResponse findAllPostByLocation(String loginUserId, LocationSquareRangeRequest locationSquareRangeRequest, Pageable pageable) {
+        LocationSquareRangeCondition locationSquareRangeCondition = locationRangeService.calculateLocationSquareRange(
+                locationSquareRangeRequest
+        );
 
-        BarLookupServiceConditionRequest lookupCondition = new BarLookupServiceConditionRequest(
-                squareRange.getMaxX(), squareRange.getMaxY(),
-                squareRange.getMinX(), squareRange.getMinY(),
-                null, null);
+        BarLookupServiceConditionRequest barLookupServiceConditionRequest = new BarLookupServiceConditionRequest(
+                locationSquareRangeCondition.southWestLatitude(),
+                locationSquareRangeCondition.southWestLongitude(),
+                locationSquareRangeCondition.northEastLatitude(),
+                locationSquareRangeCondition.northEastLongitude(),
+                Collections.emptyList(),
+                Collections.emptyList()
+        );
 
-        List<FilteredBarLookupResponse> filteredBars = barQueryRepository.findBarFilteredByConditions(lookupCondition);
+        List<FilteredBarLookupResponse> filteredBars = barQueryRepository.findBarFilteredByConditions(barLookupServiceConditionRequest);
         List<String> barIds = extractBarIds(filteredBars);
 
         Slice<FilteredPostLookupResponse> postListByLocation = postRepository.findPostListByLocation(barIds, pageable);
@@ -83,7 +92,7 @@ public class PostQueryService {
 
     private List<String> extractBarIds(List<FilteredBarLookupResponse> findBars) {
         return findBars.stream()
-                .map(bar -> bar.barId())
+                .map(FilteredBarLookupResponse::barId)
                 .collect(Collectors.toList());
     }
 

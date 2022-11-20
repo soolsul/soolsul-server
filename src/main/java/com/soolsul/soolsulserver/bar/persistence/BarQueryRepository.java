@@ -1,9 +1,10 @@
 package com.soolsul.soolsulserver.bar.persistence;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.soolsul.soolsulserver.bar.businees.dto.FilteredBarLookupResponse;
 import com.soolsul.soolsulserver.bar.businees.dto.BarLookupServiceConditionRequest;
+import com.soolsul.soolsulserver.bar.businees.dto.FilteredBarLookupResponse;
 import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupResponse;
 import com.soolsul.soolsulserver.bar.presentation.dto.LocationLookupResponse;
 import lombok.RequiredArgsConstructor;
@@ -41,10 +42,11 @@ public class BarQueryRepository {
     }
 
     public List<FilteredBarLookupResponse> findBarFilteredByConditions(BarLookupServiceConditionRequest barLookupServiceConditionRequest) {
-        double northEastLongitude = barLookupServiceConditionRequest.northEastLongitude(); // maxX
-        double northEastLatitude = barLookupServiceConditionRequest.northEastLatitude(); // maxY
-        double southWestLongitude = barLookupServiceConditionRequest.southWestLongitude(); // minX
         double southWestLatitude = barLookupServiceConditionRequest.southWestLatitude(); // minY
+        double southWestLongitude = barLookupServiceConditionRequest.southWestLongitude(); // minX
+        double northEastLatitude = barLookupServiceConditionRequest.northEastLatitude(); // maxY
+        double northEastLongitude = barLookupServiceConditionRequest.northEastLongitude(); // maxX
+
         List<String> barAlcoholTagIds = barLookupServiceConditionRequest.barAlcoholTagIds();
         List<String> barMoodTagIds = barLookupServiceConditionRequest.barMoodTagIds();
 
@@ -64,8 +66,25 @@ public class BarQueryRepository {
                 .leftJoin(barAlcoholTag).on(bar.id.eq(barAlcoholTag.barId))
                 .leftJoin(barMoodTag).on(bar.id.eq(barMoodTag.barId))
                 .where(
-                        bar.location.longitude.between(southWestLongitude, northEastLongitude), // minX, maxX
-                        bar.location.latitude.between(southWestLatitude, northEastLatitude) // minY, maxY
+                        bar.location.longitude.between(southWestLongitude, northEastLongitude),
+                        bar.location.latitude.between(southWestLatitude, northEastLatitude),
+                        inBarAlcoholTagIds(barAlcoholTagIds),
+                        inBarMoodTagIds(barMoodTagIds)
                 ).fetch();
     }
+
+    private BooleanExpression inBarAlcoholTagIds(List<String> barAlcoholTagIds) {
+        if (barAlcoholTagIds == null || barAlcoholTagIds.isEmpty()) {
+            return null;
+        }
+        return barAlcoholTag.id.in(barAlcoholTagIds);
+    }
+
+    private BooleanExpression inBarMoodTagIds(List<String> barMoodTagIds) {
+        if (barMoodTagIds == null || barMoodTagIds.isEmpty()) {
+            return null;
+        }
+        return barMoodTag.id.in(barMoodTagIds);
+    }
+
 }

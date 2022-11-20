@@ -1,12 +1,10 @@
 package com.soolsul.soolsulserver.bar.presentation;
 
-import com.soolsul.soolsulserver.bar.presentation.dto.FilteredBarsLookupResponse;
-import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupConditionRequest;
 import com.soolsul.soolsulserver.bar.facade.BarQueryFacade;
+import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupConditionRequest;
+import com.soolsul.soolsulserver.bar.presentation.dto.FilteredBarsLookupResponse;
 import com.soolsul.soolsulserver.common.response.BaseResponse;
 import com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages;
-import com.soolsul.soolsulserver.common.userlocation.UserLocation;
-import com.soolsul.soolsulserver.common.userlocation.UserLocationBasedSquareRange;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -27,27 +25,27 @@ public class BarQueryController {
 
     @GetMapping
     public ResponseEntity<BaseResponse<FilteredBarsLookupResponse>> findBarFilteredByConditions(
-            @RequestParam double latitude,
-            @RequestParam double longitude,
-            @RequestParam(defaultValue = "3") int level,
+            @RequestParam double latitude, // 위도
+            @RequestParam double longitude, // 경도
+            @RequestParam(defaultValue = "3") int level, //확대 레벨
             @RequestParam @NotNull String barMoodTagNames,
             @RequestParam @NotNull String barAlcoholTagNames
     ) {
-        UserLocation userLocation = UserLocation.of(latitude, longitude, level);
-        UserLocationBasedSquareRange squareRange = new UserLocationBasedSquareRange(userLocation);
-
         BarLookupConditionRequest barLookupConditionRequest = new BarLookupConditionRequest(
-                squareRange.getMaxX(),
-                squareRange.getMaxY(),
-                squareRange.getMinX(),
-                squareRange.getMinY(),
+                latitude,
+                longitude,
+                level,
                 barMoodTagNames,
                 barAlcoholTagNames
         );
 
-        FilteredBarsLookupResponse filteredBarsLookupResponse = barQueryFacade.findBarFilteredByConditions(barLookupConditionRequest);
+        FilteredBarsLookupResponse filteredBarsLookupResponse = barQueryFacade.findBarFilteredByConditions(
+                barLookupConditionRequest
+        );
+
         BaseResponse<FilteredBarsLookupResponse> baseResponse = new BaseResponse<>(
-                ResponseCodeAndMessages.BAR_LOOK_UP_SUCCESS, filteredBarsLookupResponse
+                ResponseCodeAndMessages.BAR_LOOK_UP_SUCCESS,
+                filteredBarsLookupResponse
         );
 
         return ResponseEntity.ok(baseResponse);

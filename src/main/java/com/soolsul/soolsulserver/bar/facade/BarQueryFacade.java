@@ -3,9 +3,12 @@ package com.soolsul.soolsulserver.bar.facade;
 import com.soolsul.soolsulserver.bar.businees.BarAlcoholTagService;
 import com.soolsul.soolsulserver.bar.businees.BarMoodTagService;
 import com.soolsul.soolsulserver.bar.businees.BarQueryService;
-import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupConditionRequest;
 import com.soolsul.soolsulserver.bar.businees.dto.BarLookupServiceConditionRequest;
+import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupConditionRequest;
 import com.soolsul.soolsulserver.bar.presentation.dto.FilteredBarsLookupResponse;
+import com.soolsul.soolsulserver.location.request.LocationSquareRangeRequest;
+import com.soolsul.soolsulserver.location.response.LocationSquareRangeCondition;
+import com.soolsul.soolsulserver.location.service.LocationRangeService;
 import com.soolsul.soolsulserver.menu.alcohol.service.AlcoholCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -27,15 +30,26 @@ public class BarQueryFacade {
     private final BarAlcoholTagService barAlcoholTagService;
     private final BarMoodTagService barMoodTarService;
     private final AlcoholCategoryService alcoholCategoryService;
+    private final LocationRangeService locationRangeService;
 
     public FilteredBarsLookupResponse findBarFilteredByConditions(BarLookupConditionRequest barLookupConditionRequest) {
+        LocationSquareRangeRequest locationSquareRangeRequest = new LocationSquareRangeRequest(
+                barLookupConditionRequest.latitude(),
+                barLookupConditionRequest.longitude(),
+                barLookupConditionRequest.level()
+        );
+
+        LocationSquareRangeCondition locationSquareRangeCondition = locationRangeService.calculateLocationSquareRange(
+                locationSquareRangeRequest
+        );
+
         BarLookupServiceConditionRequest barLookupServiceConditionRequest = new BarLookupServiceConditionRequest(
-                barLookupConditionRequest.southWestLongitude(),
-                barLookupConditionRequest.southWestLatitude(),
-                barLookupConditionRequest.northEastLongitude(),
-                barLookupConditionRequest.northEastLatitude(),
-                null,
-                null
+                locationSquareRangeCondition.southWestLatitude(),
+                locationSquareRangeCondition.southWestLongitude(),
+                locationSquareRangeCondition.northEastLatitude(),
+                locationSquareRangeCondition.northEastLongitude(),
+                getBarMoodTagIds(barLookupConditionRequest.barMoodTagNames()),
+                getBarAlcoholTagIds(barLookupConditionRequest.barAlcoholTagNames())
         );
 
         return barQueryService.findBarFilteredByConditions(barLookupServiceConditionRequest);
@@ -48,8 +62,9 @@ public class BarQueryFacade {
 
     private List<String> getBarAlcoholTagIds(@NotEmpty String alcoholTagNames) {
         List<String> alcoholCategoryNames = parseTagNames(alcoholTagNames);
-        List<String> alcoholCategoryIds
-                = alcoholCategoryService.findAlcoholCategoryIdsByAlcoholCategoryNames(alcoholCategoryNames);
+        List<String> alcoholCategoryIds = alcoholCategoryService.findAlcoholCategoryIdsByAlcoholCategoryNames(
+                alcoholCategoryNames
+        );
         return barAlcoholTagService.findBarAlcoholTagIdsByAlcoholCategoryIds(alcoholCategoryIds);
     }
 
@@ -59,6 +74,5 @@ public class BarQueryFacade {
         }
         return Arrays.stream(tagNames.split(TAG_NAME_DELIMITER)).toList();
     }
-
 
 }
