@@ -50,7 +50,6 @@ public class PostQueryService {
         BarLookupResponse findBar = barQueryRepository.findById(findPost.getBarId())
                 .orElseThrow(BarNotFoundException::new);
 
-
         List<String> imageUrlList = convertImageUrlList(findPost);
         boolean userClickedLike = isLoginUserClickedLike(loginUserId, findPost);
 

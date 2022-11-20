@@ -2,15 +2,14 @@ package com.soolsul.soolsulserver.unit.post.business;
 
 import com.soolsul.soolsulserver.auth.CustomUser;
 import com.soolsul.soolsulserver.auth.exception.UserNotFoundException;
-import com.soolsul.soolsulserver.bar.domain.Bar;
-import com.soolsul.soolsulserver.bar.domain.BarRepository;
 import com.soolsul.soolsulserver.bar.exception.BarNotFoundException;
+import com.soolsul.soolsulserver.bar.persistence.BarQueryRepository;
+import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupResponse;
 import com.soolsul.soolsulserver.post.business.PostCommandService;
 import com.soolsul.soolsulserver.post.domain.PostRepository;
 import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,7 +40,7 @@ public class PostCommandServiceTest {
     private PostRepository postRepository;
 
     @Mock
-    private BarRepository barRepository;
+    private BarQueryRepository barQueryRepository;
 
     private List<String> postPhotos;
     private CustomUser customUser;
@@ -54,31 +53,30 @@ public class PostCommandServiceTest {
         request = new PostCreateRequest("bar_id", "본문 내용", 4.3f, LocalDate.now(), postPhotos, null);
     }
 
-    @Disabled
     @DisplayName("가게가 존재할 경우, 정상적으로 게시물을 생성한다.")
     @Test
     public void create_post_test() {
         // given
-        Bar bar = new Bar(BAR_ID, "region_id", "category_id", "description", null);
+        BarLookupResponse barLookupResponse = new BarLookupResponse(BAR_ID, "region_id", "category_id", "bar_name", "description", null);
 
-        given(barRepository.findById(anyString())).willReturn(Optional.of(bar));
+        given(barQueryRepository.findById(anyString())).willReturn(Optional.of(barLookupResponse));
 
         // when
         postCommandService.create(customUser.getId(), request);
 
         // then
         verify(postRepository, times(1)).save(any());
-        verify(barRepository, times(1)).findById(anyString());
+        verify(barQueryRepository, times(1)).findById(anyString());
     }
 
-    @Disabled
+
     @DisplayName("가게가 존재하지 않은 경우, 게시물 생성시 예외를 던진다.")
     @Test
     public void not_exists_bar_cant_create_post_test() {
         // given
         PostCreateRequest request = new PostCreateRequest("bar_id", "본문 내용", 4.3f, LocalDate.now(), postPhotos, null);
 
-        given(barRepository.findById(anyString())).willReturn(Optional.empty());
+        given(barQueryRepository.findById(anyString())).willReturn(Optional.empty());
 
         // when
         ThrowableAssert.ThrowingCallable actual = () -> postCommandService.create(customUser.getId(), request);
@@ -89,24 +87,23 @@ public class PostCommandServiceTest {
                 .hasMessage("해당 술집을 찾을 수 없습니다.");
 
         verify(postRepository, times(0)).save(any());
-        verify(barRepository, times(1)).findById(anyString());
+        verify(barQueryRepository, times(1)).findById(anyString());
     }
 
-    @Disabled
     @DisplayName("사용자의 id가 존재하는 경우에만 글을 생성할 수 있다.")
     @Test
     public void create_post_if_exists_user_test() {
         // given
-        Bar bar = new Bar(BAR_ID, "region_id", "category_id", "name", "description", null);
+        BarLookupResponse barLookupResponse = new BarLookupResponse(BAR_ID, "region_id", "category_id", "bar_name", "description", null);
 
-        given(barRepository.findById(anyString())).willReturn(Optional.of(bar));
+        given(barQueryRepository.findById(anyString())).willReturn(Optional.of(barLookupResponse));
 
         // when
         postCommandService.create(customUser.getId(), request);
 
         // then
         verify(postRepository, times(1)).save(any());
-        verify(barRepository, times(1)).findById(anyString());
+        verify(barQueryRepository, times(1)).findById(anyString());
     }
 
     @DisplayName("사용자의 id가 존재하지 않는 경우 예외를 던진다.")
@@ -124,6 +121,6 @@ public class PostCommandServiceTest {
                 .hasMessage("해당 사용자를 찾을 수 없습니다.");
 
         verify(postRepository, times(0)).save(any());
-        verify(barRepository, times(0)).findById(anyString());
+        verify(barQueryRepository, times(0)).findById(anyString());
     }
 }

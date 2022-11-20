@@ -1,13 +1,15 @@
 package com.soolsul.soolsulserver.unit.post.business;
 
 import com.soolsul.soolsulserver.auth.CustomUser;
-import com.soolsul.soolsulserver.bar.domain.BarRepository;
+import com.soolsul.soolsulserver.auth.business.CustomUserDetailsService;
+import com.soolsul.soolsulserver.auth.repository.dto.UserLookUpResponse;
+import com.soolsul.soolsulserver.bar.persistence.BarQueryRepository;
+import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupResponse;
 import com.soolsul.soolsulserver.post.business.PostQueryService;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.domain.PostPhoto;
 import com.soolsul.soolsulserver.post.domain.PostRepository;
 import com.soolsul.soolsulserver.post.presentation.dto.PostDetailResponse;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,21 +38,26 @@ public class PostQueryServiceTest {
     private PostRepository postRepository;
 
     @Mock
-    private BarRepository barRepository;
+    private BarQueryRepository barQueryRepository;
 
-    @Disabled
-    // TODO : 일단 auth쪽에 User를 정확하게 검증할수 없는 테스트
+    @Mock
+    private CustomUserDetailsService userDetailsService;
+
     @DisplayName("단건 Post 조회에 성공한다.")
     @Test
     public void find_detail_post_test() {
         // given
         CustomUser customUser = new CustomUser("id1", "test@email.com", "1234");
+        UserLookUpResponse userLookUpResponse = new UserLookUpResponse("id1", "test@email.com", "1234", "010-1111-1212", "test", "shine", "url");
         List<PostPhoto> postPhotos = List.of(new PostPhoto("barId", "", "uuid1", ""), new PostPhoto("barId", "", "uuid2", ""));
+        BarLookupResponse barLookupResponse = new BarLookupResponse("barId", "region_id", "category_id", "bar_name", "description", null);
         Post post = new Post("user_uuid", "", 4.3f, "content!");
         post.addPhotoList(postPhotos);
         post.like(customUser);
 
         given(postRepository.findById(anyString())).willReturn(Optional.of(post));
+        given(barQueryRepository.findById(anyString())).willReturn(Optional.of(barLookupResponse));
+        given(userDetailsService.findUserWithDetailInfo(anyString())).willReturn(userLookUpResponse);
 
         // when
         PostDetailResponse response = postQueryService.findPostDetail(customUser.getId(), "any_uuid");
