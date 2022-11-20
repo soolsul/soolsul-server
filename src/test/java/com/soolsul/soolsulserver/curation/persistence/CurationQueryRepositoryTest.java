@@ -53,7 +53,7 @@ class CurationQueryRepositoryTest {
         );
 
         //then
-        assertThat(curationLookupResponses).hasSize(100);
+        assertThat(curationLookupResponses).hasSize(8);
     }
 
     private void initData() {
