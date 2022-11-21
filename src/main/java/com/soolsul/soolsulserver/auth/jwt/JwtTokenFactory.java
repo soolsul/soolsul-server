@@ -29,8 +29,8 @@ import java.util.stream.Collectors;
 public class JwtTokenFactory implements TokenFactorySpec {
 
     private final RedisService redisService;
-    private final Key ACCESS_PRIVATE_KEY;
-    private final Key REFRESH_PRIVATE_KEY;
+    private final Key accessPrivateKey;
+    private final Key refreshPrivateKey;
 
     @Value("${jwt.expire-length}")
     private Long accessExpirationMillis;
@@ -43,8 +43,8 @@ public class JwtTokenFactory implements TokenFactorySpec {
             @Value("${jwt.refresh.private}") String refreshPrivateKey,
             RedisService redisService)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
-        this.ACCESS_PRIVATE_KEY = getPrivateKey(accessPrivateKey);
-        this.REFRESH_PRIVATE_KEY = getPrivateKey(refreshPrivateKey);
+        this.accessPrivateKey = getPrivateKey(accessPrivateKey);
+        this.refreshPrivateKey = getPrivateKey(refreshPrivateKey);
         this.redisService = redisService;
     }
 
@@ -67,7 +67,7 @@ public class JwtTokenFactory implements TokenFactorySpec {
     @Override
     public String getUserIdFromToken(String accessToken) {
         return (String) Jwts.parserBuilder()
-                .setSigningKey(ACCESS_PRIVATE_KEY)
+                .setSigningKey(accessPrivateKey)
                 .build()
                 .parseClaimsJws(accessToken).getBody().get("userId");
     }
@@ -76,7 +76,7 @@ public class JwtTokenFactory implements TokenFactorySpec {
     @Override
     public Collection<GrantedAuthority> getRolesFromToken(String accessToken) {
         List<String> roles = (List) Jwts.parserBuilder()
-                .setSigningKey(ACCESS_PRIVATE_KEY)
+                .setSigningKey(accessPrivateKey)
                 .build()
                 .parseClaimsJws(accessToken).getBody().get("roles");
 
@@ -87,7 +87,7 @@ public class JwtTokenFactory implements TokenFactorySpec {
 
     public Map<String, Object> getUserParseInfo(String accessToken) {
         Claims parseInfo = Jwts.parserBuilder()
-                .setSigningKey(ACCESS_PRIVATE_KEY)
+                .setSigningKey(accessPrivateKey)
                 .build()
                 .parseClaimsJws(accessToken).getBody();
 
@@ -101,7 +101,7 @@ public class JwtTokenFactory implements TokenFactorySpec {
     public boolean isValidRefreshToken(String refreshToken) {
         if (StringUtils.hasText(refreshToken)) {
             try {
-                Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(REFRESH_PRIVATE_KEY).build()
+                Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(refreshPrivateKey).build()
                         .parseClaimsJws(refreshToken);
 
                 return !claims.getBody().getExpiration().before(new Date());
@@ -116,7 +116,7 @@ public class JwtTokenFactory implements TokenFactorySpec {
     public boolean isValidAccessToken(String accessToken) {
         if (StringUtils.hasText(accessToken)) {
             try {
-                Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(ACCESS_PRIVATE_KEY).build()
+                Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(accessPrivateKey).build()
                         .parseClaimsJws(accessToken);
 
                 return !claims.getBody().getExpiration().before(new Date());
@@ -145,7 +145,7 @@ public class JwtTokenFactory implements TokenFactorySpec {
                 .setClaims(claims)
                 .setIssuedAt(createdDate)
                 .setExpiration(expirationDate)
-                .signWith(ACCESS_PRIVATE_KEY)
+                .signWith(accessPrivateKey)
                 .compact();
     }
 
@@ -157,7 +157,7 @@ public class JwtTokenFactory implements TokenFactorySpec {
         String refreshToken = Jwts.builder()
                 .setIssuedAt(createdDate)
                 .setExpiration(expirationDate)
-                .signWith(REFRESH_PRIVATE_KEY)
+                .signWith(refreshPrivateKey)
                 .compact();
 
         redisService.setValuesWithDuration(userId, refreshToken, Duration.ofMillis(refreshExpirationMillis));

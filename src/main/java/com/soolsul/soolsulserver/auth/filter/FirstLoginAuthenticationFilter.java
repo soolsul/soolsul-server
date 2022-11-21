@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +39,7 @@ public class FirstLoginAuthenticationFilter extends AbstractAuthenticationProces
     }
 
     private boolean isNoUserInformation(UserDto userDto) {
-        return StringUtils.isEmpty(userDto.getEmail()) || StringUtils.isEmpty(userDto.getPassword());
+        return ObjectUtils.isEmpty(userDto.getEmail()) || ObjectUtils.isEmpty(userDto.getPassword());
     }
 
     private boolean isJsonLogin(HttpServletRequest request) {
