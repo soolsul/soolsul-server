@@ -1,7 +1,6 @@
 package com.soolsul.soolsulserver.auth;
 
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -18,11 +17,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Getter
-@EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CustomUser implements UserDetails {
 
@@ -83,5 +82,18 @@ public class CustomUser implements UserDetails {
 
     public void addRole(Role role) {
         userRoles.add(new Authority(role));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CustomUser that = (CustomUser) o;
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }
