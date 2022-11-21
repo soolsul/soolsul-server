@@ -5,6 +5,7 @@ import com.soolsul.soolsulserver.auth.repository.dto.UserLookUpResponse;
 import com.soolsul.soolsulserver.bar.persistence.BarQueryRepository;
 import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupResponse;
 import com.soolsul.soolsulserver.post.business.PostQueryService;
+import com.soolsul.soolsulserver.post.business.dto.PostLookupRequest;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.domain.PostPhoto;
 import com.soolsul.soolsulserver.post.presentation.dto.PostDetailResponse;
@@ -50,7 +51,7 @@ public class PostQueryFacadeSpecTest {
         given(barQueryRepository.findById(anyString())).willReturn(Optional.of(barLookupResponse));
 
         // when
-        PostDetailResponse response = postQueryService.findPostDetail(customUser.getId(), "any_uuid", post, userLookUpResponse);
+        PostDetailResponse response = postQueryService.findPostDetail(new PostLookupRequest(customUser.getId(), "any_uuid", post, userLookUpResponse));
 
         // then
         assertAll(

@@ -1,7 +1,6 @@
 package com.soolsul.soolsulserver.post.business;
 
 
-import com.soolsul.soolsulserver.auth.repository.dto.UserLookUpResponse;
 import com.soolsul.soolsulserver.bar.businees.dto.BarLookupServiceConditionRequest;
 import com.soolsul.soolsulserver.bar.businees.dto.FilteredBarLookupResponse;
 import com.soolsul.soolsulserver.bar.exception.BarNotFoundException;
@@ -11,6 +10,7 @@ import com.soolsul.soolsulserver.location.response.LocationSquareRangeCondition;
 import com.soolsul.soolsulserver.post.business.dto.PostDetailLikeResponse;
 import com.soolsul.soolsulserver.post.business.dto.PostDetailStoreResponse;
 import com.soolsul.soolsulserver.post.business.dto.PostDetailUserResponse;
+import com.soolsul.soolsulserver.post.business.dto.PostLookupRequest;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.domain.PostPhoto;
 import com.soolsul.soolsulserver.post.domain.PostRepository;
@@ -40,14 +40,15 @@ public class PostQueryService {
                 .orElseThrow(PostNotFoundException::new);
     }
 
-    public PostDetailResponse findPostDetail(String loginUserId, String postId, Post findPost, UserLookUpResponse findUser) {
-        BarLookupResponse findBar = barQueryRepository.findById(findPost.getBarId())
+    public PostDetailResponse findPostDetail(PostLookupRequest lookupRequest) {
+        BarLookupResponse findBar = barQueryRepository
+                .findById(lookupRequest.post().getBarId())
                 .orElseThrow(BarNotFoundException::new);
 
-        List<String> imageUrlList = convertImageUrlList(findPost);
-        boolean userClickedLike = isLoginUserClickedLike(loginUserId, findPost);
+        List<String> imageUrlList = convertImageUrlList(lookupRequest.post());
+        boolean userClickedLike = isLoginUserClickedLike(lookupRequest.userId(), lookupRequest.post());
 
-        return new PostDetailResponse(findPost, findUser, findBar, imageUrlList, userClickedLike);
+        return new PostDetailResponse(lookupRequest.post(), lookupRequest.findUser(), findBar, imageUrlList, userClickedLike);
     }
 
     public PostListResponse findAllPostByLocation(String loginUserId, LocationSquareRangeCondition squareRangeCondition, Pageable pageable) {

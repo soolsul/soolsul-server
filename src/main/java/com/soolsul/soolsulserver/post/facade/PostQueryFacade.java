@@ -6,6 +6,7 @@ import com.soolsul.soolsulserver.location.request.LocationSquareRangeRequest;
 import com.soolsul.soolsulserver.location.response.LocationSquareRangeCondition;
 import com.soolsul.soolsulserver.location.service.LocationRangeService;
 import com.soolsul.soolsulserver.post.business.PostQueryService;
+import com.soolsul.soolsulserver.post.business.dto.PostLookupRequest;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.presentation.dto.PostDetailResponse;
 import com.soolsul.soolsulserver.post.presentation.dto.PostListResponse;
@@ -27,7 +28,9 @@ public class PostQueryFacade {
         Post findPost = postQueryService.findById(postId);
         UserLookUpResponse findUser = userDetailsService.findUserWithDetailInfo(findPost.getOwnerId());
 
-        return postQueryService.findPostDetail(userId, postId, findPost, findUser);
+        PostLookupRequest postLookupRequest = new PostLookupRequest(userId, postId, findPost, findUser);
+
+        return postQueryService.findPostDetail(postLookupRequest);
     }
 
     public PostListResponse findAllPostByLocation(String userId, LocationSquareRangeRequest rangeRequest, Pageable pageable) {
