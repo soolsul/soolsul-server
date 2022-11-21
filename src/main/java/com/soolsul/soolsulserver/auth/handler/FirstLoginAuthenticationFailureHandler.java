@@ -2,7 +2,6 @@ package com.soolsul.soolsulserver.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soolsul.soolsulserver.common.response.BaseResponse;
-import com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class FirstLoginAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
@@ -22,7 +22,7 @@ public class FirstLoginAuthenticationFailureHandler implements AuthenticationFai
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        response.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
