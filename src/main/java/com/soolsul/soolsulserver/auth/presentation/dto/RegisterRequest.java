@@ -27,7 +27,4 @@ public class RegisterRequest {
 
     @NotBlank
     private String nickname;
-
-    @NotBlank
-    private String profileImage;
 }

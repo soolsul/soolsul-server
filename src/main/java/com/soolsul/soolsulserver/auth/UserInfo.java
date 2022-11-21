@@ -28,9 +28,8 @@ public class UserInfo {
     private String nickname;
     private String name;
 
-    private UserInfo(String userId, String profileImage, String phone, String nickname, String name) {
+    private UserInfo(String userId, String phone, String nickname, String name) {
         this.userId = userId;
-        this.profileImage = profileImage;
         this.phone = phone;
         this.nickname = nickname;
         this.name = name;
@@ -38,7 +37,6 @@ public class UserInfo {
 
     public static UserInfo of(String userId, RegisterRequest request) {
         return new UserInfo(userId,
-                request.getProfileImage(),
                 request.getPhone(),
                 request.getNickname(),
                 request.getName());
