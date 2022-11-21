@@ -50,4 +50,29 @@ public class AuthStep {
                 () -> assertThat(response.jsonPath().getString("data.name")).isEqualTo(name)
         );
     }
+
+    public static void 권한_없는_요청(ExtractableResponse<Response> 피드_목록_조회_응답) {
+        assertAll(
+                () -> assertThat(피드_목록_조회_응답.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value()),
+                () -> assertThat(피드_목록_조회_응답.jsonPath().getString("code")).isEqualTo("U005"),
+                () -> assertThat(피드_목록_조회_응답.jsonPath().getString("message")).isEqualTo("해당 유저는 권한이 없습니다.")
+        );
+    }
+
+    public static void 로그아웃_응답_확인(ExtractableResponse<Response> response) {
+        assertAll(
+                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("U007"),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("로그아웃에 성공하였습니다.")
+        );
+    }
+
+    public static ExtractableResponse<Response> 로그아웃_요청(String accessToken) {
+        return RestAssured.given().log().all()
+                .auth().oauth2(accessToken)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/api/auth/logout")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract();
+    }
 }

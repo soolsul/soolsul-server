@@ -4,7 +4,7 @@ import com.soolsul.soolsulserver.auth.CustomUser;
 import com.soolsul.soolsulserver.common.response.BaseResponse;
 import com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages;
 import com.soolsul.soolsulserver.location.request.LocationSquareRangeRequest;
-import com.soolsul.soolsulserver.post.business.PostServiceGateway;
+import com.soolsul.soolsulserver.post.facade.PostFacadeGateway;
 import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
 import com.soolsul.soolsulserver.post.presentation.dto.PostDetailResponse;
 import com.soolsul.soolsulserver.post.presentation.dto.PostListResponse;
@@ -28,19 +28,19 @@ import javax.validation.Valid;
 @RequestMapping("/api/posts")
 public class PostController {
 
-    private final PostServiceGateway postServiceGateway;
+    private final PostFacadeGateway postFacadeGateway;
 
     @PostMapping
     public ResponseEntity<BaseResponse<Void>> createPost(@Valid @RequestBody PostCreateRequest request, Authentication authentication) {
         CustomUser customUser = (CustomUser) authentication.getPrincipal();
-        postServiceGateway.create(customUser.getId(), request);
+        postFacadeGateway.create(customUser.getId(), request);
         return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.FEED_CREATE_SUCCESS, null));
     }
 
     @GetMapping("/{postId}")
     public ResponseEntity<BaseResponse<PostDetailResponse>> findDetailPost(@PathVariable String postId, Authentication authentication) {
         CustomUser customUser = (CustomUser) authentication.getPrincipal();
-        PostDetailResponse postDetailResponse = postServiceGateway.find(customUser.getId(), postId);
+        PostDetailResponse postDetailResponse = postFacadeGateway.find(customUser.getId(), postId);
         return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.FEED_FIND_SUCCESS, postDetailResponse));
     }
 
@@ -54,7 +54,7 @@ public class PostController {
     ) {
         CustomUser customUser = (CustomUser) authentication.getPrincipal();
         LocationSquareRangeRequest locationSquareRangeRequest = new LocationSquareRangeRequest(latitude, longitude, level);
-        PostListResponse postListResponse = postServiceGateway.findAll(customUser.getId(), locationSquareRangeRequest, pageable);
+        PostListResponse postListResponse = postFacadeGateway.findAll(customUser.getId(), locationSquareRangeRequest, pageable);
         return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.FEED_FIND_ALL_SUCCESS, postListResponse));
     }
 

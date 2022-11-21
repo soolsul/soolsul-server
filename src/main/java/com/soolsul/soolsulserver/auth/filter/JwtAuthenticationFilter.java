@@ -2,7 +2,9 @@ package com.soolsul.soolsulserver.auth.filter;
 
 import com.soolsul.soolsulserver.auth.CustomUser;
 import com.soolsul.soolsulserver.auth.business.CustomUserDetailsService;
+import com.soolsul.soolsulserver.auth.exception.UserUnauthorizedException;
 import com.soolsul.soolsulserver.auth.jwt.JwtTokenFactory;
+import com.soolsul.soolsulserver.auth.redis.RedisService;
 import com.soolsul.soolsulserver.auth.util.AuthorizationExtractor;
 import com.soolsul.soolsulserver.auth.util.AuthorizationType;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +33,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
+    @Autowired
+    private RedisService redisService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         ContentCachingRequestWrapper wrappingRequest = new ContentCachingRequestWrapper(request);
@@ -39,7 +44,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String accessToken = convert(request);
         log.info("[AccessToken] : {}", accessToken);
 
-        if (!StringUtils.hasText(accessToken) || !jwtTokenFactory.isValidAccessToken(accessToken)) {
+        if (isAlreadyLogout(accessToken)) {
+            throw new UserUnauthorizedException();
+        }
+
+        if (isInvalidAccessToken(accessToken)) {
             filterChain.doFilter(wrappingRequest, wrappingResponse);
             wrappingResponse.copyBodyToResponse();
             return;
@@ -50,6 +59,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(wrappingRequest, wrappingResponse);
         wrappingResponse.copyBodyToResponse();
+    }
+
+    private boolean isInvalidAccessToken(String accessToken) {
+        return !StringUtils.hasText(accessToken) || !jwtTokenFactory.isValidAccessToken(accessToken);
+    }
+
+    private boolean isAlreadyLogout(String accessToken) {
+        return StringUtils.hasText(accessToken) && redisService.getValues(accessToken) != null;
     }
 
     private String convert(HttpServletRequest request) {

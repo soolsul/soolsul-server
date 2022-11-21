@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.post.business;
+package com.soolsul.soolsulserver.post.facade;
 
 import com.soolsul.soolsulserver.location.request.LocationSquareRangeRequest;
 import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PostServiceGateway implements CommandService<PostCreateRequest>, QueryService {
+public class PostFacadeGateway implements CommandFacadeSpec<PostCreateRequest>, QueryFacadeSpec {
 
-    private final PostCommandService postCommandService;
-    private final PostQueryService postQueryService;
+    private final PostCommandFacade postCommandFacade;
+    private final PostQueryFacade postQueryFacade;
 
     @Override
     public void create(String userId, PostCreateRequest request) {
-        postCommandService.create(userId, request);
+        postCommandFacade.create(userId, request);
     }
 
     @Override
@@ -32,12 +32,12 @@ public class PostServiceGateway implements CommandService<PostCreateRequest>, Qu
 
     @Override
     public PostDetailResponse find(String userId, String postId) {
-        return postQueryService.findPostDetail(userId, postId);
+        return postQueryFacade.findPostDetail(userId, postId);
     }
 
     @Override
     public PostListResponse findAll(String userId, LocationSquareRangeRequest locationSquareRangeRequest, Pageable pageable) {
-        return postQueryService.findAllPostByLocation(userId, locationSquareRangeRequest, pageable);
+        return postQueryFacade.findAllPostByLocation(userId, locationSquareRangeRequest, pageable);
     }
 
 }

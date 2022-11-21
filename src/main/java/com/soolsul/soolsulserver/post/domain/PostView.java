@@ -1,7 +1,6 @@
 package com.soolsul.soolsulserver.post.domain;
 
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -9,9 +8,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
-@EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostView {
 
@@ -29,5 +28,18 @@ public class PostView {
     public PostView(String viewerId, String postId) {
         this.viewerId = viewerId;
         this.postId = postId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PostView postView = (PostView) o;
+        return Objects.equals(id, postView.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

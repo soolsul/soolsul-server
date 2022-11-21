@@ -1,13 +1,14 @@
 package com.soolsul.soolsulserver.config;
 
 
-import com.soolsul.soolsulserver.auth.Role;
 import com.soolsul.soolsulserver.auth.common.JwtAuthenticationEntryPoint;
 import com.soolsul.soolsulserver.auth.filter.FirstLoginAuthenticationFilter;
 import com.soolsul.soolsulserver.auth.filter.JwtAuthenticationFilter;
 import com.soolsul.soolsulserver.auth.handler.FirstLoginAuthenticationFailureHandler;
 import com.soolsul.soolsulserver.auth.handler.FirstLoginAuthenticationSuccessHandler;
 import com.soolsul.soolsulserver.auth.handler.JwtDeniedHandler;
+import com.soolsul.soolsulserver.auth.handler.JwtLogoutHandler;
+import com.soolsul.soolsulserver.auth.handler.JwtLogoutSuccessHandler;
 import com.soolsul.soolsulserver.auth.provider.FirstLoginAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,6 +56,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                 .accessDeniedHandler(jwtDeniedHandler());
+
+        http
+                .logout()
+                .logoutUrl("/api/auth/logout")
+                .addLogoutHandler(jwtLogoutHandler())
+                .logoutSuccessHandler(jwtLogoutSuccessHandler());
     }
 
     @Bean
@@ -108,5 +115,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    @Bean
+    public JwtLogoutHandler jwtLogoutHandler() {
+        return new JwtLogoutHandler();
+    }
+
+    @Bean
+    public JwtLogoutSuccessHandler jwtLogoutSuccessHandler() {
+        return new JwtLogoutSuccessHandler();
     }
 }

@@ -25,7 +25,7 @@ public class DataLoader {
 
     public void loadData() {
         log.info("[call DataLoader]");
-        userDetailsService.register(new RegisterRequest(USER_EMAIL, USER_PASSWORD, "02-123-4567", NAME, NICK_NAME, "url"));
+        userDetailsService.register(new RegisterRequest(USER_EMAIL, USER_PASSWORD, "02-123-4567", NAME, NICK_NAME));
 
         locationMagnificationLevelRepositoryDsl.save(new LocationMagnificationLevel(1, 60));
         locationMagnificationLevelRepositoryDsl.save(new LocationMagnificationLevel(2, 90));

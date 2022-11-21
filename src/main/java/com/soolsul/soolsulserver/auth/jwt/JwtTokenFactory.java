@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.auth.jwt;
 
+import com.soolsul.soolsulserver.auth.redis.RedisService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -16,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,8 +28,9 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenFactory implements TokenFactorySpec {
 
-    private final Key ACCESS_PRIVATE_KEY;
-    private final Key REFRESH_PRIVATE_KEY;
+    private final RedisService redisService;
+    private final Key accessPrivateKey;
+    private final Key refreshPrivateKey;
 
     @Value("${jwt.expire-length}")
     private Long accessExpirationMillis;
@@ -37,17 +40,19 @@ public class JwtTokenFactory implements TokenFactorySpec {
 
     public JwtTokenFactory(
             @Value("${jwt.access.private}") String accessPrivateKey,
-            @Value("${jwt.refresh.private}") String refreshPrivateKey)
+            @Value("${jwt.refresh.private}") String refreshPrivateKey,
+            RedisService redisService)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
-        ACCESS_PRIVATE_KEY = getPrivateKey(accessPrivateKey);
-        REFRESH_PRIVATE_KEY = getPrivateKey(refreshPrivateKey);
+        this.accessPrivateKey = getPrivateKey(accessPrivateKey);
+        this.refreshPrivateKey = getPrivateKey(refreshPrivateKey);
+        this.redisService = redisService;
     }
 
     @Override
     public JwtToken issue(String userId, List<GrantedAuthority> roles) {
         return JwtToken.builder()
                 .accessToken(createAccessToken(userId, roles))
-                .refreshToken(createRefreshToken())
+                .refreshToken(createRefreshToken(userId))
                 .build();
     }
 
@@ -62,7 +67,7 @@ public class JwtTokenFactory implements TokenFactorySpec {
     @Override
     public String getUserIdFromToken(String accessToken) {
         return (String) Jwts.parserBuilder()
-                .setSigningKey(ACCESS_PRIVATE_KEY)
+                .setSigningKey(accessPrivateKey)
                 .build()
                 .parseClaimsJws(accessToken).getBody().get("userId");
     }
@@ -71,7 +76,7 @@ public class JwtTokenFactory implements TokenFactorySpec {
     @Override
     public Collection<GrantedAuthority> getRolesFromToken(String accessToken) {
         List<String> roles = (List) Jwts.parserBuilder()
-                .setSigningKey(ACCESS_PRIVATE_KEY)
+                .setSigningKey(accessPrivateKey)
                 .build()
                 .parseClaimsJws(accessToken).getBody().get("roles");
 
@@ -82,7 +87,7 @@ public class JwtTokenFactory implements TokenFactorySpec {
 
     public Map<String, Object> getUserParseInfo(String accessToken) {
         Claims parseInfo = Jwts.parserBuilder()
-                .setSigningKey(ACCESS_PRIVATE_KEY)
+                .setSigningKey(accessPrivateKey)
                 .build()
                 .parseClaimsJws(accessToken).getBody();
 
@@ -96,7 +101,7 @@ public class JwtTokenFactory implements TokenFactorySpec {
     public boolean isValidRefreshToken(String refreshToken) {
         if (StringUtils.hasText(refreshToken)) {
             try {
-                Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(REFRESH_PRIVATE_KEY).build()
+                Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(refreshPrivateKey).build()
                         .parseClaimsJws(refreshToken);
 
                 return !claims.getBody().getExpiration().before(new Date());
@@ -111,7 +116,7 @@ public class JwtTokenFactory implements TokenFactorySpec {
     public boolean isValidAccessToken(String accessToken) {
         if (StringUtils.hasText(accessToken)) {
             try {
-                Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(ACCESS_PRIVATE_KEY).build()
+                Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(accessPrivateKey).build()
                         .parseClaimsJws(accessToken);
 
                 return !claims.getBody().getExpiration().before(new Date());
@@ -140,20 +145,24 @@ public class JwtTokenFactory implements TokenFactorySpec {
                 .setClaims(claims)
                 .setIssuedAt(createdDate)
                 .setExpiration(expirationDate)
-                .signWith(ACCESS_PRIVATE_KEY)
+                .signWith(accessPrivateKey)
                 .compact();
     }
 
     @Override
-    public String createRefreshToken() {
+    public String createRefreshToken(String userId) {
         Date createdDate = new Date();
         Date expirationDate = new Date(createdDate.getTime() + refreshExpirationMillis);
 
-        return Jwts.builder()
+        String refreshToken = Jwts.builder()
                 .setIssuedAt(createdDate)
                 .setExpiration(expirationDate)
-                .signWith(REFRESH_PRIVATE_KEY)
+                .signWith(refreshPrivateKey)
                 .compact();
+
+        redisService.setValuesWithDuration(userId, refreshToken, Duration.ofMillis(refreshExpirationMillis));
+
+        return refreshToken;
     }
 
     private Key getPrivateKey(String privateKey) throws NoSuchAlgorithmException, InvalidKeySpecException {

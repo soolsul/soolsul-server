@@ -2,7 +2,6 @@ package com.soolsul.soolsulserver.post.domain;
 
 import com.soolsul.soolsulserver.auth.CustomUser;
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -15,9 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.validation.constraints.Positive;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post {
 
@@ -98,5 +97,18 @@ public class Post {
 
     public boolean isLikeContain(String userId) {
         return likes.contains(userId);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return Objects.equals(getId(), post.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

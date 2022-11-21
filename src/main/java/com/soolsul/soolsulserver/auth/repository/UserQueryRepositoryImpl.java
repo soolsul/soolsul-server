@@ -28,6 +28,7 @@ public class UserQueryRepositoryImpl implements UserQueryRepository {
                         userInfo.profileImage))
                 .from(customUser)
                 .join(userInfo).on(customUser.id.eq(userInfo.userId))
+                .where(customUser.id.eq(userId))
                 .fetchOne();
 
         return Optional.of(userLookUpResponse);

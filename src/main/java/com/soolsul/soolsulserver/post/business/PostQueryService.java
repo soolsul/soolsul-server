@@ -1,19 +1,16 @@
 package com.soolsul.soolsulserver.post.business;
 
 
-import com.soolsul.soolsulserver.auth.business.CustomUserDetailsService;
-import com.soolsul.soolsulserver.auth.repository.dto.UserLookUpResponse;
 import com.soolsul.soolsulserver.bar.businees.dto.BarLookupServiceConditionRequest;
 import com.soolsul.soolsulserver.bar.businees.dto.FilteredBarLookupResponse;
 import com.soolsul.soolsulserver.bar.exception.BarNotFoundException;
 import com.soolsul.soolsulserver.bar.persistence.BarQueryRepository;
 import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupResponse;
-import com.soolsul.soolsulserver.location.request.LocationSquareRangeRequest;
 import com.soolsul.soolsulserver.location.response.LocationSquareRangeCondition;
-import com.soolsul.soolsulserver.location.service.LocationRangeService;
 import com.soolsul.soolsulserver.post.business.dto.PostDetailLikeResponse;
 import com.soolsul.soolsulserver.post.business.dto.PostDetailStoreResponse;
 import com.soolsul.soolsulserver.post.business.dto.PostDetailUserResponse;
+import com.soolsul.soolsulserver.post.business.dto.PostLookupRequest;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.domain.PostPhoto;
 import com.soolsul.soolsulserver.post.domain.PostRepository;
@@ -25,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,39 +30,33 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class PostQueryService {
 
     private final PostRepository postRepository;
     private final BarQueryRepository barQueryRepository;
-    private final CustomUserDetailsService userDetailsService;
-    private final LocationRangeService locationRangeService;
 
-    public PostDetailResponse findPostDetail(String loginUserId, String postId) {
-        Post findPost = postRepository.findById(postId)
+    public Post findById(String postId) {
+        return postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
-
-        UserLookUpResponse findUser = userDetailsService.findUserWithDetailInfo(findPost.getOwnerId());
-        BarLookupResponse findBar = barQueryRepository.findById(findPost.getBarId())
-                .orElseThrow(BarNotFoundException::new);
-
-
-        List<String> imageUrlList = convertImageUrlList(findPost);
-        boolean userClickedLike = isLoginUserClickedLike(loginUserId, findPost);
-
-        return new PostDetailResponse(findPost, findUser, findBar, imageUrlList, userClickedLike);
     }
 
-    public PostListResponse findAllPostByLocation(String loginUserId, LocationSquareRangeRequest locationSquareRangeRequest, Pageable pageable) {
-        LocationSquareRangeCondition locationSquareRangeCondition = locationRangeService.calculateLocationSquareRange(
-                locationSquareRangeRequest
-        );
+    public PostDetailResponse findPostDetail(PostLookupRequest lookupRequest) {
+        BarLookupResponse findBar = barQueryRepository
+                .findById(lookupRequest.post().getBarId())
+                .orElseThrow(BarNotFoundException::new);
 
+        List<String> imageUrlList = convertImageUrlList(lookupRequest.post());
+        boolean userClickedLike = isLoginUserClickedLike(lookupRequest.userId(), lookupRequest.post());
+
+        return new PostDetailResponse(lookupRequest.post(), lookupRequest.findUser(), findBar, imageUrlList, userClickedLike);
+    }
+
+    public PostListResponse findAllPostByLocation(String loginUserId, LocationSquareRangeCondition squareRangeCondition, Pageable pageable) {
         BarLookupServiceConditionRequest barLookupServiceConditionRequest = new BarLookupServiceConditionRequest(
-                locationSquareRangeCondition.southWestLatitude(),
-                locationSquareRangeCondition.southWestLongitude(),
-                locationSquareRangeCondition.northEastLatitude(),
-                locationSquareRangeCondition.northEastLongitude(),
+                squareRangeCondition.southWestLatitude(),
+                squareRangeCondition.southWestLongitude(),
+                squareRangeCondition.northEastLatitude(),
+                squareRangeCondition.northEastLongitude(),
                 Collections.emptyList(),
                 Collections.emptyList()
         );
