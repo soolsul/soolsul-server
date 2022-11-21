@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.auth.redis;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -8,19 +9,11 @@ import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@RequiredArgsConstructor
 public class RedisService {
 
     private static final String LOGOUT_KEY = "logout";
     private final RedisTemplate<String, String> redisTemplate;
-
-    public RedisService(RedisTemplate<String, String> redisTemplate) {
-        this.redisTemplate = redisTemplate;
-    }
-
-    public void setValues(String key, String data) {
-        ValueOperations<String, String> values = redisTemplate.opsForValue();
-        values.set(key, data);
-    }
 
     public void setValuesWithDuration(String key, String data, Duration duration) {
         ValueOperations<String, String> values = redisTemplate.opsForValue();
