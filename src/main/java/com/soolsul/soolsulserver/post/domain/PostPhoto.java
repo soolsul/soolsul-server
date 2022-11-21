@@ -1,7 +1,6 @@
 package com.soolsul.soolsulserver.post.domain;
 
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -16,12 +15,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.util.Objects;
 
 @Getter
 @Entity
 @SQLDelete(sql = "update post_photo set deleted = true where id = ?")
 @Where(clause = "deleted = false")
-@EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostPhoto {
 
@@ -56,5 +55,18 @@ public class PostPhoto {
 
     public String getUrl() {
         return uuidFileUrl;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PostPhoto photo = (PostPhoto) o;
+        return Objects.equals(getId(), photo.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }
