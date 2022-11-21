@@ -29,7 +29,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class PostCommandServiceTest {
+public class PostCommandFacadeSpecTest {
 
     private static final String BAR_ID = "bar_id";
 
