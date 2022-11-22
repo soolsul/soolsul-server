@@ -1,9 +1,9 @@
 package com.soolsul.soolsulserver.mypage.presentation;
 
 import com.soolsul.soolsulserver.auth.CustomUser;
-import com.soolsul.soolsulserver.auth.business.CustomUserDetailsService;
 import com.soolsul.soolsulserver.auth.repository.dto.UserLookUpResponse;
 import com.soolsul.soolsulserver.common.response.BaseResponse;
+import com.soolsul.soolsulserver.mypage.facade.MyPageQueryFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -18,12 +18,12 @@ import static com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages.
 @RequestMapping("/api/mypages")
 public class MyPageController {
 
-    private final CustomUserDetailsService userDetailsService;
+    private final MyPageQueryFacade myPageQueryFacade;
 
     @GetMapping("/me")
     public ResponseEntity<BaseResponse<UserLookUpResponse>> searchUser(Authentication authentication) {
         CustomUser user = (CustomUser) authentication.getPrincipal();
-        UserLookUpResponse userLookUpResponse = userDetailsService.findUserWithDetailInfo(user.getId());
+        UserLookUpResponse userLookUpResponse = myPageQueryFacade.findUserWithDetailInfo(user.getId());
         return ResponseEntity.ok(new BaseResponse<>(USER_LOOK_UP_SUCCESS, userLookUpResponse));
     }
 }
