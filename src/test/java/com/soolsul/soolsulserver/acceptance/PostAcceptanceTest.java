@@ -3,11 +3,17 @@ package com.soolsul.soolsulserver.acceptance;
 import com.soolsul.soolsulserver.bar.domain.Bar;
 import com.soolsul.soolsulserver.bar.domain.BarRepository;
 import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
+import com.soolsul.soolsulserver.post.presentation.dto.PostScrapRequest;
 import com.soolsul.soolsulserver.region.domain.Location;
+import io.restassured.RestAssured;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +26,8 @@ import static com.soolsul.soolsulserver.acceptance.PostStep.피드_목록_조회
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_요청;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_조회_응답_확인;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 
 public class PostAcceptanceTest extends AcceptanceTest {
@@ -65,6 +73,8 @@ public class PostAcceptanceTest extends AcceptanceTest {
      * then: 피드 리스트 페이지로 이동한다.
      * when: User가 리스트에서 특정 가게의 단건 피드을 누른다.
      * then: 해당 단건 피드로 이동한다.
+     * when: 해당 단건 피드를 관심목록에 스크랩 한다.
+     * then: 성공적으로 스크랩 된다.
      */
     @DisplayName("사용자가 하단 네비게이션에서 피드 선택시 피드 목록이 보여진다")
     @Test
@@ -84,6 +94,24 @@ public class PostAcceptanceTest extends AcceptanceTest {
 
         // then
         피드_단건_조회_응답_확인(피드_단건_조회_응답);
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new PostScrapRequest(첫_피드_아이디))
+                .when()
+                .post("/api/posts/scraps")
+                .then().log().all()
+                .extract();
+
+        // then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("P005"),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("피드 스크랩을 성공했습니다.")
+        );
     }
 
     private PostCreateRequest 피드_생성_정보_생성() {
