@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.post.facade;
 
-public interface CommandFacadeSpec<T> {
+public interface PostCommandFacadeSpec<T> {
     void create(String userId, T request);
 
     void update(String id, T param);
