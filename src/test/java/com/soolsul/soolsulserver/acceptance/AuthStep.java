@@ -37,7 +37,7 @@ public class AuthStep {
         return RestAssured.given().log().all()
                 .auth().oauth2(accessToken)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/api/auth/me")
+                .when().get("/api/mypages/me")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract();

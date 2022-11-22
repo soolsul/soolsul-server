@@ -34,7 +34,7 @@ public class MyPageAcceptanceTest extends AcceptanceTest {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .when()
-                .get("/api/auth/me/scraps")
+                .get("/api/mypages/me/scraps")
                 .then().log().all()
                 .extract();
 
