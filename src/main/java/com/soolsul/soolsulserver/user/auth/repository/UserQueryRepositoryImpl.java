@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
 
-import static com.soolsul.soolsulserver.auth.QCustomUser.customUser;
-import static com.soolsul.soolsulserver.auth.QUserInfo.userInfo;
+import static com.soolsul.soolsulserver.user.auth.QCustomUser.customUser;
+import static com.soolsul.soolsulserver.user.auth.QUserInfo.userInfo;
 
 @RequiredArgsConstructor
 public class UserQueryRepositoryImpl implements UserQueryRepository {

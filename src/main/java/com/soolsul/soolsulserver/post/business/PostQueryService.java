@@ -15,6 +15,7 @@ import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.domain.PostPhoto;
 import com.soolsul.soolsulserver.post.domain.PostRepository;
 import com.soolsul.soolsulserver.post.domain.dto.FilteredPostLookupResponse;
+import com.soolsul.soolsulserver.post.domain.dto.ScrapedPostLookUpResponse;
 import com.soolsul.soolsulserver.post.exception.PostNotFoundException;
 import com.soolsul.soolsulserver.post.presentation.dto.PostDetailResponse;
 import com.soolsul.soolsulserver.post.presentation.dto.PostListResponse;
@@ -67,6 +68,10 @@ public class PostQueryService {
         Slice<FilteredPostLookupResponse> postListByLocation = postRepository.findPostListByLocation(barIds, pageable);
 
         return new PostListResponse(buildPostDetailResponse(loginUserId, postListByLocation, filteredBars));
+    }
+
+    public List<ScrapedPostLookUpResponse> findAllScrapedPost(String userId) {
+        return postRepository.findAllScrapedPost(userId);
     }
 
     private boolean isLoginUserClickedLike(String loginUserId, Post findPost) {

@@ -1,10 +1,15 @@
 package com.soolsul.soolsulserver.user.mypage.facade;
 
+import com.soolsul.soolsulserver.post.domain.dto.ScrapedPostLookUpResponse;
+import com.soolsul.soolsulserver.user.mypage.presentation.dto.response.ScrapedPostListLookUpResponse;
+import com.soolsul.soolsulserver.post.business.PostQueryService;
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
 import com.soolsul.soolsulserver.user.auth.repository.dto.UserLookUpResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -12,9 +17,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class MyPageQueryFacade implements MyPageQueryFacadeSpec {
 
     private final CustomUserDetailsService userDetailsService;
+    private final PostQueryService postQueryService;
 
     @Override
     public UserLookUpResponse findUserWithDetailInfo(String userId) {
         return userDetailsService.findUserWithDetailInfo(userId);
+    }
+
+    @Override
+    public ScrapedPostListLookUpResponse findAllScrapedPost(String userId) {
+        List<ScrapedPostLookUpResponse> scrapedPostList = postQueryService.findAllScrapedPost(userId);
+        return new ScrapedPostListLookUpResponse(scrapedPostList);
     }
 }
