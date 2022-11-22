@@ -4,7 +4,7 @@ import com.soolsul.soolsulserver.auth.CustomUser;
 import com.soolsul.soolsulserver.auth.business.CustomUserDetailsService;
 import com.soolsul.soolsulserver.auth.exception.UserUnauthorizedException;
 import com.soolsul.soolsulserver.auth.jwt.JwtTokenFactory;
-import com.soolsul.soolsulserver.auth.redis.RedisService;
+import com.soolsul.soolsulserver.auth.redis.RedisCachingService;
 import com.soolsul.soolsulserver.auth.util.AuthorizationExtractor;
 import com.soolsul.soolsulserver.auth.util.AuthorizationType;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private CustomUserDetailsService userDetailsService;
 
     @Autowired
-    private RedisService redisService;
+    private RedisCachingService redisCachingService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -66,7 +66,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private boolean isAlreadyLogout(String accessToken) {
-        return StringUtils.hasText(accessToken) && redisService.getValues(accessToken) != null;
+        return StringUtils.hasText(accessToken) && redisCachingService.getValues(accessToken) != null;
     }
 
     private String convert(HttpServletRequest request) {

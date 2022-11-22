@@ -1,7 +1,7 @@
 package com.soolsul.soolsulserver.auth.handler;
 
 import com.soolsul.soolsulserver.auth.jwt.JwtTokenFactory;
-import com.soolsul.soolsulserver.auth.redis.RedisService;
+import com.soolsul.soolsulserver.auth.redis.RedisCachingService;
 import com.soolsul.soolsulserver.auth.util.AuthorizationExtractor;
 import com.soolsul.soolsulserver.auth.util.AuthorizationType;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ public class JwtLogoutHandler implements LogoutHandler {
     private JwtTokenFactory jwtTokenFactory;
 
     @Autowired
-    private RedisService redisService;
+    private RedisCachingService redisCachingService;
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
@@ -39,17 +39,17 @@ public class JwtLogoutHandler implements LogoutHandler {
         String userIdFromToken = jwtTokenFactory.getUserIdFromToken(accessToken);
         if (StringUtils.hasText(userIdFromToken) && isHasRefreshToken(userIdFromToken)) {
             // delete refresh token
-            redisService.deleteValues(userIdFromToken);
+            redisCachingService.deleteValues(userIdFromToken);
 
             // accessToken add black list
-            redisService.addBlackList(accessToken, accessExpirationMillis);
+            redisCachingService.addBlackList(accessToken, accessExpirationMillis);
 
             SecurityContextHolder.clearContext();
         }
     }
 
     private boolean isHasRefreshToken(String userIdFromToken) {
-        return StringUtils.hasText(redisService.getValues(userIdFromToken));
+        return StringUtils.hasText(redisCachingService.getValues(userIdFromToken));
     }
 
     private boolean isInvalidAccessToken(String accessToken) {

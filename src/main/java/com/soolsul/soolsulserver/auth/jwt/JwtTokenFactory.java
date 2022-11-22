@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.auth.jwt;
 
-import com.soolsul.soolsulserver.auth.redis.RedisService;
+import com.soolsul.soolsulserver.auth.redis.RedisCachingService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenFactory implements TokenFactorySpec {
 
-    private final RedisService redisService;
+    private final RedisCachingService redisCachingService;
     private final Key accessPrivateKey;
     private final Key refreshPrivateKey;
 
@@ -41,11 +41,11 @@ public class JwtTokenFactory implements TokenFactorySpec {
     public JwtTokenFactory(
             @Value("${jwt.access.private}") String accessPrivateKey,
             @Value("${jwt.refresh.private}") String refreshPrivateKey,
-            RedisService redisService)
+            RedisCachingService redisCachingService)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
         this.accessPrivateKey = getPrivateKey(accessPrivateKey);
         this.refreshPrivateKey = getPrivateKey(refreshPrivateKey);
-        this.redisService = redisService;
+        this.redisCachingService = redisCachingService;
     }
 
     @Override
@@ -160,7 +160,7 @@ public class JwtTokenFactory implements TokenFactorySpec {
                 .signWith(refreshPrivateKey)
                 .compact();
 
-        redisService.setValuesWithDuration(userId, refreshToken, Duration.ofMillis(refreshExpirationMillis));
+        redisCachingService.setValuesWithDuration(userId, refreshToken, Duration.ofMillis(refreshExpirationMillis));
 
         return refreshToken;
     }
