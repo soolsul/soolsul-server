@@ -1,17 +1,13 @@
 package com.soolsul.soolsulserver.acceptance;
 
-import io.restassured.RestAssured;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그인_되어_있음;
+import static com.soolsul.soolsulserver.acceptance.MyPageStep.스크랩_피드_응답_확인;
+import static com.soolsul.soolsulserver.acceptance.MyPageStep.스크랩_피드_조회_요청;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_스크랩_요청;
 import static com.soolsul.soolsulserver.common.data.DataLoader.postId;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class MyPageAcceptanceTest extends AcceptanceTest {
 
@@ -30,20 +26,9 @@ public class MyPageAcceptanceTest extends AcceptanceTest {
         피드_스크랩_요청(accessToken, postId);
 
         // when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .when()
-                .get("/api/mypages/me/scraps")
-                .then().log().all()
-                .extract();
+        var 스크랩_피드_응답 = 스크랩_피드_조회_요청(accessToken);
 
         // then
-        assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("P006"),
-                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("모든 스크랩 된 피드를 찾는데 성공하였습니다."),
-                () -> assertThat(response.jsonPath().getList("data.postList").size()).isNotEqualTo(0)
-        );
+        스크랩_피드_응답_확인(스크랩_피드_응답);
     }
 }

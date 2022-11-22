@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.common.data;
 
+import com.soolsul.soolsulserver.post.domain.PostPhoto;
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
 import com.soolsul.soolsulserver.user.auth.presentation.dto.RegisterRequest;
 import com.soolsul.soolsulserver.location.domain.LocationMagnificationLevel;
@@ -43,6 +44,8 @@ public class DataLoader {
         locationMagnificationLevelRepositoryDsl.save(new LocationMagnificationLevel(7, 3000));
 
         Post post = new Post("test_owner_uuid", "bar_uuid", 4.3f, "contents");
+        post.addPhoto(new PostPhoto("bar_id", "originName", "photo_url_1", ".jpg"));
+        post.addPhoto(new PostPhoto("bar_id", "originName", "photo_url_2", ".jpg"));
         Post savedPost = postRepository.save(post);
         postId = savedPost.getId();
 
