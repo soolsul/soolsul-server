@@ -7,6 +7,8 @@ import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupResponse;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.domain.PostPhoto;
 import com.soolsul.soolsulserver.post.domain.PostRepository;
+import com.soolsul.soolsulserver.post.domain.PostScrap;
+import com.soolsul.soolsulserver.post.domain.PostScrapRepository;
 import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 public class PostCommandService {
 
     private final PostRepository postRepository;
+    private final PostScrapRepository postScrapRepository;
     private final BarQueryRepository barQueryRepository;
 
     public void create(String userId, PostCreateRequest request) {
@@ -49,5 +52,9 @@ public class PostCommandService {
 
     private boolean isInvalidUserId(String userId) {
         return !StringUtils.hasText(userId);
+    }
+
+    public void scrap(String userId, String postId) {
+        postScrapRepository.save(new PostScrap(userId, postId));
     }
 }

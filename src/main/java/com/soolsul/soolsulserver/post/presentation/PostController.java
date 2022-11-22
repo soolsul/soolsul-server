@@ -8,6 +8,7 @@ import com.soolsul.soolsulserver.post.facade.PostFacadeGateway;
 import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
 import com.soolsul.soolsulserver.post.presentation.dto.PostDetailResponse;
 import com.soolsul.soolsulserver.post.presentation.dto.PostListResponse;
+import com.soolsul.soolsulserver.post.presentation.dto.PostScrapRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -58,4 +59,10 @@ public class PostController {
         return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.FEED_FIND_ALL_SUCCESS, postListResponse));
     }
 
+    @PostMapping("/scraps")
+    public ResponseEntity<BaseResponse<Void>> scrapPost(@Valid @RequestBody PostScrapRequest request, Authentication authentication) {
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+        postFacadeGateway.scrap(customUser.getId(), request.postId());
+        return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.FEED_SCRAP_SUCCESS, null));
+    }
 }

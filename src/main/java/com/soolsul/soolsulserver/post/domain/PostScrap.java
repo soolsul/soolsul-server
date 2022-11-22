@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.post.domain;
 
+import com.soolsul.soolsulserver.common.domain.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -12,7 +13,7 @@ import java.util.Objects;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PostScrap {
+public class PostScrap extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(generator = "uuid")

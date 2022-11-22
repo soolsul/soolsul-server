@@ -6,4 +6,6 @@ public interface CommandFacadeSpec<T> {
     void update(String id, T param);
 
     void delete(String id);
+
+    void scrap(String userId, String postId);
 }

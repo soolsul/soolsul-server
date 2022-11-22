@@ -31,6 +31,11 @@ public class PostFacadeGateway implements CommandFacadeSpec<PostCreateRequest>, 
     }
 
     @Override
+    public void scrap(String userId, String postId) {
+        postCommandFacade.scrap(userId, postId);
+    }
+
+    @Override
     public PostDetailResponse find(String userId, String postId) {
         return postQueryFacade.findPostDetail(userId, postId);
     }
