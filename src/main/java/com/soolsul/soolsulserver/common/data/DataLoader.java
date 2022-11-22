@@ -1,7 +1,7 @@
 package com.soolsul.soolsulserver.common.data;
 
-import com.soolsul.soolsulserver.auth.business.CustomUserDetailsService;
-import com.soolsul.soolsulserver.auth.presentation.dto.RegisterRequest;
+import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
+import com.soolsul.soolsulserver.user.auth.presentation.dto.RegisterRequest;
 import com.soolsul.soolsulserver.location.domain.LocationMagnificationLevel;
 import com.soolsul.soolsulserver.location.persistence.LocationMagnificationLevelRepository;
 import com.soolsul.soolsulserver.post.domain.Post;

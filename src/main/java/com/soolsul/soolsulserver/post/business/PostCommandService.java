@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.post.business;
 
-import com.soolsul.soolsulserver.auth.exception.UserNotFoundException;
+import com.soolsul.soolsulserver.user.auth.exception.UserNotFoundException;
 import com.soolsul.soolsulserver.bar.exception.BarNotFoundException;
 import com.soolsul.soolsulserver.bar.persistence.BarQueryRepository;
 import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupResponse;

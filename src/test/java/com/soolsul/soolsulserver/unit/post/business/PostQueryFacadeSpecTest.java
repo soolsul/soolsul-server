@@ -1,7 +1,7 @@
 package com.soolsul.soolsulserver.unit.post.business;
 
-import com.soolsul.soolsulserver.auth.CustomUser;
-import com.soolsul.soolsulserver.auth.repository.dto.UserLookUpResponse;
+import com.soolsul.soolsulserver.user.auth.CustomUser;
+import com.soolsul.soolsulserver.user.auth.repository.dto.UserLookUpResponse;
 import com.soolsul.soolsulserver.bar.persistence.BarQueryRepository;
 import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupResponse;
 import com.soolsul.soolsulserver.post.business.PostQueryService;
