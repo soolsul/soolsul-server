@@ -1,6 +1,7 @@
 package com.soolsul.soolsulserver.acceptance;
 
 import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
+import com.soolsul.soolsulserver.post.presentation.dto.PostScrapRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -71,5 +72,25 @@ public class PostStep {
                 () -> assertThat(피드_단건_조회_응답.jsonPath().getString("code")).isEqualTo("P002"),
                 () -> assertThat(피드_단건_조회_응답.jsonPath().getString("message")).isEqualTo("피드 찾기에 성공하였습니다.")
         );
+    }
+
+    public static void 피드_스크랩_응답_확인(ExtractableResponse<Response> response) {
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("P005"),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("피드 스크랩을 성공했습니다.")
+        );
+    }
+
+    public static ExtractableResponse<Response> 피드_스크랩_요청(String accessToken, String 첫_피드_아이디) {
+        return RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new PostScrapRequest(첫_피드_아이디))
+                .when()
+                .post("/api/posts/scraps")
+                .then().log().all()
+                .extract();
     }
 }
