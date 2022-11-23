@@ -6,16 +6,18 @@ import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.soolsul.soolsulserver.images.exception.ImageUploadFailException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -24,11 +26,9 @@ import java.util.stream.Collectors;
 public class AwsS3ImageHandler {
 
     private static final String FILE_URL_FORMAT = "%s/%s/%s";
-    private static final String FILE_NAME_FORMAT = "%s-%s.%s";
     private static final String PREFIX_FORMAT = "%s/%s/";
     private static final String KEY_FORMAT = "%s/%s/%s";
     private static final String SLASH = "/";
-    private static final String DASH = "-";
 
     private final AmazonS3 amazonS3;
 
@@ -38,8 +38,12 @@ public class AwsS3ImageHandler {
     @Value("${aws.s3.images.endpoint.url}")
     private String endpointUrl;
 
-    public String uploadImage(MultipartFile multipartFile, String category, String id) {
-        String fileName = generateFileName(multipartFile);
+    public String uploadImage(
+            MultipartFile multipartFile,
+            @Valid @NotNull ImageCategory category,
+            @Valid @NotEmpty String fileName,
+            @Valid @NotEmpty String id
+    ) {
         String key = String.format(KEY_FORMAT, category, id, fileName);
 
         uploadFileTos3bucket(multipartFile, key);
@@ -69,28 +73,6 @@ public class AwsS3ImageHandler {
         return amazonS3.listObjects(listObjectsRequest);
     }
 
-    private boolean isMultipartFileEmpty(MultipartFile multipartFile) {
-        return (multipartFile == null || multipartFile.isEmpty())
-                || (multipartFile.getOriginalFilename() == null || multipartFile.getOriginalFilename().isEmpty());
-    }
-
-    private String generateFileName(MultipartFile multipartFile) {
-        if(isMultipartFileEmpty(multipartFile) || multipartFile.getOriginalFilename() == null) {
-            throw new MultipartException("multipartFile is invalid");
-        }
-
-        String originalFilename = multipartFile.getOriginalFilename();
-
-        int fileStartIndex = 0;
-        int extensionIndex = originalFilename.lastIndexOf(".");
-
-        String fileName = originalFilename.substring(fileStartIndex, extensionIndex);
-        String fileExtension = originalFilename.substring(extensionIndex + 1);
-        String uuid = UUID.randomUUID().toString().replaceAll(DASH, "");
-
-        return String.format(FILE_NAME_FORMAT, fileName, uuid, fileExtension);
-    }
-
     private String generateFileUrl(String fileName) {
         return String.format(FILE_URL_FORMAT, endpointUrl, bucketName, fileName);
     }
@@ -99,9 +81,11 @@ public class AwsS3ImageHandler {
         try {
             //uploadFilePath : 파일이 저장될 위치
             amazonS3.putObject(bucketName, uploadFilePath, multipartFile.getInputStream(), new ObjectMetadata());
-        } catch (IOException e) {
+        } catch (IOException ioException) {
             log.error("S3 bucket 에 이미지 파일을 업로드를 실패하였습니다.");
-            throw new RuntimeException(e);
+            throw new ImageUploadFailException();
         }
+
     }
+
 }
