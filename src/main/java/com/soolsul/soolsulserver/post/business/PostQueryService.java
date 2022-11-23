@@ -14,6 +14,7 @@ import com.soolsul.soolsulserver.post.business.dto.PostLookupRequest;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.domain.PostPhoto;
 import com.soolsul.soolsulserver.post.domain.PostRepository;
+import com.soolsul.soolsulserver.post.domain.PostScrapRepository;
 import com.soolsul.soolsulserver.post.domain.dto.FilteredPostLookupResponse;
 import com.soolsul.soolsulserver.post.domain.dto.ScrapedPostLookUpResponse;
 import com.soolsul.soolsulserver.post.exception.PostNotFoundException;
@@ -34,6 +35,7 @@ import java.util.stream.Collectors;
 public class PostQueryService {
 
     private final PostRepository postRepository;
+    private final PostScrapRepository postScrapRepository;
     private final BarQueryRepository barQueryRepository;
 
     public Post findById(String postId) {
@@ -71,7 +73,7 @@ public class PostQueryService {
     }
 
     public List<ScrapedPostLookUpResponse> findAllScrapedPost(String userId) {
-        return postRepository.findAllScrapedPost(userId);
+        return postScrapRepository.findAllScrapedPost(userId);
     }
 
     private boolean isLoginUserClickedLike(String loginUserId, Post findPost) {

@@ -1,10 +1,8 @@
-package com.soolsul.soolsulserver.post.domain;
+package com.soolsul.soolsulserver.post.domain.query;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.soolsul.soolsulserver.post.domain.dto.FilteredPostLookupResponse;
 import com.soolsul.soolsulserver.post.domain.dto.QFilteredPostLookupResponse;
-import com.soolsul.soolsulserver.post.domain.dto.QScrapedPostLookUpResponse;
-import com.soolsul.soolsulserver.post.domain.dto.ScrapedPostLookUpResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -13,8 +11,6 @@ import org.springframework.data.domain.SliceImpl;
 import java.util.List;
 
 import static com.soolsul.soolsulserver.post.domain.QPost.post;
-import static com.soolsul.soolsulserver.post.domain.QPostPhoto.postPhoto;
-import static com.soolsul.soolsulserver.post.domain.QPostScrap.postScrap;
 import static com.soolsul.soolsulserver.user.auth.QUserInfo.userInfo;
 
 @RequiredArgsConstructor
@@ -34,17 +30,6 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                 .fetch();
 
         return checkEndPage(postList, pageable);
-    }
-
-    @Override
-    public List<ScrapedPostLookUpResponse> findAllScrapedPost(String userId) {
-        return queryFactory
-                .select(new QScrapedPostLookUpResponse(postScrap.postId, postPhoto.uuidFileUrl))
-                .from(postScrap).join(postPhoto)
-                .on(postScrap.postId.eq(postPhoto.post.id))
-                .where(postScrap.ownerId.eq(userId))
-                .limit(1)
-                .fetch();
     }
 
     private Slice<FilteredPostLookupResponse> checkEndPage(List<FilteredPostLookupResponse> results, Pageable pageable) {

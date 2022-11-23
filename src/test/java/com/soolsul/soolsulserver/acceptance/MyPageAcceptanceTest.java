@@ -7,7 +7,8 @@ import static com.soolsul.soolsulserver.acceptance.AuthStep.로그인_되어_있
 import static com.soolsul.soolsulserver.acceptance.MyPageStep.스크랩_피드_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.MyPageStep.스크랩_피드_조회_요청;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_스크랩_요청;
-import static com.soolsul.soolsulserver.common.data.DataLoader.postId;
+import static com.soolsul.soolsulserver.common.data.DataLoader.postIdOne;
+import static com.soolsul.soolsulserver.common.data.DataLoader.postIdTwo;
 
 public class MyPageAcceptanceTest extends AcceptanceTest {
 
@@ -23,7 +24,8 @@ public class MyPageAcceptanceTest extends AcceptanceTest {
     public void scraped_post_find_all_test() {
         // given
         String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
-        피드_스크랩_요청(accessToken, postId);
+        피드_스크랩_요청(accessToken, postIdOne);
+        피드_스크랩_요청(accessToken, postIdTwo);
 
         // when
         var 스크랩_피드_응답 = 스크랩_피드_조회_요청(accessToken);

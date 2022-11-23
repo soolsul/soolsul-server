@@ -29,7 +29,8 @@ public class DataLoader {
     private final PostRepository postRepository;
     private final PostScrapRepository postScrapRepository;
 
-    public static String postId;
+    public static String postIdOne;
+    public static String postIdTwo;
 
     public void loadData() {
         log.info("[call DataLoader]");
@@ -47,7 +48,13 @@ public class DataLoader {
         post.addPhoto(new PostPhoto("bar_id", "originName", "photo_url_1", ".jpg"));
         post.addPhoto(new PostPhoto("bar_id", "originName", "photo_url_2", ".jpg"));
         Post savedPost = postRepository.save(post);
-        postId = savedPost.getId();
+        postIdOne = savedPost.getId();
+
+        Post post2 = new Post("test_owner_uuid", "bar_uuid", 4.0f, "contents");
+        post2.addPhoto(new PostPhoto("bar_id_2", "originName", "photo_url_3", ".jpg"));
+        post2.addPhoto(new PostPhoto("bar_id_2", "originName", "photo_url_4", ".jpg"));
+        Post savedPost2 = postRepository.save(post2);
+        postIdTwo = savedPost2.getId();
 
         log.info("[init complete DataLoader]");
     }
