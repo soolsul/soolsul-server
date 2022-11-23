@@ -33,17 +33,14 @@ public class Reply extends BaseTimeEntity {
     @Column(nullable = false)
     private String postId;
 
-    private String responseId;
-
     @Embedded
     private ReplyContent contents;
 
     private Boolean deleted = Boolean.FALSE;
 
-    public Reply(String ownerId, String postId, String responseId, String contents) {
+    public Reply(String ownerId, String postId, String contents) {
         this.ownerId = ownerId;
         this.postId = postId;
-        this.responseId = responseId;
         this.contents = new ReplyContent(contents);
     }
 
