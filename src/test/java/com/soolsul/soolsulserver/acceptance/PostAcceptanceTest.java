@@ -1,17 +1,8 @@
 package com.soolsul.soolsulserver.acceptance;
 
-import com.soolsul.soolsulserver.bar.domain.Bar;
-import com.soolsul.soolsulserver.bar.domain.BarRepository;
 import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
-import com.soolsul.soolsulserver.region.domain.Location;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그인_되어_있음;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_단건_조회_요청;
@@ -19,25 +10,13 @@ import static com.soolsul.soolsulserver.acceptance.PostStep.피드_단건_조회
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_목록_조회_요청;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_요청;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_응답_확인;
+import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_정보_생성;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_스크랩_요청;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_스크랩_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_조회_응답_확인;
 
 
 public class PostAcceptanceTest extends AcceptanceTest {
-
-    @Autowired
-    private BarRepository barRepository;
-
-    String barId;
-
-    @Override
-    @BeforeEach
-    public void setUp() {
-        super.setUp();
-        Bar saveBar = barRepository.save(new Bar("region_id", "bar_category_id", "bar_name", "good", new Location(37.49909732361135d, 126.9459247225816d)));
-        barId = saveBar.getId();
-    }
 
     /**
      * given: 사용자가 로그인 한 상태이다.
@@ -94,13 +73,5 @@ public class PostAcceptanceTest extends AcceptanceTest {
 
         // then
         피드_스크랩_응답_확인(피드_스크랩_응답);
-    }
-
-    private PostCreateRequest 피드_생성_정보_생성() {
-        List<String> imagesUrl = List.of("url1", "url2", "url3");
-        List<String> tags = List.of("mood_tag1", "mood_tag2", "alcohol_tag1");
-        LocalDate date = LocalDate.parse(LocalDate.now().toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        PostCreateRequest postCreateRequest = new PostCreateRequest(barId, "본문 내용 입니다", 4.3f, date, imagesUrl, tags);
-        return postCreateRequest;
     }
 }
