@@ -23,7 +23,7 @@ public class AuthStep {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("X-Requested-With", "JSONLoginHttpRequest")
                 .body(params)
-                .when().post("/api/login")
+                .when().post("/api/auth/login")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value()).extract();
     }
