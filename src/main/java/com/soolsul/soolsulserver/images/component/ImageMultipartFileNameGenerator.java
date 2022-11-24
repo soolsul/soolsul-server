@@ -1,5 +1,6 @@
-package com.soolsul.soolsulserver.images;
+package com.soolsul.soolsulserver.images.component;
 
+import com.soolsul.soolsulserver.images.vo.ImageExtension;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;

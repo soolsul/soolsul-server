@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.images;
+package com.soolsul.soolsulserver.images.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;

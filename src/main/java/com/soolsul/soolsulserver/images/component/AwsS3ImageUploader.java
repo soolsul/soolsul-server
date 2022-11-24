@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.images;
+package com.soolsul.soolsulserver.images.component;
 
 
 import com.amazonaws.services.s3.AmazonS3;
@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.soolsul.soolsulserver.images.vo.ImageCategory;
 import com.soolsul.soolsulserver.images.exception.ImageUploadFailException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

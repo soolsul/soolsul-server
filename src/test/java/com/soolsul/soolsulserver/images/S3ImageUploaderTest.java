@@ -2,6 +2,8 @@ package com.soolsul.soolsulserver.images;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.soolsul.soolsulserver.images.component.AwsS3ImageUploader;
+import com.soolsul.soolsulserver.images.vo.ImageCategory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;

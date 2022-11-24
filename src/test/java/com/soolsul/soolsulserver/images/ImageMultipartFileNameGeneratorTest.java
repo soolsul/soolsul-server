@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.images;
 
+import com.soolsul.soolsulserver.images.component.ImageMultipartFileNameGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

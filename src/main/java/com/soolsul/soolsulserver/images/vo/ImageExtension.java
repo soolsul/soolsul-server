@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.images;
+package com.soolsul.soolsulserver.images.vo;
 
 import com.soolsul.soolsulserver.images.exception.InvalidImageExtensionException;
 
