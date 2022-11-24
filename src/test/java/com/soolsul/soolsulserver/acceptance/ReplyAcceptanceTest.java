@@ -1,21 +1,17 @@
 package com.soolsul.soolsulserver.acceptance;
 
-import com.soolsul.soolsulserver.reply.presentation.dto.request.PostReplyRequest;
-import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그인_되어_있음;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_목록_조회_요청;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_요청;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_정보_생성;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_조회_응답_확인;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static com.soolsul.soolsulserver.acceptance.ReplyStep.댓글_추가_요청_응답_확인;
+import static com.soolsul.soolsulserver.acceptance.ReplyStep.피드에_댓글_추가_요청;
 
 public class ReplyAcceptanceTest extends AcceptanceTest {
 
@@ -35,22 +31,9 @@ public class ReplyAcceptanceTest extends AcceptanceTest {
         String 첫_피드_아이디 = 피드_조회_응답_확인(피드_목록_조회_응답);
 
         // when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new PostReplyRequest("댓글 추가요!"))
-                .pathParam("postId", 첫_피드_아이디)
-                .when()
-                .post("/api/posts/{postId}/replies")
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> 댓글_추가_요청_응답 = 피드에_댓글_추가_요청(accessToken, 첫_피드_아이디);
 
         // then
-        assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("R001"),
-                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("댓글을 추가하는데 성공하였습니다.")
-        );
+        댓글_추가_요청_응답_확인(댓글_추가_요청_응답);
     }
 }
