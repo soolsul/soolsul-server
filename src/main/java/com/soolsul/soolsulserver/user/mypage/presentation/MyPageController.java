@@ -2,6 +2,7 @@ package com.soolsul.soolsulserver.user.mypage.presentation;
 
 import com.soolsul.soolsulserver.common.response.BaseResponse;
 import com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages;
+import com.soolsul.soolsulserver.user.auth.CurrentUser;
 import com.soolsul.soolsulserver.user.mypage.presentation.dto.response.ScrapedPostListLookUpResponse;
 import com.soolsul.soolsulserver.user.auth.CustomUser;
 import com.soolsul.soolsulserver.user.auth.repository.dto.UserLookUpResponse;
@@ -23,17 +24,15 @@ public class MyPageController {
     private final MyPageQueryFacade myPageQueryFacade;
 
     @GetMapping("/me")
-    public ResponseEntity<BaseResponse<UserLookUpResponse>> searchUser(Authentication authentication) {
-        CustomUser user = (CustomUser) authentication.getPrincipal();
-        UserLookUpResponse userLookUpResponse = myPageQueryFacade.findUserWithDetailInfo(user.getId());
+    public ResponseEntity<BaseResponse<UserLookUpResponse>> searchUser(@CurrentUser CustomUser currentUser) {
+        UserLookUpResponse userLookUpResponse = myPageQueryFacade.findUserWithDetailInfo(currentUser.getId());
         return ResponseEntity.ok(new BaseResponse<>(USER_LOOK_UP_SUCCESS, userLookUpResponse));
     }
 
 
     @GetMapping("/scraps")
-    public ResponseEntity<BaseResponse<ScrapedPostListLookUpResponse>> findAllScrapedPost(Authentication authentication) {
-        CustomUser user = (CustomUser) authentication.getPrincipal();
-        ScrapedPostListLookUpResponse scrapedPostListResponse = myPageQueryFacade.findAllScrapedPost(user.getId());
+    public ResponseEntity<BaseResponse<ScrapedPostListLookUpResponse>> findAllScrapedPost(@CurrentUser CustomUser currentUser) {
+        ScrapedPostListLookUpResponse scrapedPostListResponse = myPageQueryFacade.findAllScrapedPost(currentUser.getId());
         return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.FEED_FIND_ALL_SCRAP_SUCCESS, scrapedPostListResponse));
     }
 }

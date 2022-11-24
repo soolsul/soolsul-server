@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.post.presentation;
 
+import com.soolsul.soolsulserver.user.auth.CurrentUser;
 import com.soolsul.soolsulserver.user.auth.CustomUser;
 import com.soolsul.soolsulserver.common.response.BaseResponse;
 import com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages;
@@ -13,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,16 +32,20 @@ public class PostController {
     private final PostFacadeGateway postFacadeGateway;
 
     @PostMapping
-    public ResponseEntity<BaseResponse<Void>> createPost(@Valid @RequestBody PostCreateRequest request, Authentication authentication) {
-        CustomUser customUser = (CustomUser) authentication.getPrincipal();
-        postFacadeGateway.create(customUser.getId(), request);
+    public ResponseEntity<BaseResponse<Void>> createPost(
+            @Valid @RequestBody PostCreateRequest request,
+            @CurrentUser CustomUser currentUser
+    ) {
+        postFacadeGateway.create(currentUser.getId(), request);
         return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.FEED_CREATE_SUCCESS, null));
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<BaseResponse<PostDetailResponse>> findDetailPost(@PathVariable String postId, Authentication authentication) {
-        CustomUser customUser = (CustomUser) authentication.getPrincipal();
-        PostDetailResponse postDetailResponse = postFacadeGateway.find(customUser.getId(), postId);
+    public ResponseEntity<BaseResponse<PostDetailResponse>> findDetailPost(
+            @PathVariable String postId,
+            @CurrentUser CustomUser currentUser
+    ) {
+        PostDetailResponse postDetailResponse = postFacadeGateway.find(currentUser.getId(), postId);
         return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.FEED_FIND_SUCCESS, postDetailResponse));
     }
 
@@ -51,18 +55,19 @@ public class PostController {
             @RequestParam double longitude,
             @RequestParam(defaultValue = "3") int level,
             @PageableDefault(size = 6) Pageable pageable,
-            Authentication authentication
+            @CurrentUser CustomUser currentUser
     ) {
-        CustomUser customUser = (CustomUser) authentication.getPrincipal();
         LocationSquareRangeRequest locationSquareRangeRequest = new LocationSquareRangeRequest(latitude, longitude, level);
-        PostListResponse postListResponse = postFacadeGateway.findAll(customUser.getId(), locationSquareRangeRequest, pageable);
+        PostListResponse postListResponse = postFacadeGateway.findAll(currentUser.getId(), locationSquareRangeRequest, pageable);
         return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.FEED_FIND_ALL_SUCCESS, postListResponse));
     }
 
     @PostMapping("/scraps")
-    public ResponseEntity<BaseResponse<Void>> scrapPost(@Valid @RequestBody PostScrapRequest request, Authentication authentication) {
-        CustomUser customUser = (CustomUser) authentication.getPrincipal();
-        postFacadeGateway.scrap(customUser.getId(), request.postId());
+    public ResponseEntity<BaseResponse<Void>> scrapPost(
+            @Valid @RequestBody PostScrapRequest request,
+            @CurrentUser CustomUser currentUser
+    ) {
+        postFacadeGateway.scrap(currentUser.getId(), request.postId());
         return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.FEED_SCRAP_SUCCESS, null));
     }
 }
