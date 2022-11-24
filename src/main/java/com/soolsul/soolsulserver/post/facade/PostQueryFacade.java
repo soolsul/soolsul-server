@@ -6,7 +6,7 @@ import com.soolsul.soolsulserver.location.request.LocationSquareRangeRequest;
 import com.soolsul.soolsulserver.location.response.LocationSquareRangeCondition;
 import com.soolsul.soolsulserver.location.service.LocationRangeService;
 import com.soolsul.soolsulserver.post.business.PostQueryService;
-import com.soolsul.soolsulserver.post.business.dto.PostLookupRequest;
+import com.soolsul.soolsulserver.post.business.dto.request.PostLookupRequest;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.presentation.dto.PostDetailResponse;
 import com.soolsul.soolsulserver.post.presentation.dto.PostListResponse;
