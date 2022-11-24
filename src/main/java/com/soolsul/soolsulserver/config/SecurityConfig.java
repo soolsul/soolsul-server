@@ -1,15 +1,15 @@
 package com.soolsul.soolsulserver.config;
 
 
-import com.soolsul.soolsulserver.auth.common.JwtAuthenticationEntryPoint;
-import com.soolsul.soolsulserver.auth.filter.FirstLoginAuthenticationFilter;
-import com.soolsul.soolsulserver.auth.filter.JwtAuthenticationFilter;
-import com.soolsul.soolsulserver.auth.handler.FirstLoginAuthenticationFailureHandler;
-import com.soolsul.soolsulserver.auth.handler.FirstLoginAuthenticationSuccessHandler;
-import com.soolsul.soolsulserver.auth.handler.JwtDeniedHandler;
-import com.soolsul.soolsulserver.auth.handler.JwtLogoutHandler;
-import com.soolsul.soolsulserver.auth.handler.JwtLogoutSuccessHandler;
-import com.soolsul.soolsulserver.auth.provider.FirstLoginAuthenticationProvider;
+import com.soolsul.soolsulserver.user.auth.common.JwtAuthenticationEntryPoint;
+import com.soolsul.soolsulserver.user.auth.filter.FirstLoginAuthenticationFilter;
+import com.soolsul.soolsulserver.user.auth.filter.JwtAuthenticationFilter;
+import com.soolsul.soolsulserver.user.auth.handler.FirstLoginAuthenticationFailureHandler;
+import com.soolsul.soolsulserver.user.auth.handler.FirstLoginAuthenticationSuccessHandler;
+import com.soolsul.soolsulserver.user.auth.handler.JwtDeniedHandler;
+import com.soolsul.soolsulserver.user.auth.handler.JwtLogoutHandler;
+import com.soolsul.soolsulserver.user.auth.handler.JwtLogoutSuccessHandler;
+import com.soolsul.soolsulserver.user.auth.provider.FirstLoginAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;

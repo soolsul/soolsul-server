@@ -19,6 +19,8 @@ import static com.soolsul.soolsulserver.acceptance.PostStep.피드_단건_조회
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_목록_조회_요청;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_요청;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_응답_확인;
+import static com.soolsul.soolsulserver.acceptance.PostStep.피드_스크랩_요청;
+import static com.soolsul.soolsulserver.acceptance.PostStep.피드_스크랩_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_조회_응답_확인;
 
 
@@ -65,8 +67,10 @@ public class PostAcceptanceTest extends AcceptanceTest {
      * then: 피드 리스트 페이지로 이동한다.
      * when: User가 리스트에서 특정 가게의 단건 피드을 누른다.
      * then: 해당 단건 피드로 이동한다.
+     * when: 해당 단건 피드를 관심목록에 스크랩 한다.
+     * then: 성공적으로 스크랩 된다.
      */
-    @DisplayName("사용자가 하단 네비게이션에서 피드 선택시 피드 목록이 보여진다")
+    @DisplayName("사용자가 피드 스토리 테스트")
     @Test
     public void find_post_list_test() {
         // given
@@ -84,6 +88,12 @@ public class PostAcceptanceTest extends AcceptanceTest {
 
         // then
         피드_단건_조회_응답_확인(피드_단건_조회_응답);
+
+        // when
+        var 피드_스크랩_응답 = 피드_스크랩_요청(accessToken, 첫_피드_아이디);
+
+        // then
+        피드_스크랩_응답_확인(피드_스크랩_응답);
     }
 
     private PostCreateRequest 피드_생성_정보_생성() {

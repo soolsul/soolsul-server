@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.post.domain;
 
-import com.soolsul.soolsulserver.auth.CustomUser;
+import com.soolsul.soolsulserver.user.auth.CustomUser;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

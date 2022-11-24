@@ -16,4 +16,8 @@ public class PostCommandFacade {
     public void create(String userId, PostCreateRequest request) {
         postCommandService.create(userId, request);
     }
+
+    public void scrap(String userId, String postId) {
+        postCommandService.scrap(userId, postId);
+    }
 }

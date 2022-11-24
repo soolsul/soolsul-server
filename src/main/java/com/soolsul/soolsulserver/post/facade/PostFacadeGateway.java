@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PostFacadeGateway implements CommandFacadeSpec<PostCreateRequest>, QueryFacadeSpec {
+public class PostFacadeGateway implements PostCommandFacadeSpec<PostCreateRequest>, PostQueryFacadeSpec {
 
     private final PostCommandFacade postCommandFacade;
     private final PostQueryFacade postQueryFacade;
@@ -28,6 +28,11 @@ public class PostFacadeGateway implements CommandFacadeSpec<PostCreateRequest>, 
     @Override
     public void delete(String id) {
 
+    }
+
+    @Override
+    public void scrap(String userId, String postId) {
+        postCommandFacade.scrap(userId, postId);
     }
 
     @Override
