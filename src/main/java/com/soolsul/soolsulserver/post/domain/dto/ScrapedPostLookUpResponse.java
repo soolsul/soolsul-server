@@ -7,12 +7,8 @@ import javax.validation.constraints.NotBlank;
 
 public record ScrapedPostLookUpResponse(
 
-        @NotBlank
-        String postId,
-
-        @URL
-        @NotBlank
-        String imageUrl
+        @NotBlank String postId,
+        @URL @NotBlank String imageUrl
 ) {
 
     @QueryProjection

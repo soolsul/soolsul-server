@@ -1,13 +1,12 @@
 package com.soolsul.soolsulserver.common.data;
 
-import com.soolsul.soolsulserver.post.domain.PostPhoto;
-import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
-import com.soolsul.soolsulserver.user.auth.presentation.dto.RegisterRequest;
 import com.soolsul.soolsulserver.location.domain.LocationMagnificationLevel;
 import com.soolsul.soolsulserver.location.persistence.LocationMagnificationLevelRepository;
 import com.soolsul.soolsulserver.post.domain.Post;
+import com.soolsul.soolsulserver.post.domain.PostPhoto;
 import com.soolsul.soolsulserver.post.domain.PostRepository;
-import com.soolsul.soolsulserver.post.domain.PostScrapRepository;
+import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
+import com.soolsul.soolsulserver.user.auth.presentation.dto.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +26,6 @@ public class DataLoader {
     private final CustomUserDetailsService userDetailsService;
     private final LocationMagnificationLevelRepository locationMagnificationLevelRepositoryDsl;
     private final PostRepository postRepository;
-    private final PostScrapRepository postScrapRepository;
 
     public static String postIdOne;
     public static String postIdTwo;
