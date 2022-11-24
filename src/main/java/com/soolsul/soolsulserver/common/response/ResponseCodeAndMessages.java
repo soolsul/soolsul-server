@@ -25,8 +25,8 @@ public enum ResponseCodeAndMessages {
     CURATIONS_LOOK_UP_SUCCESS("C001", "큐레이션 목록 조회에 성공하였습니다."),
 
     /* REPLY */
-    REPLY_CREATE_SUCCESS("R001", "댓글을 추가하는데 성공하였습니다.");
-
+    REPLY_CREATE_SUCCESS("R001", "댓글을 추가하는데 성공하였습니다."),
+    REPLY_READ_SUCCESS("R002", "댓글을 읽는데 성공하였습니다.");
 
     private final String code;
     private final String message;

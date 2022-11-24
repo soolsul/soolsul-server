@@ -61,16 +61,16 @@ public class ReplyAcceptanceTest extends AcceptanceTest {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .when()
-                .get("/api/posts/{postId}", 첫_피드_아이디)
+                .get("/api/posts/{postId}/replies?page={page}&size={size}", 첫_피드_아이디, 0, 1)
                 .then().log().all()
                 .extract();
 
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("P002"),
-                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("피드 찾기에 성공하였습니다."),
-                () -> assertThat(response.jsonPath().getString("data.reply[0]"))
+                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("R002"),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("댓글을 읽는데 성공하였습니다."),
+                () -> assertThat(response.jsonPath().getList("data.replies.content").size()).isNotEqualTo(0)
         );
     }
 }
