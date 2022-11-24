@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @Disabled
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = LocalStackS3Config.class)
-class S3ImageHandlerTest {
+class S3ImageUploaderTest {
 
     @Value("${aws.s3.images.bucket.name}")
     private String bucketName;
@@ -33,7 +33,7 @@ class S3ImageHandlerTest {
     private AmazonS3 amazonS3;
 
     @Autowired
-    private AwsS3ImageHandler awsS3ImageHandler;
+    private AwsS3ImageUploader awsS3ImageUploader;
 
     @BeforeEach
     void init() {
@@ -53,7 +53,7 @@ class S3ImageHandlerTest {
                 "test1".getBytes());
 
         //when
-        String uploadImageUrl = awsS3ImageHandler.uploadImage(multipartFile, imageCategory, "test1", "user01");
+        String uploadImageUrl = awsS3ImageUploader.uploadImage(multipartFile, imageCategory, "test1", "user01");
 
         //then
         assertThat(uploadImageUrl).isNotEmpty();
@@ -64,7 +64,7 @@ class S3ImageHandlerTest {
     void throwExceptionWhenImageNameIsEmpty() {
         //given, when, then
         assertThatExceptionOfType(MultipartException.class)
-                .isThrownBy(() -> awsS3ImageHandler.uploadImage(null, ImageCategory.from("restaurants"), "imageName", "user01"));
+                .isThrownBy(() -> awsS3ImageUploader.uploadImage(null, ImageCategory.from("restaurants"), "imageName", "user01"));
     }
 
     public static Stream<String> originalEmptyNameProvider() {
@@ -84,7 +84,7 @@ class S3ImageHandlerTest {
 
         //when, then
         assertThatExceptionOfType(MultipartException.class)
-                .isThrownBy(() -> awsS3ImageHandler.uploadImage(multipartFile, ImageCategory.from("restaurants"), "image1", "user01"));
+                .isThrownBy(() -> awsS3ImageUploader.uploadImage(multipartFile, ImageCategory.from("restaurants"), "image1", "user01"));
     }
 
     @DisplayName("이미지를 검색한다")
@@ -100,7 +100,7 @@ class S3ImageHandlerTest {
         amazonS3.putObject(bucketName, "restaurant/user01/" + imageName02, multipartFile02.getInputStream(), new ObjectMetadata());
 
         //when
-        List<String> fileNames = awsS3ImageHandler.findFileNames("restaurant", "user01");
+        List<String> fileNames = awsS3ImageUploader.findFileNames("restaurant", "user01");
 
         //then
         assertThat(fileNames).hasSize(2);

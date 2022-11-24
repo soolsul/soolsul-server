@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.UUID;
 
 @Component
-public class ImageMultipartParser {
+public class ImageMultipartFileNameGenerator {
 
     private static final String FILE_NAME_FORMAT = "%s-%s.%s";
     private static final String EXTENSION_DELIMITER = ".";
@@ -26,11 +26,11 @@ public class ImageMultipartParser {
         String originalFilename = multipartFile.getOriginalFilename();
         int extensionIndex = originalFilename.lastIndexOf(EXTENSION_DELIMITER);
 
-        String fileName = getFileName(originalFilename, extensionIndex);
+        String imageFileName = getFileName(originalFilename, extensionIndex);
         ImageExtension imageExtension = ImageExtension.parseImageExtensionFromFilename(originalFilename);
         String uuid = UUID.randomUUID().toString().replaceAll(DASH, "");
 
-        return String.format(FILE_NAME_FORMAT, fileName, uuid, imageExtension.getLowercaseName());
+        return String.format(FILE_NAME_FORMAT, imageFileName, uuid, imageExtension.getLowercaseName());
     }
 
     private String getFileName(String originalFilename, int extensionIndex) {

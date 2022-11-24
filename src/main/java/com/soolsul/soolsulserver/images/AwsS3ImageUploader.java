@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class AwsS3ImageHandler {
+public class AwsS3ImageUploader {
 
     private static final String FILE_URL_FORMAT = "%s/%s/%s";
     private static final String PREFIX_FORMAT = "%s/%s/";
@@ -44,9 +44,9 @@ public class AwsS3ImageHandler {
             @Valid @NotEmpty String fileName,
             @Valid @NotEmpty String id
     ) {
-        String key = String.format(KEY_FORMAT, category, id, fileName);
+        String s3UploadFilePath = String.format(KEY_FORMAT, category, id, fileName);
 
-        uploadFileTos3bucket(multipartFile, key);
+        uploadFileToS3bucket(multipartFile, s3UploadFilePath);
         return generateFileUrl(fileName);
     }
 
@@ -77,10 +77,10 @@ public class AwsS3ImageHandler {
         return String.format(FILE_URL_FORMAT, endpointUrl, bucketName, fileName);
     }
 
-    private void uploadFileTos3bucket(MultipartFile multipartFile, String uploadFilePath) {
+    private void uploadFileToS3bucket(MultipartFile multipartFile, String s3UploadFilePath) {
         try {
-            //uploadFilePath : 파일이 저장될 위치
-            amazonS3.putObject(bucketName, uploadFilePath, multipartFile.getInputStream(), new ObjectMetadata());
+            //s3UploadFilePath : 파일이 저장될 위치
+            amazonS3.putObject(bucketName, s3UploadFilePath, multipartFile.getInputStream(), new ObjectMetadata());
         } catch (IOException ioException) {
             log.error("S3 bucket 에 이미지 파일을 업로드를 실패하였습니다.");
             throw new ImageUploadFailException();
