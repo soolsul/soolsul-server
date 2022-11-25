@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +16,8 @@ import java.util.Objects;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "update user_info set deleted = true where id = ?")
+@Where(clause = "deleted = false")
 public class UserInfo {
 
     @Id
@@ -26,6 +30,8 @@ public class UserInfo {
     private String phone;
     private String nickname;
     private String name;
+
+    private boolean deleted = false;
 
     private UserInfo(String userId, String phone, String nickname, String name) {
         this.userId = userId;

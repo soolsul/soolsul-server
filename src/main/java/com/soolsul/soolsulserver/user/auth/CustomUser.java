@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -23,6 +25,8 @@ import java.util.Set;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "update custom_user set deleted = true where id = ?")
+@Where(clause = "deleted = false")
 public class CustomUser implements UserDetails {
 
     @Id
@@ -32,6 +36,8 @@ public class CustomUser implements UserDetails {
 
     private String email;
     private String password;
+
+    private boolean deleted = false;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinTable(name = "user_roles",
