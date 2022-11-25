@@ -19,7 +19,7 @@ public class FirstLoginAuthenticationFilter extends AbstractAuthenticationProces
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public FirstLoginAuthenticationFilter() {
-        super(new AntPathRequestMatcher("/api/login"));
+        super(new AntPathRequestMatcher("/api/auth/login"));
     }
 
     @Override

@@ -8,6 +8,11 @@ import io.restassured.response.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import static com.soolsul.soolsulserver.common.data.DataLoader.barId;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -92,5 +97,13 @@ public class PostStep {
                 .post("/api/posts/scraps")
                 .then().log().all()
                 .extract();
+    }
+
+    public static PostCreateRequest 피드_생성_정보_생성() {
+        List<String> imagesUrl = List.of("url1", "url2", "url3");
+        List<String> tags = List.of("mood_tag1", "mood_tag2", "alcohol_tag1");
+        LocalDate date = LocalDate.parse(LocalDate.now().toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        PostCreateRequest postCreateRequest = new PostCreateRequest(barId, "본문 내용 입니다", 4.3f, date, imagesUrl, tags);
+        return postCreateRequest;
     }
 }

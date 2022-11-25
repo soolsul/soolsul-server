@@ -1,10 +1,13 @@
 package com.soolsul.soolsulserver.common.data;
 
+import com.soolsul.soolsulserver.bar.domain.Bar;
+import com.soolsul.soolsulserver.bar.domain.BarRepository;
 import com.soolsul.soolsulserver.location.domain.LocationMagnificationLevel;
 import com.soolsul.soolsulserver.location.persistence.LocationMagnificationLevelRepository;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.domain.PostPhoto;
 import com.soolsul.soolsulserver.post.domain.PostRepository;
+import com.soolsul.soolsulserver.region.domain.Location;
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
 import com.soolsul.soolsulserver.user.auth.presentation.dto.RegisterRequest;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +20,6 @@ import org.springframework.stereotype.Component;
 public class DataLoader {
 
     private static final Logger log = LoggerFactory.getLogger(DataLoader.class);
-    private static final String USER_UUID = "user_uuid";
     private static final String USER_EMAIL = "user@email.com";
     private static final String USER_PASSWORD = "password";
     private static final String NAME = "user";
@@ -26,9 +28,11 @@ public class DataLoader {
     private final CustomUserDetailsService userDetailsService;
     private final LocationMagnificationLevelRepository locationMagnificationLevelRepositoryDsl;
     private final PostRepository postRepository;
+    private final BarRepository barRepository;
 
     public static String postIdOne;
     public static String postIdTwo;
+    public static String barId;
 
     public void loadData() {
         log.info("[call DataLoader]");
@@ -53,6 +57,9 @@ public class DataLoader {
         post2.addPhoto(new PostPhoto("bar_id_2", "originName", "photo_url_4", ".jpg"));
         Post savedPost2 = postRepository.save(post2);
         postIdTwo = savedPost2.getId();
+
+        Bar saveBar = barRepository.save(new Bar("bar_uuid_1", "region_id", "bar_category_id", "bar_name", "good", new Location(37.49909732361135d, 126.9459247225816d)));
+        barId = saveBar.getId();
 
         log.info("[init complete DataLoader]");
     }

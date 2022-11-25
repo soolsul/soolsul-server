@@ -1,7 +1,6 @@
-package com.soolsul.soolsulserver.unit.post.domain;
+package com.soolsul.soolsulserver.post.domain;
 
 import com.soolsul.soolsulserver.user.auth.CustomUser;
-import com.soolsul.soolsulserver.post.domain.Post;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

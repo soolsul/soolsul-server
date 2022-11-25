@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.unit.post.business;
+package com.soolsul.soolsulserver.post.business;
 
 import com.soolsul.soolsulserver.user.auth.CustomUser;
 import com.soolsul.soolsulserver.user.auth.exception.UserNotFoundException;

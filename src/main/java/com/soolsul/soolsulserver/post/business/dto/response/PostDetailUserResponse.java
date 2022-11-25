@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.post.business.dto;
+package com.soolsul.soolsulserver.post.business.dto.response;
 
 import org.hibernate.validator.constraints.URL;
 
