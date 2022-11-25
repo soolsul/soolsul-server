@@ -2,15 +2,14 @@ package com.soolsul.soolsulserver.images;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.soolsul.soolsulserver.images.component.AwsS3ImageUploader;
+import com.soolsul.soolsulserver.images.vo.ImageCategory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
-import org.junit.jupiter.params.provider.NullSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,11 +23,10 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.jupiter.params.provider.Arguments.*;
 
 @Disabled
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = LocalStackS3Config.class)
-class S3ImageHandlerTest {
+class S3ImageUploaderTest {
 
     @Value("${aws.s3.images.bucket.name}")
     private String bucketName;
@@ -37,7 +35,7 @@ class S3ImageHandlerTest {
     private AmazonS3 amazonS3;
 
     @Autowired
-    private AwsS3ImageHandler awsS3ImageHandler;
+    private AwsS3ImageUploader awsS3ImageUploader;
 
     @BeforeEach
     void init() {
@@ -49,6 +47,7 @@ class S3ImageHandlerTest {
     @Test
     void uploadImageFile() {
         //given
+        ImageCategory imageCategory = ImageCategory.from("restaurants");
         MockMultipartFile multipartFile = new MockMultipartFile(
                 "multipartFile",
                 "test1.PNG",
@@ -56,7 +55,7 @@ class S3ImageHandlerTest {
                 "test1".getBytes());
 
         //when
-        String uploadImageUrl = awsS3ImageHandler.uploadImage(multipartFile, "restaurant", "user01");
+        String uploadImageUrl = awsS3ImageUploader.uploadImage(multipartFile, imageCategory, "test1", "user01");
 
         //then
         assertThat(uploadImageUrl).isNotEmpty();
@@ -67,7 +66,7 @@ class S3ImageHandlerTest {
     void throwExceptionWhenImageNameIsEmpty() {
         //given, when, then
         assertThatExceptionOfType(MultipartException.class)
-                .isThrownBy(() -> awsS3ImageHandler.uploadImage(null, "restaurant", "user01"));
+                .isThrownBy(() -> awsS3ImageUploader.uploadImage(null, ImageCategory.from("restaurants"), "imageName", "user01"));
     }
 
     public static Stream<String> originalEmptyNameProvider() {
@@ -87,7 +86,7 @@ class S3ImageHandlerTest {
 
         //when, then
         assertThatExceptionOfType(MultipartException.class)
-                .isThrownBy(() -> awsS3ImageHandler.uploadImage(multipartFile, "restaurant", "user01"));
+                .isThrownBy(() -> awsS3ImageUploader.uploadImage(multipartFile, ImageCategory.from("restaurants"), "image1", "user01"));
     }
 
     @DisplayName("이미지를 검색한다")
@@ -103,7 +102,7 @@ class S3ImageHandlerTest {
         amazonS3.putObject(bucketName, "restaurant/user01/" + imageName02, multipartFile02.getInputStream(), new ObjectMetadata());
 
         //when
-        List<String> fileNames = awsS3ImageHandler.findFileNames("restaurant", "user01");
+        List<String> fileNames = awsS3ImageUploader.findFileNames("restaurant", "user01");
 
         //then
         assertThat(fileNames).hasSize(2);
