@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface UserInfoRepository extends JpaRepository<UserInfo, String> {
 
     Optional<UserInfo> findByNickname(String nickname);
+
+    void deleteByUserId(String userId);
 }

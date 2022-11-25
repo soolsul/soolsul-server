@@ -80,13 +80,13 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         String userId = 베어러_인증으로_내_회원_정보_조회_요청(accessToken).jsonPath().getString("data.userId");
 
         // when
-        ExtractableResponse<Response> response = RestAssured.given().log().all()
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
                 .auth().oauth2(accessToken)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(new DeleteRequest(userId))
                 .when().post("/api/auth/delete")
                 .then().log().all()
-                .statusCode(HttpStatus.OK.value())
                 .extract();
 
         // then

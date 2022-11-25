@@ -5,8 +5,8 @@ import com.soolsul.soolsulserver.user.auth.Role;
 import com.soolsul.soolsulserver.user.auth.UserContext;
 import com.soolsul.soolsulserver.user.auth.UserInfo;
 import com.soolsul.soolsulserver.user.auth.exception.UserAlreadyExistsException;
-import com.soolsul.soolsulserver.user.auth.exception.UserNotFoundException;
 import com.soolsul.soolsulserver.user.auth.exception.UserNicknameDuplicatedException;
+import com.soolsul.soolsulserver.user.auth.exception.UserNotFoundException;
 import com.soolsul.soolsulserver.user.auth.presentation.dto.RegisterRequest;
 import com.soolsul.soolsulserver.user.auth.repository.UserInfoRepository;
 import com.soolsul.soolsulserver.user.auth.repository.UserRepository;
@@ -19,11 +19,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -31,6 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
     private final UserInfoRepository userInfoRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         CustomUser user = userRepository.findByEmail(email)
@@ -61,11 +64,18 @@ public class CustomUserDetailsService implements UserDetailsService {
         userInfoRepository.save(UserInfo.of(savedUser.getId(), registerRequest));
     }
 
+    public void delete(String userId) {
+        userInfoRepository.deleteByUserId(userId);
+        userRepository.deleteById(userId);
+    }
+
+    @Transactional(readOnly = true)
     public UserLookUpResponse findUserWithDetailInfo(String userId) {
         return userRepository.findUserDetailInfoById(userId)
                 .orElseThrow(UserNotFoundException::new);
     }
 
+    @Transactional(readOnly = true)
     public CustomUser findUserForAuthentication(String userId) {
         return userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
