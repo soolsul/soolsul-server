@@ -5,7 +5,7 @@ insert into custom_user (id, email, password)
     value ('user_id_1', 'shine@google.com', '12341234');
 
 insert into user_info (id, name, nickname, phone, profile_image, user_id)
-    value ('user_info_id_1', 'test', 'shine', '010-1234-5678', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx1-fDj8PMv7zgNU_1UB3foB0RIBEVExpJNQ&usqp=CAU', 'user_id_1');
+    value ('user_info_id_1', 'test', 'tester', '010-1234-5678', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx1-fDj8PMv7zgNU_1UB3foB0RIBEVExpJNQ&usqp=CAU', 'user_id_1');
 
 insert into bar (id, created_at, update_at, bar_category_id, description, latitude, longitude, name, region_id)
 values ('bar_uuid_1', '2022-11-18 15:30:25', '2022-11-18 15:30:25', 'bar_category_id', 'good', 37.565494, 126.992493,

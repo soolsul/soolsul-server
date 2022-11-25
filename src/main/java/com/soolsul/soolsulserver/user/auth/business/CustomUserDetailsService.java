@@ -6,6 +6,7 @@ import com.soolsul.soolsulserver.user.auth.UserContext;
 import com.soolsul.soolsulserver.user.auth.UserInfo;
 import com.soolsul.soolsulserver.user.auth.exception.UserAlreadyExistsException;
 import com.soolsul.soolsulserver.user.auth.exception.UserNotFoundException;
+import com.soolsul.soolsulserver.user.auth.exception.UserNicknameDuplicatedException;
 import com.soolsul.soolsulserver.user.auth.presentation.dto.RegisterRequest;
 import com.soolsul.soolsulserver.user.auth.repository.UserInfoRepository;
 import com.soolsul.soolsulserver.user.auth.repository.UserRepository;
@@ -43,6 +44,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         userRepository.findByEmail(registerRequest.getEmail())
                 .ifPresent(user -> {
                     throw new UserAlreadyExistsException();
+                });
+
+        userInfoRepository.findByNickname(registerRequest.getNickname())
+                .ifPresent(user -> {
+                    throw new UserNicknameDuplicatedException();
                 });
 
         // 신규 회원 생성
