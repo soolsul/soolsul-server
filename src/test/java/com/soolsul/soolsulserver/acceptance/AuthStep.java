@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.acceptance;
 
+import com.soolsul.soolsulserver.user.auth.presentation.dto.DeleteRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -73,6 +74,29 @@ public class AuthStep {
                 .when().get("/api/auth/logout")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
+                .extract();
+    }
+
+    public static String 회원_고유_아이디_조회(String accessToken) {
+        return 베어러_인증으로_내_회원_정보_조회_요청(accessToken).jsonPath().getString("data.userId");
+    }
+
+    public static void 회원_탈퇴_응답_확인(ExtractableResponse<Response> response) {
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("U003"),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("유저 삭제에 성공했습니다.")
+        );
+    }
+
+    public static ExtractableResponse<Response> 회원_탈퇴_요청(String accessToken, String userId) {
+        return RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new DeleteRequest(userId))
+                .when().post("/api/auth/delete")
+                .then().log().all()
                 .extract();
     }
 }
