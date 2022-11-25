@@ -20,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,30 +32,18 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<CustomUser> optionalUser = userRepository.findByEmail(email);
-        if (optionalUser.isEmpty()) {
-            if (userRepository.countByEmail(email) == 0) {
-                throw new UsernameNotFoundException("No user found with email: " + email);
-            }
-        }
+        CustomUser user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("No user found with email: " + email));
 
-        CustomUser user = optionalUser.get();
-        List<GrantedAuthority> collect = user.getAuthorities()
-                .stream()
-                .map(userRole -> userRole.getAuthority())
-                .collect(Collectors.toSet())
-                .stream().map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-
-        return new UserContext(user, collect);
+        return new UserContext(user, buildAuthorities(user));
     }
 
     public void register(RegisterRequest registerRequest) {
         // 중복 회원 검증
-        Optional<CustomUser> findUser = userRepository.findByEmail(registerRequest.getEmail());
-        if (findUser.isPresent()) {
-            throw new UserAlreadyExistsException();
-        }
+        userRepository.findByEmail(registerRequest.getEmail())
+                .ifPresent(user -> {
+                    throw new UserAlreadyExistsException();
+                });
 
         // 신규 회원 생성
         String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
@@ -76,5 +63,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     public CustomUser findUserForAuthentication(String userId) {
         return userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
+    }
+
+    private List<GrantedAuthority> buildAuthorities(CustomUser user) {
+        return user.getAuthorities()
+                .stream()
+                .map(userRole -> userRole.getAuthority())
+                .collect(Collectors.toSet())
+                .stream().map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 }
