@@ -14,11 +14,6 @@ public class ImageMultipartFileNameGenerator {
     private static final String EXTENSION_DELIMITER = ".";
     private static final String DASH = "-";
 
-    private boolean isMultipartFileEmpty(MultipartFile multipartFile) {
-        return (multipartFile == null || multipartFile.isEmpty())
-                || (multipartFile.getOriginalFilename() == null || multipartFile.getOriginalFilename().isEmpty());
-    }
-
     public String generateFileName(MultipartFile multipartFile) {
         if(isMultipartFileEmpty(multipartFile) || multipartFile.getOriginalFilename() == null) {
             throw new MultipartException("multipartFile is invalid");
@@ -32,6 +27,11 @@ public class ImageMultipartFileNameGenerator {
         String uuid = UUID.randomUUID().toString().replaceAll(DASH, "");
 
         return String.format(FILE_NAME_FORMAT, imageFileName, uuid, imageExtension.getLowercaseName());
+    }
+
+    private boolean isMultipartFileEmpty(MultipartFile multipartFile) {
+        return (multipartFile == null || multipartFile.isEmpty())
+                || (multipartFile.getOriginalFilename() == null || multipartFile.getOriginalFilename().isEmpty());
     }
 
     private String getFileName(String originalFilename, int extensionIndex) {

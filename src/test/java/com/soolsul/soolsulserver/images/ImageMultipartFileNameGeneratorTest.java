@@ -39,6 +39,6 @@ class ImageMultipartFileNameGeneratorTest {
 
         //then
         assertThat(generatedFileName).startsWith(imageName);
-        System.out.println(generatedFileName);
     }
+
 }
