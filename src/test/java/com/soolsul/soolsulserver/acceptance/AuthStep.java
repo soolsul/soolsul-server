@@ -51,11 +51,11 @@ public class AuthStep {
         );
     }
 
-    public static void 권한_없는_요청(ExtractableResponse<Response> 피드_목록_조회_응답) {
+    public static void 권한_없는_요청(ExtractableResponse<Response> response) {
         assertAll(
-                () -> assertThat(피드_목록_조회_응답.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value()),
-                () -> assertThat(피드_목록_조회_응답.jsonPath().getString("code")).isEqualTo("U005"),
-                () -> assertThat(피드_목록_조회_응답.jsonPath().getString("message")).isEqualTo("해당 유저는 권한이 없습니다.")
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value()),
+                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("U005"),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("해당 유저는 권한이 없습니다.")
         );
     }
 
