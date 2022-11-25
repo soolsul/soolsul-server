@@ -43,23 +43,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public void register(RegisterRequest registerRequest) {
-        // 중복 회원 검증
-        userRepository.findByEmail(registerRequest.getEmail())
-                .ifPresent(user -> {
-                    throw new UserAlreadyExistsException();
-                });
+        checkAlreadyExistsUser(registerRequest.getEmail(), registerRequest.getNickname());
 
-        userInfoRepository.findByNickname(registerRequest.getNickname())
-                .ifPresent(user -> {
-                    throw new UserNicknameDuplicatedException();
-                });
+        CustomUser newUser = createUser(registerRequest.getPassword(), registerRequest.getEmail());
 
-        // 신규 회원 생성
-        String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
-        CustomUser newUser = new CustomUser(registerRequest.getEmail(), encodedPassword);
-        newUser.addRole(Role.USER);
-
-        // 회원 저장
         CustomUser savedUser = userRepository.save(newUser);
         userInfoRepository.save(UserInfo.of(savedUser.getId(), registerRequest));
     }
@@ -79,6 +66,25 @@ public class CustomUserDetailsService implements UserDetailsService {
     public CustomUser findUserForAuthentication(String userId) {
         return userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
+    }
+
+    private void checkAlreadyExistsUser(String email, String nickname) {
+        userRepository.findByEmail(email)
+                .ifPresent(user -> {
+                    throw new UserAlreadyExistsException();
+                });
+
+        userInfoRepository.findByNickname(nickname)
+                .ifPresent(user -> {
+                    throw new UserNicknameDuplicatedException();
+                });
+    }
+
+    private CustomUser createUser(final String password, final String email) {
+        String encodedPassword = passwordEncoder.encode(password);
+        CustomUser newUser = new CustomUser(email, encodedPassword);
+        newUser.addRole(Role.USER);
+        return newUser;
     }
 
     private List<GrantedAuthority> buildAuthorities(CustomUser user) {
