@@ -36,7 +36,7 @@ public class Reply extends BaseTimeEntity {
     @Embedded
     private ReplyContent contents;
 
-    private Boolean deleted = Boolean.FALSE;
+    private boolean deleted = false;
 
     public Reply(String ownerId, String postId, String contents) {
         this.ownerId = ownerId;
