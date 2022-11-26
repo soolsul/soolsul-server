@@ -4,10 +4,12 @@ public enum ResponseCodeAndMessages {
     /* USER */
     USER_CREATE_SUCCESS("U001", "유저 생성에 성공했습니다."),
     USER_LOGIN_SUCCESS("U002", "로그인에 성공했습니다."),
+    USER_DELETE_SUCCESS("U003", "유저 삭제에 성공했습니다."),
     USER_UNAUTHENTICATED("U004", "해당 유저는 인증되지 않았습니다."),
     USER_UNAUTHORIZED("U005", "해당 유저는 권한이 없습니다."),
     USER_LOOK_UP_SUCCESS("U006", "해당 유저 정보를 찾는데 성공했습니다."),
     USER_LOGOUT_SUCCESS("U007", "로그아웃에 성공하였습니다."),
+    USER_DUPLICATED("U008", "이미 가입된 회원 입니다."),
 
     /* FEED */
     FEED_CREATE_SUCCESS("P001", "피드 생성 성공했습니다."),

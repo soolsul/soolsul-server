@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterRequest {
+public class UserRegisterRequest {
 
     @Email
     @NotBlank

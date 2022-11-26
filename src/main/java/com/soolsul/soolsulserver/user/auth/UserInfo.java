@@ -1,10 +1,12 @@
 package com.soolsul.soolsulserver.user.auth;
 
-import com.soolsul.soolsulserver.user.auth.presentation.dto.RegisterRequest;
+import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +16,8 @@ import java.util.Objects;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "update user_info set deleted = true where id = ?")
+@Where(clause = "deleted = false")
 public class UserInfo {
 
     @Id
@@ -27,6 +31,8 @@ public class UserInfo {
     private String nickname;
     private String name;
 
+    private boolean deleted = false;
+
     private UserInfo(String userId, String phone, String nickname, String name) {
         this.userId = userId;
         this.phone = phone;
@@ -34,7 +40,7 @@ public class UserInfo {
         this.name = name;
     }
 
-    public static UserInfo of(String userId, RegisterRequest request) {
+    public static UserInfo of(String userId, UserRegisterRequest request) {
         return new UserInfo(userId,
                 request.getPhone(),
                 request.getNickname(),

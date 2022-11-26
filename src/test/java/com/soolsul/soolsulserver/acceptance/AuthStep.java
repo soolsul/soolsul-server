@@ -51,11 +51,11 @@ public class AuthStep {
         );
     }
 
-    public static void 권한_없는_요청(ExtractableResponse<Response> 피드_목록_조회_응답) {
+    public static void 권한_없는_요청(ExtractableResponse<Response> response) {
         assertAll(
-                () -> assertThat(피드_목록_조회_응답.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value()),
-                () -> assertThat(피드_목록_조회_응답.jsonPath().getString("code")).isEqualTo("U005"),
-                () -> assertThat(피드_목록_조회_응답.jsonPath().getString("message")).isEqualTo("해당 유저는 권한이 없습니다.")
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value()),
+                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("U005"),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("해당 유저는 권한이 없습니다.")
         );
     }
 
@@ -73,6 +73,27 @@ public class AuthStep {
                 .when().get("/api/auth/logout")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
+                .extract();
+    }
+
+    public static String 회원_고유_아이디_조회(String accessToken) {
+        return 베어러_인증으로_내_회원_정보_조회_요청(accessToken).jsonPath().getString("data.userId");
+    }
+
+    public static void 회원_탈퇴_응답_확인(ExtractableResponse<Response> response) {
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("U003"),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("유저 삭제에 성공했습니다.")
+        );
+    }
+
+    public static ExtractableResponse<Response> 회원_탈퇴_요청(String accessToken) {
+        return RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .when().delete("/api/auth")
+                .then().log().all()
                 .extract();
     }
 }

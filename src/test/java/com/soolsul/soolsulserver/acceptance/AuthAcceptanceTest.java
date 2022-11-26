@@ -9,6 +9,8 @@ import static com.soolsul.soolsulserver.acceptance.AuthStep.로그아웃_응답_
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그인_되어_있음;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.베어러_인증으로_내_회원_정보_조회_요청;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.회원_정보_조회;
+import static com.soolsul.soolsulserver.acceptance.AuthStep.회원_탈퇴_요청;
+import static com.soolsul.soolsulserver.acceptance.AuthStep.회원_탈퇴_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_목록_조회_요청;
 
 public class AuthAcceptanceTest extends AcceptanceTest {
@@ -57,5 +59,23 @@ public class AuthAcceptanceTest extends AcceptanceTest {
 
         // then
         권한_없는_요청(피드_목록_조회_응답);
+    }
+
+    /**
+     * given: 로그인하 회원이 마이페이지를 보고있다.
+     * when: “탈퇴하기”를 버튼을 누르면
+     * then: 성공적으로 탈퇴한다.
+     */
+    @DisplayName("회원은 탈퇴할 수 있다.")
+    @Test
+    public void user_delete_test() {
+        // given
+        String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
+
+        // when
+        var 회원_탈퇴_요청 = 회원_탈퇴_요청(accessToken);
+
+        // then
+        회원_탈퇴_응답_확인(회원_탈퇴_요청);
     }
 }
