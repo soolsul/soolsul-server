@@ -8,7 +8,6 @@ import static com.soolsul.soolsulserver.acceptance.AuthStep.로그아웃_요청;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그아웃_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그인_되어_있음;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.베어러_인증으로_내_회원_정보_조회_요청;
-import static com.soolsul.soolsulserver.acceptance.AuthStep.회원_고유_아이디_조회;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.회원_정보_조회;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.회원_탈퇴_요청;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.회원_탈퇴_응답_확인;
@@ -72,10 +71,9 @@ public class AuthAcceptanceTest extends AcceptanceTest {
     public void user_delete_test() {
         // given
         String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
-        String userId = 회원_고유_아이디_조회(accessToken);
 
         // when
-        var 회원_탈퇴_요청 = 회원_탈퇴_요청(accessToken, userId);
+        var 회원_탈퇴_요청 = 회원_탈퇴_요청(accessToken);
 
         // then
         회원_탈퇴_응답_확인(회원_탈퇴_요청);

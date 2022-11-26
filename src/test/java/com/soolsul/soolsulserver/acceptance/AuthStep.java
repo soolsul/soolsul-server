@@ -1,6 +1,5 @@
 package com.soolsul.soolsulserver.acceptance;
 
-import com.soolsul.soolsulserver.user.auth.presentation.dto.UserDeleteRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -89,13 +88,11 @@ public class AuthStep {
         );
     }
 
-    public static ExtractableResponse<Response> 회원_탈퇴_요청(String accessToken, String userId) {
+    public static ExtractableResponse<Response> 회원_탈퇴_요청(String accessToken) {
         return RestAssured
                 .given().log().all()
                 .auth().oauth2(accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new UserDeleteRequest(userId))
-                .when().post("/api/auth/delete")
+                .when().delete("/api/auth")
                 .then().log().all()
                 .extract();
     }
