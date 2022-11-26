@@ -56,6 +56,12 @@ public class CustomUser implements UserDetails {
         this.password = password;
     }
 
+    public static CustomUser createWithRoleUser(String email, String password) {
+        CustomUser newUser = new CustomUser(email, password);
+        newUser.addRole(Role.USER);
+        return newUser;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return userRoles.stream().toList();

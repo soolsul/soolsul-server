@@ -1,7 +1,6 @@
 package com.soolsul.soolsulserver.user.auth.business;
 
 import com.soolsul.soolsulserver.user.auth.CustomUser;
-import com.soolsul.soolsulserver.user.auth.Role;
 import com.soolsul.soolsulserver.user.auth.UserContext;
 import com.soolsul.soolsulserver.user.auth.UserInfo;
 import com.soolsul.soolsulserver.user.auth.exception.UserAlreadyExistsException;
@@ -82,9 +81,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private CustomUser createUser(final String password, final String email) {
         String encodedPassword = passwordEncoder.encode(password);
-        CustomUser newUser = new CustomUser(email, encodedPassword);
-        newUser.addRole(Role.USER);
-        return newUser;
+        return CustomUser.createWithRoleUser(email, encodedPassword);
     }
 
     private List<GrantedAuthority> buildAuthorities(CustomUser user) {
