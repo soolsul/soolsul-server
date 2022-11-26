@@ -7,7 +7,7 @@ import com.soolsul.soolsulserver.user.auth.UserInfo;
 import com.soolsul.soolsulserver.user.auth.exception.UserAlreadyExistsException;
 import com.soolsul.soolsulserver.user.auth.exception.UserNicknameDuplicatedException;
 import com.soolsul.soolsulserver.user.auth.exception.UserNotFoundException;
-import com.soolsul.soolsulserver.user.auth.presentation.dto.RegisterRequest;
+import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
 import com.soolsul.soolsulserver.user.auth.repository.UserInfoRepository;
 import com.soolsul.soolsulserver.user.auth.repository.UserRepository;
 import com.soolsul.soolsulserver.user.auth.repository.dto.UserLookUpResponse;
@@ -42,13 +42,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new UserContext(user, buildAuthorities(user));
     }
 
-    public void register(RegisterRequest registerRequest) {
-        checkAlreadyExistsUser(registerRequest.getEmail(), registerRequest.getNickname());
+    public void register(UserRegisterRequest userRegisterRequest) {
+        checkAlreadyExistsUser(userRegisterRequest.getEmail(), userRegisterRequest.getNickname());
 
-        CustomUser newUser = createUser(registerRequest.getPassword(), registerRequest.getEmail());
+        CustomUser newUser = createUser(userRegisterRequest.getPassword(), userRegisterRequest.getEmail());
 
         CustomUser savedUser = userRepository.save(newUser);
-        userInfoRepository.save(UserInfo.of(savedUser.getId(), registerRequest));
+        userInfoRepository.save(UserInfo.of(savedUser.getId(), userRegisterRequest));
     }
 
     public void delete(String userId) {

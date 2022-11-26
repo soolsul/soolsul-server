@@ -7,7 +7,7 @@ import com.soolsul.soolsulserver.reply.domain.Reply;
 import com.soolsul.soolsulserver.reply.domain.ReplyRepository;
 import com.soolsul.soolsulserver.user.auth.CustomUser;
 import com.soolsul.soolsulserver.user.auth.UserInfo;
-import com.soolsul.soolsulserver.user.auth.presentation.dto.RegisterRequest;
+import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public class ReplyPersistenceTest {
         // given
         Post savedPost = testEntityManager.persist(new Post("test_user_id", "bar_id", 4.3f, "contents"));
         CustomUser savedUser = testEntityManager.persist(new CustomUser("custom_user", "1234"));
-        testEntityManager.persist(UserInfo.of(savedUser.getId(), new RegisterRequest("email", "1234", "010-1234-5678", "name", "shine")));
+        testEntityManager.persist(UserInfo.of(savedUser.getId(), new UserRegisterRequest("email", "1234", "010-1234-5678", "name", "shine")));
         testEntityManager.persist(new Reply(savedUser.getId(), savedPost.getId(), "content_1"));
         testEntityManager.persist(new Reply(savedUser.getId(), savedPost.getId(), "content_2"));
         testEntityManager.persist(new Reply(savedUser.getId(), savedPost.getId(), "content_3"));

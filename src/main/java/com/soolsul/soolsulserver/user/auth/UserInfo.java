@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.user.auth;
 
-import com.soolsul.soolsulserver.user.auth.presentation.dto.RegisterRequest;
+import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,7 +40,7 @@ public class UserInfo {
         this.name = name;
     }
 
-    public static UserInfo of(String userId, RegisterRequest request) {
+    public static UserInfo of(String userId, UserRegisterRequest request) {
         return new UserInfo(userId,
                 request.getPhone(),
                 request.getNickname(),

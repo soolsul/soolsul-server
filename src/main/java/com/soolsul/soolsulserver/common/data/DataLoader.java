@@ -9,7 +9,7 @@ import com.soolsul.soolsulserver.post.domain.PostPhoto;
 import com.soolsul.soolsulserver.post.domain.PostRepository;
 import com.soolsul.soolsulserver.region.domain.Location;
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
-import com.soolsul.soolsulserver.user.auth.presentation.dto.RegisterRequest;
+import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ public class DataLoader {
 
     public void loadData() {
         log.info("[call DataLoader]");
-        userDetailsService.register(new RegisterRequest(USER_EMAIL, USER_PASSWORD, "02-123-4567", NAME, NICK_NAME));
+        userDetailsService.register(new UserRegisterRequest(USER_EMAIL, USER_PASSWORD, "02-123-4567", NAME, NICK_NAME));
 
         locationMagnificationLevelRepositoryDsl.save(new LocationMagnificationLevel(1, 60));
         locationMagnificationLevelRepositoryDsl.save(new LocationMagnificationLevel(2, 90));

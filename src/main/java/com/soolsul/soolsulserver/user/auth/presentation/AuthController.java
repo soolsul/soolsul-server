@@ -1,8 +1,8 @@
 package com.soolsul.soolsulserver.user.auth.presentation;
 
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
-import com.soolsul.soolsulserver.user.auth.presentation.dto.DeleteRequest;
-import com.soolsul.soolsulserver.user.auth.presentation.dto.RegisterRequest;
+import com.soolsul.soolsulserver.user.auth.presentation.dto.UserDeleteRequest;
+import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
 import com.soolsul.soolsulserver.common.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,14 +25,14 @@ public class AuthController {
     private final CustomUserDetailsService userDetailsService;
 
     @PostMapping("/register")
-    public ResponseEntity<BaseResponse<Void>> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
-        userDetailsService.register(registerRequest);
+    public ResponseEntity<BaseResponse<Void>> registerUser(@Valid @RequestBody UserRegisterRequest userRegisterRequest) {
+        userDetailsService.register(userRegisterRequest);
         return new ResponseEntity<>(new BaseResponse<>(USER_CREATE_SUCCESS, null), HttpStatus.CREATED);
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<BaseResponse<Void>> deleteUser(@Valid @RequestBody DeleteRequest deleteRequest) {
-        userDetailsService.delete(deleteRequest.userId());
+    public ResponseEntity<BaseResponse<Void>> deleteUser(@Valid @RequestBody UserDeleteRequest userDeleteRequest) {
+        userDetailsService.delete(userDeleteRequest.userId());
         return new ResponseEntity<>(new BaseResponse<>(USER_DELETE_SUCCESS, null), HttpStatus.OK);
     }
 }

@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.acceptance;
 
-import com.soolsul.soolsulserver.user.auth.presentation.dto.DeleteRequest;
+import com.soolsul.soolsulserver.user.auth.presentation.dto.UserDeleteRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -94,7 +94,7 @@ public class AuthStep {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new DeleteRequest(userId))
+                .body(new UserDeleteRequest(userId))
                 .when().post("/api/auth/delete")
                 .then().log().all()
                 .extract();
