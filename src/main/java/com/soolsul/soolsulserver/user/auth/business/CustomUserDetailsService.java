@@ -87,9 +87,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private List<GrantedAuthority> buildAuthorities(CustomUser user) {
         return user.getAuthorities()
                 .stream()
-                .map(userRole -> userRole.getAuthority())
-                .collect(Collectors.toSet())
-                .stream().map(SimpleGrantedAuthority::new)
+                .map(userRole -> new SimpleGrantedAuthority(userRole.getAuthority()))
                 .collect(Collectors.toList());
     }
 }
