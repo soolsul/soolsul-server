@@ -1,15 +1,15 @@
 package com.soolsul.soolsulserver.acceptance;
 
-import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그인_되어_있음;
+import static com.soolsul.soolsulserver.acceptance.MyPageStep.사용자_댓글_조회_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.MyPageStep.사용자_피드_조회_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.MyPageStep.사용자가_작성한_피드_목록_조회;
+import static com.soolsul.soolsulserver.acceptance.MyPageStep.사용자가_추가한_댓글_목록_조회;
 import static com.soolsul.soolsulserver.acceptance.MyPageStep.스크랩_피드_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.MyPageStep.스크랩_피드_조회_요청;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_목록_조회_요청;
@@ -20,8 +20,6 @@ import static com.soolsul.soolsulserver.acceptance.PostStep.피드_조회_응답
 import static com.soolsul.soolsulserver.acceptance.ReplyStep.피드에_댓글_추가_요청;
 import static com.soolsul.soolsulserver.common.data.DataLoader.postIdOne;
 import static com.soolsul.soolsulserver.common.data.DataLoader.postIdTwo;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class MyPageAcceptanceTest extends AcceptanceTest {
 
@@ -84,20 +82,9 @@ public class MyPageAcceptanceTest extends AcceptanceTest {
         피드에_댓글_추가_요청(accessToken, 첫_피드_아이디, "댓글 추가요 3");
 
         // when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .when().get("/api/mypages/replies")
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> 사용자_댓글_조회_응답 = 사용자가_추가한_댓글_목록_조회(accessToken);
 
         // then
-        assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("M002"),
-                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("유저의 댓글 조회에 성공했습니다."),
-                () -> assertThat(response.jsonPath().getList("data.replyList").size()).isEqualTo(3),
-                () -> assertThat(response.jsonPath().getList("data.replyList")).extracting("contents").containsExactly("댓글 추가요 1", "댓글 추가요 2", "댓글 추가요 3")
-        );
+        사용자_댓글_조회_응답_확인(사용자_댓글_조회_응답);
     }
 }
