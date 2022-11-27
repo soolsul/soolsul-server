@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.curation.persistence;
 
+import com.soolsul.soolsulserver.bar.domain.Address;
 import com.soolsul.soolsulserver.bar.domain.Bar;
 import com.soolsul.soolsulserver.bar.domain.BarAlcoholTag;
 import com.soolsul.soolsulserver.bar.domain.BarMoodTag;
@@ -58,8 +59,8 @@ class CurationQueryRepositoryTest {
 
     private void initData() {
         //Bar data
-        Bar bar01 = new Bar("region1", "category1", "name1", "description", new Location(120, 30));
-        Bar bar02 = new Bar("region2", "category2", "name2", "description", new Location(121, 31));
+        Bar bar01 = new Bar("category1", "barName1", "description1", "description", new Address("", "서울특별시", "중구", "수표로", "12길 12" , ""), new Location(120, 30));
+        Bar bar02 = new Bar("category2", "barName2", "description2", "description", new Address("", "서울특별시", "중구", "수표로", "12길 12" , ""), new Location(121, 31));
 
         testEntityManager.persist(bar01);
         testEntityManager.persist(bar02);
