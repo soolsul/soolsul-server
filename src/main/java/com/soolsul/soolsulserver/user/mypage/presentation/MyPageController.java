@@ -8,6 +8,7 @@ import com.soolsul.soolsulserver.user.auth.repository.dto.UserLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.facade.MyPageQueryFacade;
 import com.soolsul.soolsulserver.user.mypage.presentation.dto.response.ScrapedPostListLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.presentation.dto.response.UserPostListLookUpResponse;
+import com.soolsul.soolsulserver.user.mypage.presentation.dto.response.UserReplyListLookUpResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,5 +42,12 @@ public class MyPageController {
     public ResponseEntity<BaseResponse<UserPostListLookUpResponse>> findAllUserPost(@CurrentUser CustomUser currentUser) {
         UserPostListLookUpResponse userPostListLookUpResponse = myPageQueryFacade.findAllUserPost(currentUser.getId());
         return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.MYPAGE_POSTS_FIND_SUCCESS, userPostListLookUpResponse));
+    }
+
+
+    @GetMapping("/replies")
+    public ResponseEntity<BaseResponse<UserReplyListLookUpResponse>> findAllUserReply(@CurrentUser CustomUser currentUser) {
+        UserReplyListLookUpResponse userReplyListLookUpResponse = myPageQueryFacade.findAllUserReplies(currentUser.getId());
+        return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.MYPAGE_REPLIES_FIND_SUCCESS, userReplyListLookUpResponse));
     }
 }

@@ -3,10 +3,13 @@ package com.soolsul.soolsulserver.user.mypage.facade;
 import com.soolsul.soolsulserver.post.business.PostQueryService;
 import com.soolsul.soolsulserver.post.domain.dto.ScrapedPostLookUpResponse;
 import com.soolsul.soolsulserver.post.domain.dto.UserPostLookUpResponse;
+import com.soolsul.soolsulserver.post.domain.dto.UserReplyLookUpResponse;
+import com.soolsul.soolsulserver.reply.business.ReplyQueryService;
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
 import com.soolsul.soolsulserver.user.auth.repository.dto.UserLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.presentation.dto.response.ScrapedPostListLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.presentation.dto.response.UserPostListLookUpResponse;
+import com.soolsul.soolsulserver.user.mypage.presentation.dto.response.UserReplyListLookUpResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +23,7 @@ public class MyPageQueryFacade implements MyPageQueryFacadeSpec {
 
     private final CustomUserDetailsService userDetailsService;
     private final PostQueryService postQueryService;
+    private final ReplyQueryService replyQueryService;
 
     @Override
     public UserLookUpResponse findUserWithDetailInfo(String userId) {
@@ -36,5 +40,11 @@ public class MyPageQueryFacade implements MyPageQueryFacadeSpec {
     public UserPostListLookUpResponse findAllUserPost(String userId) {
         List<UserPostLookUpResponse> userPostList = postQueryService.findAllUserPost(userId);
         return new UserPostListLookUpResponse(userPostList);
+    }
+
+    @Override
+    public UserReplyListLookUpResponse findAllUserReplies(String userId) {
+        List<UserReplyLookUpResponse> userReplyList = replyQueryService.findAllUserReply(userId);
+        return new UserReplyListLookUpResponse(userReplyList);
     }
 }
