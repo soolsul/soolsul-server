@@ -28,4 +28,22 @@ public class MyPageStep {
                 .then().log().all()
                 .extract();
     }
+
+    public static void 사용자_피드_조회_응답_확인(ExtractableResponse<Response> 사용자_피드_조회_응답) {
+        assertAll(
+                () -> assertThat(사용자_피드_조회_응답.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(사용자_피드_조회_응답.jsonPath().getString("code")).isEqualTo("M001"),
+                () -> assertThat(사용자_피드_조회_응답.jsonPath().getString("message")).isEqualTo("유저의 피드 조회에 성공했습니다"),
+                () -> assertThat(사용자_피드_조회_응답.jsonPath().getList("data.postList").size()).isNotEqualTo(0)
+        );
+    }
+
+    public static ExtractableResponse<Response> 사용자가_작성한_피드_목록_조회(String accessToken) {
+        return RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .when().get("/api/mypages/posts")
+                .then().log().all()
+                .extract();
+    }
 }

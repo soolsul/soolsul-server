@@ -1,13 +1,13 @@
 package com.soolsul.soolsulserver.acceptance;
 
-import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
 
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그인_되어_있음;
+import static com.soolsul.soolsulserver.acceptance.MyPageStep.사용자_피드_조회_응답_확인;
+import static com.soolsul.soolsulserver.acceptance.MyPageStep.사용자가_작성한_피드_목록_조회;
 import static com.soolsul.soolsulserver.acceptance.MyPageStep.스크랩_피드_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.MyPageStep.스크랩_피드_조회_요청;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_요청;
@@ -15,8 +15,6 @@ import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_정보
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_스크랩_요청;
 import static com.soolsul.soolsulserver.common.data.DataLoader.postIdOne;
 import static com.soolsul.soolsulserver.common.data.DataLoader.postIdTwo;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class MyPageAcceptanceTest extends AcceptanceTest {
 
@@ -55,19 +53,9 @@ public class MyPageAcceptanceTest extends AcceptanceTest {
         피드_생성_요청(accessToken, 피드_생성_정보_생성());
 
         // when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .when().get("/api/mypages/posts")
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> 사용자_피드_조회_응답 = 사용자가_작성한_피드_목록_조회(accessToken);
 
         // then
-        assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("M001"),
-                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("유저의 피드 조회에 성공했습니다"),
-                () -> assertThat(response.jsonPath().getList("data.postList").size()).isNotEqualTo(0)
-        );
+        사용자_피드_조회_응답_확인(사용자_피드_조회_응답);
     }
 }
