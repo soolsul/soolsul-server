@@ -33,7 +33,7 @@ public class MyPageStep {
         assertAll(
                 () -> assertThat(사용자_피드_조회_응답.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(사용자_피드_조회_응답.jsonPath().getString("code")).isEqualTo("M001"),
-                () -> assertThat(사용자_피드_조회_응답.jsonPath().getString("message")).isEqualTo("유저의 피드 조회에 성공했습니다"),
+                () -> assertThat(사용자_피드_조회_응답.jsonPath().getString("message")).isEqualTo("유저의 피드 조회에 성공했습니다."),
                 () -> assertThat(사용자_피드_조회_응답.jsonPath().getList("data.postList").size()).isNotEqualTo(0)
         );
     }

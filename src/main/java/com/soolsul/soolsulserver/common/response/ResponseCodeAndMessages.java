@@ -12,7 +12,8 @@ public enum ResponseCodeAndMessages {
     USER_DUPLICATED("U008", "이미 가입된 회원 입니다."),
 
     /* MYPAGE */
-    MYPAGE_POSTS_FIND_SUCCESS("M001", "유저의 피드 조회에 성공했습니다"),
+    MYPAGE_POSTS_FIND_SUCCESS("M001", "유저의 피드 조회에 성공했습니다."),
+    MYPAGE_REPLIES_FIND_SUCCESS("M002", "유저의 댓글 조회에 성공했습니다."),
 
     /* FEED */
     FEED_CREATE_SUCCESS("P001", "피드 생성 성공했습니다."),
