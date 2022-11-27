@@ -11,6 +11,9 @@ public enum ResponseCodeAndMessages {
     USER_LOGOUT_SUCCESS("U007", "로그아웃에 성공하였습니다."),
     USER_DUPLICATED("U008", "이미 가입된 회원 입니다."),
 
+    /* MYPAGE */
+    MYPAGE_POSTS_FIND_SUCCESS("M001", "유저의 피드 조회에 성공했습니다"),
+
     /* FEED */
     FEED_CREATE_SUCCESS("P001", "피드 생성 성공했습니다."),
     FEED_FIND_SUCCESS("P002", "피드 찾기에 성공하였습니다."),
