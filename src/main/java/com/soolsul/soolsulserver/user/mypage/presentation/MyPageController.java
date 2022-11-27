@@ -3,13 +3,13 @@ package com.soolsul.soolsulserver.user.mypage.presentation;
 import com.soolsul.soolsulserver.common.response.BaseResponse;
 import com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages;
 import com.soolsul.soolsulserver.user.auth.CurrentUser;
-import com.soolsul.soolsulserver.user.mypage.presentation.dto.response.ScrapedPostListLookUpResponse;
 import com.soolsul.soolsulserver.user.auth.CustomUser;
 import com.soolsul.soolsulserver.user.auth.repository.dto.UserLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.facade.MyPageQueryFacade;
+import com.soolsul.soolsulserver.user.mypage.presentation.dto.response.ScrapedPostListLookUpResponse;
+import com.soolsul.soolsulserver.user.mypage.presentation.dto.response.UserPostListLookUpResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,5 +34,12 @@ public class MyPageController {
     public ResponseEntity<BaseResponse<ScrapedPostListLookUpResponse>> findAllScrapedPost(@CurrentUser CustomUser currentUser) {
         ScrapedPostListLookUpResponse scrapedPostListResponse = myPageQueryFacade.findAllScrapedPost(currentUser.getId());
         return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.FEED_FIND_ALL_SCRAP_SUCCESS, scrapedPostListResponse));
+    }
+
+
+    @GetMapping("/posts")
+    public ResponseEntity<BaseResponse<UserPostListLookUpResponse>> findAllUserPost(@CurrentUser CustomUser currentUser) {
+        UserPostListLookUpResponse userPostListLookUpResponse = myPageQueryFacade.findAllUserPost(currentUser.getId());
+        return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.MYPAGE_POSTS_FIND_SUCCESS, userPostListLookUpResponse));
     }
 }
