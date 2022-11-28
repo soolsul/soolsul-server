@@ -1,6 +1,7 @@
 package com.soolsul.soolsulserver.curation.facade;
 
 import com.soolsul.soolsulserver.curation.business.CurationQueryService;
+import com.soolsul.soolsulserver.curation.dto.CurationDetailLookupResponse;
 import com.soolsul.soolsulserver.curation.dto.CurationLookupResponse;
 import com.soolsul.soolsulserver.curation.dto.CurationsLookupResponse;
 import com.soolsul.soolsulserver.location.request.LocationSquareRangeRequest;
@@ -28,6 +29,10 @@ public class CurationQueryFacade {
                 = curationQueryService.findAllSingleTagCurationsByLocationRange(locationSquareRangeCondition);
 
         return new CurationsLookupResponse(singleTagCurationLookupResponses);
+    }
+
+    public CurationDetailLookupResponse findCurationDetailsByCurationId(String curationId) {
+        return null;
     }
 
 }

@@ -51,7 +51,11 @@ public class StreetNameAddress {
         this.locationDetail = locationDetail;
     }
 
-    public String streetNameAddress() {
+    public String simpleStreetNameAddress() {
+        return String.format("%s %s %s", regionName, city, district).trim();
+    }
+
+    public String detailStreetNameAddress() {
         return String.format("%s %s %s%s %s %s %s",
                         regionName,
                 city,
@@ -62,5 +66,4 @@ public class StreetNameAddress {
                 locationDetail.isEmpty() ? "" : locationDetail)
                 .trim();
     }
-
 }
