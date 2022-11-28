@@ -5,12 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Embeddable
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Duration {
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+public class OpeningHours {
+    private LocalTime openTime;
+    private LocalTime closeTime;
 }
