@@ -96,6 +96,10 @@ public class CustomUser implements UserDetails {
         userRoles.add(new Authority(role));
     }
 
+    public void editEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

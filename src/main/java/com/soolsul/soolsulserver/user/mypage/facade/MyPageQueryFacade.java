@@ -6,7 +6,8 @@ import com.soolsul.soolsulserver.post.domain.dto.UserPostLookUpResponse;
 import com.soolsul.soolsulserver.post.domain.dto.UserReplyLookUpResponse;
 import com.soolsul.soolsulserver.reply.business.ReplyQueryService;
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
-import com.soolsul.soolsulserver.user.auth.repository.dto.UserLookUpResponse;
+import com.soolsul.soolsulserver.user.auth.repository.dto.response.UserEditFormResponse;
+import com.soolsul.soolsulserver.user.auth.repository.dto.response.UserLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.presentation.dto.response.ScrapedPostListLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.presentation.dto.response.UserPostListLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.presentation.dto.response.UserReplyListLookUpResponse;
@@ -46,5 +47,11 @@ public class MyPageQueryFacade implements MyPageQueryFacadeSpec {
     public UserReplyListLookUpResponse findAllUserReplies(String userId) {
         List<UserReplyLookUpResponse> userReplyList = replyQueryService.findAllUserReply(userId);
         return new UserReplyListLookUpResponse(userReplyList);
+    }
+
+    @Override
+    public UserEditFormResponse findUserEditForm(String userId) {
+        UserLookUpResponse userInfo = userDetailsService.findUserWithDetailInfo(userId);
+        return new UserEditFormResponse(userInfo.profileImage(), userInfo.nickName(), userInfo.email());
     }
 }

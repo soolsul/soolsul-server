@@ -9,7 +9,8 @@ import com.soolsul.soolsulserver.user.auth.exception.UserNotFoundException;
 import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
 import com.soolsul.soolsulserver.user.auth.repository.UserInfoRepository;
 import com.soolsul.soolsulserver.user.auth.repository.UserRepository;
-import com.soolsul.soolsulserver.user.auth.repository.dto.UserLookUpResponse;
+import com.soolsul.soolsulserver.user.auth.repository.dto.response.UserLookUpResponse;
+import com.soolsul.soolsulserver.user.mypage.presentation.dto.reqeust.UserInfoEditRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -65,6 +66,17 @@ public class CustomUserDetailsService implements UserDetailsService {
     public CustomUser findUserForAuthentication(String userId) {
         return userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
+    }
+
+    public void editUserInformation(UserInfoEditRequest editRequest, String userId) {
+        CustomUser findUser = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        UserInfo findUserInfo = userInfoRepository.findByUserId(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        findUser.editEmail(editRequest.email());
+        findUserInfo.editNickNameAndImage(editRequest.nickName(), editRequest.imageUrl());
     }
 
     private void checkAlreadyExistsUser(String email, String nickname) {

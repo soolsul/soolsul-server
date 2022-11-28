@@ -121,7 +121,6 @@ public class MyPageAcceptanceTest extends AcceptanceTest {
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(response.jsonPath().getString("code")).isEqualTo("M003"),
                 () -> assertThat(response.jsonPath().getString("message")).isEqualTo("유저의 기본 정보 조회에 성공했습니다."),
-                () -> assertThat(response.jsonPath().getString("data.imageUrl")).isNotBlank(),
                 () -> assertThat(response.jsonPath().getString("data.nickName")).isEqualTo(NICK_NAME),
                 () -> assertThat(response.jsonPath().getString("data.email")).isEqualTo(USER_EMAIL)
         );
