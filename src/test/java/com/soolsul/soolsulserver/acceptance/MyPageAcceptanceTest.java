@@ -1,9 +1,13 @@
 package com.soolsul.soolsulserver.acceptance;
 
+import com.soolsul.soolsulserver.user.mypage.presentation.dto.reqeust.UserInfoEditRequest;
+import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그인_되어_있음;
 import static com.soolsul.soolsulserver.acceptance.MyPageStep.사용자_댓글_조회_응답_확인;
@@ -20,6 +24,8 @@ import static com.soolsul.soolsulserver.acceptance.PostStep.피드_조회_응답
 import static com.soolsul.soolsulserver.acceptance.ReplyStep.피드에_댓글_추가_요청;
 import static com.soolsul.soolsulserver.common.data.DataLoader.postIdOne;
 import static com.soolsul.soolsulserver.common.data.DataLoader.postIdTwo;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class MyPageAcceptanceTest extends AcceptanceTest {
 
@@ -86,5 +92,56 @@ public class MyPageAcceptanceTest extends AcceptanceTest {
 
         // then
         사용자_댓글_조회_응답_확인(사용자_댓글_조회_응답);
+    }
+
+    /**
+     * given: 가입후 로그인한 사용자가 있고
+     * when: 사용자가 프로필 편집을 누르면
+     * then: 기존의 사용자 이미지, 닉네임, 이메일을 반환한다
+     * when: 사용자가 프로필을 수정후 전송하면
+     * then: 수정된 정보가 서버에 저장된다
+     */
+    @DisplayName("사용자의 상세 정보를 반환한다.")
+    @Test
+    public void my_info_find_test() {
+        // given
+        String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .when()
+                .get("/api/mypages/edit")
+                .then().log().all()
+                .extract();
+
+        // then
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("M003"),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("유저의 기본 정보 조회에 성공했습니다."),
+                () -> assertThat(response.jsonPath().getString("data.imageUrl")).isNotBlank(),
+                () -> assertThat(response.jsonPath().getString("data.nickName")).isEqualTo(NICK_NAME),
+                () -> assertThat(response.jsonPath().getString("data.email")).isEqualTo(USER_EMAIL)
+        );
+
+        // when
+        ExtractableResponse<Response> editRequest = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(new UserInfoEditRequest("new_url", "change", "change@email.com"))
+                .when()
+                .patch("/api/mypages/edit")
+                .then().log().all()
+                .extract();
+
+        // then
+        assertAll(
+                () -> assertThat(editRequest.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(editRequest.jsonPath().getString("code")).isEqualTo("M004"),
+                () -> assertThat(editRequest.jsonPath().getString("message")).isEqualTo("유저의 기본 정보 수정에 성공했습니다.")
+        );
     }
 }
