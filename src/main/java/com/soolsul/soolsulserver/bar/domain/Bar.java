@@ -23,6 +23,8 @@ public class Bar extends BaseTimeEntity {
     @GenericGenerator(name = "uuid", strategy = "uuid")
     private String id;
 
+    private String regionId;
+
     private String barCategoryId;
 
     private String name;
@@ -30,25 +32,24 @@ public class Bar extends BaseTimeEntity {
     private String description;
 
     @Embedded
-    private Address address;
+    private StreetNameAddress streetNameAddress;
 
     @Embedded
     private Location location;
 
-    public Bar(String id, String barCategoryId, String name, String description, Address address, Location location) {
-        this.id = id;
+    public Bar(
+            String regionId,
+            String barCategoryId,
+            String name,
+            String description,
+            StreetNameAddress streetNameAddress,
+            Location location
+    ) {
+        this.regionId = regionId;
         this.barCategoryId = barCategoryId;
         this.name = name;
         this.description = description;
-        this.address = address;
-        this.location = location;
-    }
-
-    public Bar(String barCategoryId, String name, String description, Address address, Location location) {
-        this.barCategoryId = barCategoryId;
-        this.name = name;
-        this.description = description;
-        this.address = address;
+        this.streetNameAddress = streetNameAddress;
         this.location = location;
     }
 

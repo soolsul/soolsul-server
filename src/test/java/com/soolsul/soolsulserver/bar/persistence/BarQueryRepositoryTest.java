@@ -1,6 +1,7 @@
 package com.soolsul.soolsulserver.bar.persistence;
 
 import com.soolsul.soolsulserver.bar.domain.Bar;
+import com.soolsul.soolsulserver.bar.domain.StreetNameAddress;
 import com.soolsul.soolsulserver.bar.exception.BarNotFoundException;
 import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupResponse;
 import com.soolsul.soolsulserver.config.QueryDslConfig;
@@ -35,7 +36,13 @@ class BarQueryRepositoryTest {
     @Test
     void find_by_id() {
         Bar bar = testEntityManager.persist(
-                new Bar("regionId01", "barCategoryId", "barName","description", new Location(50.0, 50.0))
+                new Bar(
+                        "regionId01",
+                        "barCategoryId",
+                        "barName",
+                        "description",
+                        new StreetNameAddress("", "서울", "중구", "을지로", 18, "", "2층"),
+                        new Location(50.0, 50.0))
         );
 
         BarLookupResponse findBar = barQueryRepository.findById(bar.getId()).orElseThrow(BarNotFoundException::new);
