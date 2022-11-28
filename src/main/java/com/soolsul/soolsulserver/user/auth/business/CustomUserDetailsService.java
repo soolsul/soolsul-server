@@ -79,19 +79,28 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserInfo findUserInfo = userInfoRepository.findByUserId(userId)
                 .orElseThrow(UserNotFoundException::new);
 
+        checkAlreadyExistsUser(editRequest.email(), editRequest.nickName());
+
         findUser.editEmail(editRequest.email());
         findUserInfo.editNickNameAndImage(editRequest.nickName(), editRequest.imageUrl());
     }
 
     private void checkAlreadyExistsUser(String email, String nickname) {
-        userRepository.findByEmail(email)
-                .ifPresent(user -> {
-                    throw new UserAlreadyExistsException();
-                });
+        checkAlreadyExistsEmail(email);
+        checkAlreadyExistsNickName(nickname);
+    }
 
+    private void checkAlreadyExistsNickName(String nickname) {
         userInfoRepository.findByNickname(nickname)
                 .ifPresent(user -> {
                     throw new UserNicknameDuplicatedException();
+                });
+    }
+
+    private void checkAlreadyExistsEmail(String email) {
+        userRepository.findByEmail(email)
+                .ifPresent(user -> {
+                    throw new UserAlreadyExistsException();
                 });
     }
 
