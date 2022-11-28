@@ -1,10 +1,14 @@
 package com.soolsul.soolsulserver.acceptance;
 
+import com.soolsul.soolsulserver.user.mypage.presentation.dto.reqeust.UserInfoEditRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
+import static com.soolsul.soolsulserver.acceptance.AcceptanceTest.NICK_NAME;
+import static com.soolsul.soolsulserver.acceptance.AcceptanceTest.USER_EMAIL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -62,6 +66,47 @@ public class MyPageStep {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .when().get("/api/mypages/replies")
+                .then().log().all()
+                .extract();
+    }
+
+
+    public static void 사용자_프로필_편집_응답_확인(ExtractableResponse<Response> editRequest) {
+        assertAll(
+                () -> assertThat(editRequest.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(editRequest.jsonPath().getString("code")).isEqualTo("M004"),
+                () -> assertThat(editRequest.jsonPath().getString("message")).isEqualTo("유저의 기본 정보 수정에 성공했습니다.")
+        );
+    }
+
+    public static ExtractableResponse<Response> 사용자_프로필_편집_요청(String accessToken, UserInfoEditRequest userInfoEditRequest) {
+        return RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(userInfoEditRequest)
+                .when()
+                .patch("/api/mypages/edit")
+                .then().log().all()
+                .extract();
+    }
+
+    public static void 사용자_프로필_편집_폼_응답_확인(ExtractableResponse<Response> response) {
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("M003"),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("유저의 기본 정보 조회에 성공했습니다."),
+                () -> assertThat(response.jsonPath().getString("data.nickName")).isEqualTo(NICK_NAME),
+                () -> assertThat(response.jsonPath().getString("data.email")).isEqualTo(USER_EMAIL)
+        );
+    }
+
+    public static ExtractableResponse<Response> 사용자_프로필_편집_폼_요청(String accessToken) {
+        return RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .when()
+                .get("/api/mypages/edit")
                 .then().log().all()
                 .extract();
     }

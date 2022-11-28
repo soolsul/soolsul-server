@@ -69,6 +69,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public void editUserInformation(UserInfoEditRequest editRequest, String userId) {
+        edit(editRequest, userId);
+    }
+
+    private void edit(UserInfoEditRequest editRequest, String userId) {
         CustomUser findUser = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
