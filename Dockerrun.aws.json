@@ -1,0 +1,13 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "Image": {
+    "Name": "141454826176.dkr.ecr.ap-northeast-2.amazonaws.com/soolsul:latest",
+    "Update": "true"
+  },
+  "Ports": [
+    {
+      "ContainerPort": "8080",
+      "HostPort": "8080"
+    }
+  ]
+}

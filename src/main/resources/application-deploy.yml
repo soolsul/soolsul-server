@@ -1,0 +1,53 @@
+spring:
+  datasource:
+    url: ${rds.url}
+    username: ${rds.username}
+    password: ${rds.password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: ${redis.host}
+    port: ${redis.port}
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true # 추후 초기화 데이터 삽입용
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:sql/data.sql
+  profiles:
+    include: aws-deploy
+
+
+management:
+  endpoint:
+    web:
+      exposure:
+        include: health
+    health:
+      show-details: always
+
+
+jwt:
+  expire-length: 1800000 # 30min
+  refresh-length: 86400000 # 1day
+  access:
+    private: ${jwt.access.private}
+  refresh:
+    private: ${jwt.refresh.private}
+
+springdoc:
+  version: v.1.0.0
+  packages-to-scan: com.soolsul.soolsulserver
+  swagger-ui:
+    path: /swagger-ui
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v1/api-docs
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
