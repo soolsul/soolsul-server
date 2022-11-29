@@ -1,10 +1,12 @@
 package com.soolsul.soolsulserver.curation.presentation;
 
+import com.soolsul.soolsulserver.bar.businees.dto.BarSnackMenuResponse;
+import com.soolsul.soolsulserver.bar.businees.dto.BarStreetNameAddressResponse;
 import com.soolsul.soolsulserver.curation.dto.BarOpeningHoursResponse;
-import com.soolsul.soolsulserver.curation.dto.BarSnackMenuResponse;
 import com.soolsul.soolsulserver.curation.dto.CurationDetailLookupResponse;
 import com.soolsul.soolsulserver.curation.dto.CurationPostLookupResponse;
 import com.soolsul.soolsulserver.curation.dto.CurationsLookupResponse;
+import com.soolsul.soolsulserver.curation.dto.PostPhotoImageResponse;
 import com.soolsul.soolsulserver.curation.facade.CurationQueryFacade;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -72,9 +74,8 @@ class CurationQueryControllerTest {
         CurationDetailLookupResponse curationDetailLookupResponse = new CurationDetailLookupResponse(
                 "curationTitle",
                 "curationContent",
-                "barSimpleAddress",
-                "barConcreteAddress",
                 "02-0000-0000",
+                new BarStreetNameAddressResponse("", "서울", "중구", "을지로", 112, "11", "1층"),
                 new BarOpeningHoursResponse(
                         LocalTime.of(17, 0, 0),
                         LocalTime.of(1, 0, 0)
@@ -88,9 +89,9 @@ class CurationQueryControllerTest {
                                 "postTitle01",
                                 "postContent",
                                 List.of(
-                                        "postImageUrl01",
-                                        "postImageUrl02",
-                                        "postImageUrl03"
+                                        new PostPhotoImageResponse("postImageUrl01"),
+                                        new PostPhotoImageResponse("postImageUrl02"),
+                                        new PostPhotoImageResponse("postImageUrl03")
                                 ),
                                 3
                         ),
@@ -98,9 +99,9 @@ class CurationQueryControllerTest {
                                 "postTitle02",
                                 "postContent",
                                 List.of(
-                                        "postImageUrl01",
-                                        "postImageUrl02",
-                                        "postImageUrl03"
+                                        new PostPhotoImageResponse("postImageUrl01"),
+                                        new PostPhotoImageResponse("postImageUrl02"),
+                                        new PostPhotoImageResponse("postImageUrl03")
                                 ),
                                 3
                         )

@@ -6,6 +6,7 @@ import com.soolsul.soolsulserver.bar.businees.dto.FilteredBarLookupResponse;
 import com.soolsul.soolsulserver.bar.exception.BarNotFoundException;
 import com.soolsul.soolsulserver.bar.persistence.BarQueryRepository;
 import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupResponse;
+import com.soolsul.soolsulserver.curation.dto.CurationPostLookupResponse;
 import com.soolsul.soolsulserver.location.response.LocationSquareRangeCondition;
 import com.soolsul.soolsulserver.post.business.dto.response.PostDetailLikeResponse;
 import com.soolsul.soolsulserver.post.business.dto.response.PostDetailStoreResponse;
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +33,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PostQueryService {
 
@@ -119,5 +122,10 @@ public class PostQueryService {
                 })
                 .collect(Collectors.toList());
     }
+
+    public List<CurationPostLookupResponse> findAllPostByBarId(String barId) {
+        return postRepository.findAllPostByBarId(barId);
+    }
+
 }
 

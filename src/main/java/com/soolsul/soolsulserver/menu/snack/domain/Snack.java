@@ -3,6 +3,7 @@ package com.soolsul.soolsulserver.menu.snack.domain;
 import com.soolsul.soolsulserver.common.domain.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Snack extends BaseTimeEntity {
 
@@ -22,6 +24,11 @@ public class Snack extends BaseTimeEntity {
     private String name;
 
     private Long snackCategoryId;
+
+    public Snack(String name, Long snackCategoryId) {
+        this.name = name;
+        this.snackCategoryId = snackCategoryId;
+    }
 
     @Override
     public boolean equals(Object o) {

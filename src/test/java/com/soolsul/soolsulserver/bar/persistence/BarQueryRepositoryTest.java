@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -24,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
         includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = BarQueryRepository.class)
 )
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Transactional
 class BarQueryRepositoryTest {
 
     @Autowired
@@ -41,6 +43,7 @@ class BarQueryRepositoryTest {
                         "barCategoryId",
                         "barName",
                         "description",
+                        "02-0000-0000",
                         new StreetNameAddress("", "서울", "중구", "을지로", 18, "", "2층"),
                         new Location(50.0, 50.0))
         );

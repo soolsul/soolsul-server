@@ -6,6 +6,7 @@ import com.soolsul.soolsulserver.bar.domain.BarMoodTag;
 import com.soolsul.soolsulserver.bar.domain.StreetNameAddress;
 import com.soolsul.soolsulserver.config.QueryDslConfig;
 import com.soolsul.soolsulserver.curation.domain.Curation;
+import com.soolsul.soolsulserver.curation.dto.CurationListLookupResponse;
 import com.soolsul.soolsulserver.curation.dto.CurationLookupResponse;
 import com.soolsul.soolsulserver.location.response.LocationSquareRangeCondition;
 import com.soolsul.soolsulserver.region.domain.Location;
@@ -19,16 +20,19 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @Import(QueryDslConfig.class)
 @DataJpaTest(
         includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = CurationQueryRepository.class)
 )
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Transactional
 class CurationQueryRepositoryTest {
 
     @Autowired
@@ -49,12 +53,12 @@ class CurationQueryRepositoryTest {
         LocationSquareRangeCondition locationSquareRangeCondition = new LocationSquareRangeCondition(119, 29, 122, 32);
 
         //when
-        List<CurationLookupResponse> curationLookupResponses = curationQueryRepository.findAllCurationsInLocationRange(
+        List<CurationListLookupResponse> curationListLookupResponses = curationQueryRepository.findAllCurationsInLocationRange(
                 locationSquareRangeCondition
         );
 
         //then
-        assertThat(curationLookupResponses).hasSize(8);
+        assertThat(curationListLookupResponses).hasSize(8);
     }
 
     private void initData() {
@@ -64,6 +68,7 @@ class CurationQueryRepositoryTest {
                 "barName1",
                 "description1",
                 "description",
+                "02-0000-0000",
                 new StreetNameAddress("", "서울", "중구", "수표로", 12,  "12", ""),
                 new Location(120, 30)
         );
@@ -73,6 +78,7 @@ class CurationQueryRepositoryTest {
                 "barName2",
                 "description2",
                 "description",
+                "02-0000-0000",
                 new StreetNameAddress("", "서울", "중구", "수표로", 12, "12" , ""),
                 new Location(121, 31)
         );
@@ -108,6 +114,24 @@ class CurationQueryRepositoryTest {
         testEntityManager.persist(barAlcoholTag02);
         testEntityManager.persist(barAlcoholTag03);
         testEntityManager.persist(barAlcoholTag04);
+    }
+
+    @DisplayName("큐레이션을 조회한다")
+    @Test
+    void findById() {
+        //given
+        Curation savedCuration = testEntityManager.persist(new Curation("curationTitle1", "mainUrl1", "curationContent1", "bar01"));
+
+        //when
+        CurationLookupResponse curationLookupResponse = curationQueryRepository.findById(savedCuration.getId());
+
+        //then
+        assertAll(
+                () -> assertThat(savedCuration.getTitle()).isEqualTo(curationLookupResponse.curationTitle()),
+                () -> assertThat(savedCuration.getContent()).isEqualTo(curationLookupResponse.curationContent()),
+                () -> assertThat(savedCuration.getMainPictureUrl()).isEqualTo(curationLookupResponse.mainPictureUrl())
+        );
+
     }
 
 }

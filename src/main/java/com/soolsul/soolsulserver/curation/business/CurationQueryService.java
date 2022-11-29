@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.curation.business;
 
+import com.soolsul.soolsulserver.curation.dto.CurationListLookupResponse;
 import com.soolsul.soolsulserver.curation.dto.CurationLookupResponse;
 import com.soolsul.soolsulserver.curation.persistence.CurationQueryRepository;
 import com.soolsul.soolsulserver.location.response.LocationSquareRangeCondition;
@@ -19,28 +20,28 @@ public class CurationQueryService {
 
     private final CurationQueryRepository curationQueryRepository;
 
-    public List<CurationLookupResponse> findAllSingleTagCurationsByLocationRange(
+    public List<CurationListLookupResponse> findAllSingleTagCurationsByLocationRange(
             LocationSquareRangeCondition locationSquareRangeCondition
     ) {
-        List<CurationLookupResponse> curationLookupResponses
+        List<CurationListLookupResponse> curationListLookupResponses
                 = curationQueryRepository.findAllCurationsInLocationRange(locationSquareRangeCondition);
 
-        Map<String, Boolean> curationIdMap = createCurationIdMap(curationLookupResponses);
-        return getFilteredSingleTagCuration(curationLookupResponses, curationIdMap);
+        Map<String, Boolean> curationIdMap = createCurationIdMap(curationListLookupResponses);
+        return getFilteredSingleTagCuration(curationListLookupResponses, curationIdMap);
     }
 
-    private List<CurationLookupResponse> getFilteredSingleTagCuration(
-            List<CurationLookupResponse> curationLookupResponses,
+    private List<CurationListLookupResponse> getFilteredSingleTagCuration(
+            List<CurationListLookupResponse> curationListLookupRespons,
             Map<String, Boolean> curationIdMap
     ) {
-        List<CurationLookupResponse> filteredSingleTagNameCurations = new ArrayList<>();
+        List<CurationListLookupResponse> filteredSingleTagNameCurations = new ArrayList<>();
 
-        for (CurationLookupResponse curationLookupResponse : curationLookupResponses) {
-            String curationId = curationLookupResponse.curationId();
+        for (CurationListLookupResponse curationListLookupResponse : curationListLookupRespons) {
+            String curationId = curationListLookupResponse.curationId();
             Boolean alreadyAddedCuration = curationIdMap.get(curationId);
 
             if(!alreadyAddedCuration) {
-                filteredSingleTagNameCurations.add(curationLookupResponse);
+                filteredSingleTagNameCurations.add(curationListLookupResponse);
                 curationIdMap.put(curationId, true);
             }
         }
@@ -49,12 +50,15 @@ public class CurationQueryService {
     }
 
     // createCurationIdMap : 단일 태그 큐레이션을 추가하기 위한 함수 (key : curationId, Boolean : curation 추가 여부를 확인하는 변수)
-    private Map<String, Boolean> createCurationIdMap(List<CurationLookupResponse> curationLookupResponses) {
+    private Map<String, Boolean> createCurationIdMap(List<CurationListLookupResponse> curationListLookupResponses) {
         Map<String, Boolean> curationIdMap = new HashMap<>();
-        for (CurationLookupResponse curationLookupResponse : curationLookupResponses) {
-            curationIdMap.putIfAbsent(curationLookupResponse.curationId(), false);
+        for (CurationListLookupResponse curationListLookupResponse : curationListLookupResponses) {
+            curationIdMap.putIfAbsent(curationListLookupResponse.curationId(), false);
         }
         return curationIdMap;
     }
 
+    public CurationLookupResponse findCurationByCurationId(String curationId) {
+        return curationQueryRepository.findById(curationId);
+    }
 }

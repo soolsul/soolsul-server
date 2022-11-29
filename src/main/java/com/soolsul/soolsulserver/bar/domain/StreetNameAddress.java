@@ -12,7 +12,6 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StreetNameAddress {
 
-    private static final String ROAD_NAME_SUFFIX = "길";
     @ColumnDefault("''")
     private String regionName = "";
 
@@ -51,19 +50,4 @@ public class StreetNameAddress {
         this.locationDetail = locationDetail;
     }
 
-    public String simpleStreetNameAddress() {
-        return String.format("%s %s %s", regionName, city, district).trim();
-    }
-
-    public String detailStreetNameAddress() {
-        return String.format("%s %s %s%s %s %s %s",
-                        regionName,
-                city,
-                district,
-                roadName,
-                roadNumber == 0 ? "" : roadNumber + ROAD_NAME_SUFFIX,
-                roadNumberDetail,
-                locationDetail.isEmpty() ? "" : locationDetail)
-                .trim();
-    }
 }

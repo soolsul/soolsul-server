@@ -65,6 +65,7 @@ public class DataLoader {
                         "region_id",
                         "bar_category_id",
                         "bar_name",
+                        "02-0000-0000",
                         new StreetNameAddress("", "서울", "중구", "을지로", 18, "", "2층"),
                         new Location(37.49909732361135d, 126.9459247225816d)));
         barId = saveBar.getId();

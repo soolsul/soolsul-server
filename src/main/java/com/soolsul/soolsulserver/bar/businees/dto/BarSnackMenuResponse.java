@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.curation.dto;
+package com.soolsul.soolsulserver.bar.businees.dto;
 
 public record BarSnackMenuResponse(
         String snackMenuName,

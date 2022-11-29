@@ -31,6 +31,8 @@ public class Bar extends BaseTimeEntity {
 
     private String description;
 
+    private String phoneNumber;
+
     @Embedded
     private StreetNameAddress streetNameAddress;
 
@@ -42,6 +44,7 @@ public class Bar extends BaseTimeEntity {
             String barCategoryId,
             String name,
             String description,
+            String phoneNumber,
             StreetNameAddress streetNameAddress,
             Location location
     ) {
@@ -49,6 +52,7 @@ public class Bar extends BaseTimeEntity {
         this.barCategoryId = barCategoryId;
         this.name = name;
         this.description = description;
+        this.phoneNumber = phoneNumber;
         this.streetNameAddress = streetNameAddress;
         this.location = location;
     }
