@@ -58,7 +58,6 @@ class PostQueryRepositoryImplTest {
                 () -> assertThat(curationPostLookupResponses.get(0).getUserLikes()).isEqualTo(2)
         );
 
-        System.out.println(curationPostLookupResponses);
     }
 
     private void initData() {

@@ -15,6 +15,8 @@ import static com.soolsul.soolsulserver.menu.snack.domain.QSnackMenu.snackMenu;
 @RequiredArgsConstructor
 public class BarSnackMenuRepository {
 
+    private static final int LIMIT_NUMBER = 3;
+
     private final JPAQueryFactory jpaQueryFactory;
 
     public List<BarSnackMenuResponse> findAllBarSnackMenuByBarId(String barId) {
@@ -25,7 +27,7 @@ public class BarSnackMenuRepository {
                 .from(snackMenu)
                 .innerJoin(snack).on(snackMenu.snack.id.eq(snack.id))
                 .where(snackMenu.barId.eq(barId))
-                .limit(3)
+                .limit(LIMIT_NUMBER)
                 .fetch();
     }
 
