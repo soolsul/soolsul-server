@@ -46,7 +46,8 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
         JPQLQuery<Tuple> subQuery = JPAExpressions
                 .select(subPhoto.post.id, subPhoto.uuidFileUrl.min())
                 .from(subPhoto)
-                .groupBy(subPhoto.post.id);
+                .groupBy(subPhoto.post.id)
+                .having(postPhoto.uuidFileUrl.eq(subPhoto.uuidFileUrl.min()));
 
         return queryFactory
                 .select(new QUserPostLookUpResponse(post.id, postPhoto.uuidFileUrl))
@@ -54,7 +55,7 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                 .on(post.id.eq(postPhoto.post.id))
                 .where(
                         post.ownerId.eq(userId),
-                        subQuery.having(postPhoto.uuidFileUrl.eq(subPhoto.uuidFileUrl.min())).exists()
+                        subQuery.exists()
                 )
                 .orderBy(post.createdAt.desc())
                 .fetch();
