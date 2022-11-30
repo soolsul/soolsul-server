@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.post.business.dto.request;
 
-import com.soolsul.soolsulserver.user.auth.repository.dto.UserLookUpResponse;
+import com.soolsul.soolsulserver.user.auth.repository.dto.response.UserLookUpResponse;
 import com.soolsul.soolsulserver.post.domain.Post;
 
 import javax.validation.constraints.NotBlank;

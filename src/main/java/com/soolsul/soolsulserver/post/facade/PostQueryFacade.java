@@ -1,7 +1,7 @@
 package com.soolsul.soolsulserver.post.facade;
 
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
-import com.soolsul.soolsulserver.user.auth.repository.dto.UserLookUpResponse;
+import com.soolsul.soolsulserver.user.auth.repository.dto.response.UserLookUpResponse;
 import com.soolsul.soolsulserver.location.request.LocationSquareRangeRequest;
 import com.soolsul.soolsulserver.location.response.LocationSquareRangeCondition;
 import com.soolsul.soolsulserver.location.service.LocationRangeService;

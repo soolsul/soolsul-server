@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -63,6 +64,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addLogoutHandler(jwtLogoutHandler())
                 .logoutSuccessHandler(jwtLogoutSuccessHandler());
     }
+
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/swagger-ui/**", "/v1/api-docs/**");
+         }
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {

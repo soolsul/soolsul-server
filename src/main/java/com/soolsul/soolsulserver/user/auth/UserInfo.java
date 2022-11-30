@@ -47,6 +47,11 @@ public class UserInfo {
                 request.getName());
     }
 
+    public void editNickNameAndImage(String nickName, String profileImage) {
+        this.profileImage = profileImage;
+        this.nickname = nickName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

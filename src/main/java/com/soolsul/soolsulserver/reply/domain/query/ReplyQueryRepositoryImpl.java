@@ -1,6 +1,8 @@
 package com.soolsul.soolsulserver.reply.domain.query;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.soolsul.soolsulserver.post.domain.dto.QUserReplyLookUpResponse;
+import com.soolsul.soolsulserver.post.domain.dto.UserReplyLookUpResponse;
 import com.soolsul.soolsulserver.reply.business.dto.response.QReplyDetailResponse;
 import com.soolsul.soolsulserver.reply.business.dto.response.ReplyDetailResponse;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +41,15 @@ public class ReplyQueryRepositoryImpl implements ReplyQueryRepository {
                 .fetch();
 
         return checkEndPage(replies, pageable);
+    }
+
+    @Override
+    public List<UserReplyLookUpResponse> findRepliesByUserId(String userId) {
+        return queryFactory
+                .select(new QUserReplyLookUpResponse(reply.postId, reply.contents.reviewContent))
+                .from(reply)
+                .where(reply.ownerId.eq(userId))
+                .fetch();
     }
 
     private Slice<ReplyDetailResponse> checkEndPage(List<ReplyDetailResponse> results, Pageable pageable) {

@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.user.auth.repository;
 
-import com.soolsul.soolsulserver.user.auth.repository.dto.UserLookUpResponse;
+import com.soolsul.soolsulserver.user.auth.repository.dto.response.UserLookUpResponse;
 
 import java.util.Optional;
 

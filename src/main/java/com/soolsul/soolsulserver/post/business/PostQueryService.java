@@ -8,16 +8,17 @@ import com.soolsul.soolsulserver.bar.persistence.BarQueryRepository;
 import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupResponse;
 import com.soolsul.soolsulserver.curation.dto.CurationPostLookupResponse;
 import com.soolsul.soolsulserver.location.response.LocationSquareRangeCondition;
+import com.soolsul.soolsulserver.post.business.dto.request.PostLookupRequest;
 import com.soolsul.soolsulserver.post.business.dto.response.PostDetailLikeResponse;
 import com.soolsul.soolsulserver.post.business.dto.response.PostDetailStoreResponse;
 import com.soolsul.soolsulserver.post.business.dto.response.PostDetailUserResponse;
-import com.soolsul.soolsulserver.post.business.dto.request.PostLookupRequest;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.domain.PostPhoto;
 import com.soolsul.soolsulserver.post.domain.PostRepository;
 import com.soolsul.soolsulserver.post.domain.PostScrapRepository;
 import com.soolsul.soolsulserver.post.domain.dto.FilteredPostLookupResponse;
 import com.soolsul.soolsulserver.post.domain.dto.ScrapedPostLookUpResponse;
+import com.soolsul.soolsulserver.post.domain.dto.UserPostLookUpResponse;
 import com.soolsul.soolsulserver.post.exception.PostNotFoundException;
 import com.soolsul.soolsulserver.post.presentation.dto.PostDetailResponse;
 import com.soolsul.soolsulserver.post.presentation.dto.PostListResponse;
@@ -77,6 +78,10 @@ public class PostQueryService {
 
     public List<ScrapedPostLookUpResponse> findAllScrapedPost(String userId) {
         return postScrapRepository.findAllScrapedPost(userId);
+    }
+
+    public List<UserPostLookUpResponse> findAllUserPost(String userId) {
+        return postRepository.findAllUserPost(userId);
     }
 
     private boolean isLoginUserClickedLike(String loginUserId, Post findPost) {

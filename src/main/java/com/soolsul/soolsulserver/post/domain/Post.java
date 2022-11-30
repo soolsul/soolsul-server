@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.post.domain;
 
+import com.soolsul.soolsulserver.common.domain.BaseTimeEntity;
 import com.soolsul.soolsulserver.user.auth.CustomUser;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,7 +19,7 @@ import java.util.Objects;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Post {
+public class Post extends BaseTimeEntity {
 
     private static final int LIMIT_LENGTH = 50;
 

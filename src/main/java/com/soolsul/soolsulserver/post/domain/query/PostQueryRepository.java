@@ -2,6 +2,7 @@ package com.soolsul.soolsulserver.post.domain.query;
 
 import com.soolsul.soolsulserver.curation.dto.CurationPostLookupResponse;
 import com.soolsul.soolsulserver.post.domain.dto.FilteredPostLookupResponse;
+import com.soolsul.soolsulserver.post.domain.dto.UserPostLookUpResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
@@ -11,4 +12,7 @@ public interface PostQueryRepository {
     Slice<FilteredPostLookupResponse> findPostListByLocation(List<String> barIds, Pageable pageable);
 
     List<CurationPostLookupResponse> findAllPostByBarId(String barId);
+
+    List<UserPostLookUpResponse> findAllUserPost(String userId);
+
 }

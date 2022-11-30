@@ -1,11 +1,17 @@
 package com.soolsul.soolsulserver.post.domain.query;
 
+import com.querydsl.core.Tuple;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.soolsul.soolsulserver.curation.dto.CurationPostLookupResponse;
 import com.soolsul.soolsulserver.curation.dto.QCurationPostLookupResponse;
 import com.soolsul.soolsulserver.curation.dto.QPostPhotoImageResponse;
+import com.soolsul.soolsulserver.post.domain.QPostPhoto;
 import com.soolsul.soolsulserver.post.domain.dto.FilteredPostLookupResponse;
 import com.soolsul.soolsulserver.post.domain.dto.QFilteredPostLookupResponse;
+import com.soolsul.soolsulserver.post.domain.dto.QUserPostLookUpResponse;
+import com.soolsul.soolsulserver.post.domain.dto.UserPostLookUpResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -52,6 +58,26 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                                         list(new QPostPhotoImageResponse(postPhoto.uuidFileUrl).as("postPhotoImageUrl")),
                                         post.likes.likeUsers.size().as("userLikes")))
                 );
+
+    public List<UserPostLookUpResponse> findAllUserPost(String userId) {
+        QPostPhoto subPhoto = new QPostPhoto("subPhoto");
+
+        JPQLQuery<Tuple> subQuery = JPAExpressions
+                .select(subPhoto.post.id, subPhoto.uuidFileUrl.min())
+                .from(subPhoto)
+                .groupBy(subPhoto.post.id)
+                .having(postPhoto.uuidFileUrl.eq(subPhoto.uuidFileUrl.min()));
+
+        return queryFactory
+                .select(new QUserPostLookUpResponse(post.id, postPhoto.uuidFileUrl))
+                .from(post).join(postPhoto)
+                .on(post.id.eq(postPhoto.post.id))
+                .where(
+                        post.ownerId.eq(userId),
+                        subQuery.exists()
+                )
+                .orderBy(post.createdAt.desc())
+                .fetch();
     }
 
     private Slice<FilteredPostLookupResponse> checkEndPage(List<FilteredPostLookupResponse> results, Pageable pageable) {
