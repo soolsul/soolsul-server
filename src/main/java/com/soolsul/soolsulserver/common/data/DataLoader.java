@@ -2,6 +2,7 @@ package com.soolsul.soolsulserver.common.data;
 
 import com.soolsul.soolsulserver.bar.domain.Bar;
 import com.soolsul.soolsulserver.bar.domain.BarRepository;
+import com.soolsul.soolsulserver.bar.domain.StreetNameAddress;
 import com.soolsul.soolsulserver.location.domain.LocationMagnificationLevel;
 import com.soolsul.soolsulserver.location.persistence.LocationMagnificationLevelRepository;
 import com.soolsul.soolsulserver.post.domain.Post;
@@ -58,7 +59,15 @@ public class DataLoader {
         Post savedPost2 = postRepository.save(post2);
         postIdTwo = savedPost2.getId();
 
-        Bar saveBar = barRepository.save(new Bar("bar_uuid_1", "region_id", "bar_category_id", "bar_name", "good", new Location(37.49909732361135d, 126.9459247225816d)));
+        Bar saveBar = barRepository.save(
+                new Bar(
+                        "bar_uuid_1",
+                        "region_id",
+                        "bar_category_id",
+                        "bar_name",
+                        "02-0000-0000",
+                        new StreetNameAddress("", "서울", "중구", "을지로", 18, "", "2층"),
+                        new Location(37.49909732361135d, 126.9459247225816d)));
         barId = saveBar.getId();
 
         log.info("[init complete DataLoader]");

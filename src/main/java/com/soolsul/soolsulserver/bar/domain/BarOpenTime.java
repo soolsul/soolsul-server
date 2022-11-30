@@ -1,7 +1,7 @@
 package com.soolsul.soolsulserver.bar.domain;
 
 import com.soolsul.soolsulserver.common.domain.BaseTimeEntity;
-import com.soolsul.soolsulserver.common.domain.Duration;
+import com.soolsul.soolsulserver.common.domain.OpeningHours;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,11 +24,11 @@ public class BarOpenTime extends BaseTimeEntity {
     private String barId;
 
     @Embedded
-    private Duration duration;
+    private OpeningHours openingHours;
 
-    public BarOpenTime(String barId, Duration duration) {
+    public BarOpenTime(String barId, OpeningHours openingHours) {
         this.barId = barId;
-        this.duration = duration;
+        this.openingHours = openingHours;
     }
 
     @Override

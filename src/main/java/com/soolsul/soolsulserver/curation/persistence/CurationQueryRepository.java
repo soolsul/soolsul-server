@@ -2,6 +2,7 @@ package com.soolsul.soolsulserver.curation.persistence;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.soolsul.soolsulserver.curation.dto.CurationListLookupResponse;
 import com.soolsul.soolsulserver.curation.dto.CurationLookupResponse;
 import com.soolsul.soolsulserver.location.response.LocationSquareRangeCondition;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class CurationQueryRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     // 무드, 술집 태그 중복한 큐레이션 결과 반환
-    public List<CurationLookupResponse> findAllCurationsInLocationRange(
+    public List<CurationListLookupResponse> findAllCurationsInLocationRange(
             LocationSquareRangeCondition locationSquareRangeCondition
     ) {
         double southWestLatitude = locationSquareRangeCondition.southWestLatitude();
@@ -30,7 +31,7 @@ public class CurationQueryRepository {
         double northEastLongitude = locationSquareRangeCondition.northEastLongitude();
 
         return jpaQueryFactory.select(Projections.constructor(
-                        CurationLookupResponse.class,
+                        CurationListLookupResponse.class,
                         curation.id,
                         curation.mainPictureUrl,
                         curation.title,
@@ -48,4 +49,15 @@ public class CurationQueryRepository {
                 .fetch();
     }
 
+    public CurationLookupResponse findById(String curationId) {
+        return jpaQueryFactory.select(Projections.constructor(CurationLookupResponse.class,
+                        curation.id,
+                        curation.mainPictureUrl,
+                        curation.title,
+                        curation.content,
+                        curation.barId))
+                .from(curation)
+                .where(curation.id.eq(curationId))
+                .fetchOne();
+    }
 }

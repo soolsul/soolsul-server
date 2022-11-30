@@ -1,13 +1,12 @@
 package com.soolsul.soolsulserver.post.business;
 
-import com.soolsul.soolsulserver.user.auth.CustomUser;
-import com.soolsul.soolsulserver.user.auth.exception.UserNotFoundException;
 import com.soolsul.soolsulserver.bar.exception.BarNotFoundException;
 import com.soolsul.soolsulserver.bar.persistence.BarQueryRepository;
 import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupResponse;
-import com.soolsul.soolsulserver.post.business.PostCommandService;
 import com.soolsul.soolsulserver.post.domain.PostRepository;
 import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
+import com.soolsul.soolsulserver.user.auth.CustomUser;
+import com.soolsul.soolsulserver.user.auth.exception.UserNotFoundException;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -57,7 +56,17 @@ public class PostCommandFacadeSpecTest {
     @Test
     public void create_post_test() {
         // given
-        BarLookupResponse barLookupResponse = new BarLookupResponse(BAR_ID, "region_id", "category_id", "bar_name", "description", null);
+        BarLookupResponse barLookupResponse = new BarLookupResponse(
+                BAR_ID,
+                "region_id",
+                "category_id",
+                "bar_name",
+                "description",
+                "02-0000-0000",
+                null,
+                null,
+                null
+        );
 
         given(barQueryRepository.findById(anyString())).willReturn(Optional.of(barLookupResponse));
 
@@ -94,7 +103,17 @@ public class PostCommandFacadeSpecTest {
     @Test
     public void create_post_if_exists_user_test() {
         // given
-        BarLookupResponse barLookupResponse = new BarLookupResponse(BAR_ID, "region_id", "category_id", "bar_name", "description", null);
+        BarLookupResponse barLookupResponse = new BarLookupResponse(
+                BAR_ID,
+                "region_id",
+                "category_id",
+                "bar_name",
+                "description",
+                "02-0000-0000",
+                null,
+                null,
+                null
+        );
 
         given(barQueryRepository.findById(anyString())).willReturn(Optional.of(barLookupResponse));
 

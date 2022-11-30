@@ -8,6 +8,8 @@ import com.soolsul.soolsulserver.post.business.dto.request.PostLookupRequest;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.domain.PostPhoto;
 import com.soolsul.soolsulserver.post.presentation.dto.PostDetailResponse;
+import com.soolsul.soolsulserver.user.auth.CustomUser;
+import com.soolsul.soolsulserver.user.auth.repository.dto.UserLookUpResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,9 +42,27 @@ public class PostQueryFacadeSpecTest {
     public void find_detail_post_test() {
         // given
         CustomUser customUser = new CustomUser("id1", "test@email.com", "1234");
-        UserLookUpResponse userLookUpResponse = new UserLookUpResponse("id1", "test@email.com", "1234", "010-1111-1212", "test", "shine", "url");
+        UserLookUpResponse userLookUpResponse = new UserLookUpResponse(
+                "id1",
+                "test@email.com",
+                "1234",
+                "010-1111-1212",
+                "test",
+                "shine",
+                "url"
+        );
         List<PostPhoto> postPhotos = List.of(new PostPhoto("barId", "", "uuid1", ""), new PostPhoto("barId", "", "uuid2", ""));
-        BarLookupResponse barLookupResponse = new BarLookupResponse("barId", "region_id", "category_id", "bar_name", "description", null);
+        BarLookupResponse barLookupResponse = new BarLookupResponse(
+                "barId",
+                "region_id",
+                "category_id",
+                "bar_name",
+                "description",
+                "02-0000-0000",
+                null,
+                null,
+                null
+        );
         Post post = new Post("user_uuid", "", 4.3f, "content!");
         post.addPhotoList(postPhotos);
         post.like(customUser);

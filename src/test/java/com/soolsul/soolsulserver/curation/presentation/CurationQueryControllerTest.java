@@ -1,6 +1,12 @@
 package com.soolsul.soolsulserver.curation.presentation;
 
+import com.soolsul.soolsulserver.bar.businees.dto.BarSnackMenuResponse;
+import com.soolsul.soolsulserver.bar.businees.dto.BarStreetNameAddressResponse;
+import com.soolsul.soolsulserver.curation.dto.BarOpeningHoursResponse;
+import com.soolsul.soolsulserver.curation.dto.CurationDetailLookupResponse;
+import com.soolsul.soolsulserver.curation.dto.CurationPostLookupResponse;
 import com.soolsul.soolsulserver.curation.dto.CurationsLookupResponse;
+import com.soolsul.soolsulserver.curation.dto.PostPhotoImageResponse;
 import com.soolsul.soolsulserver.curation.facade.CurationQueryFacade;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,11 +16,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -53,6 +62,63 @@ class CurationQueryControllerTest {
         result.andExpectAll(
                 status().isOk(),
                 jsonPath("$.code").value("C001"),
+                jsonPath("$.message").isNotEmpty(),
+                jsonPath("$.data").isNotEmpty()
+        );
+    }
+
+    @DisplayName("큐레이션의 상세 내용을 조회한다")
+    @Test
+    void find_curation_details_by_curation_id() throws Exception {
+        //given
+        CurationDetailLookupResponse curationDetailLookupResponse = new CurationDetailLookupResponse(
+                "curationTitle",
+                "curationContent",
+                "02-0000-0000",
+                new BarStreetNameAddressResponse("", "서울", "중구", "을지로", 112, "11", "1층"),
+                new BarOpeningHoursResponse(
+                        LocalTime.of(17, 0, 0),
+                        LocalTime.of(1, 0, 0)
+                ),
+                List.of(
+                        new BarSnackMenuResponse("snackMenuName01", 10000),
+                        new BarSnackMenuResponse("snackMenuName02", 20000)
+                ),
+                List.of(
+                        new CurationPostLookupResponse(
+                                "postTitle01",
+                                "postContent",
+                                List.of(
+                                        new PostPhotoImageResponse("postImageUrl01"),
+                                        new PostPhotoImageResponse("postImageUrl02"),
+                                        new PostPhotoImageResponse("postImageUrl03")
+                                ),
+                                3
+                        ),
+                        new CurationPostLookupResponse(
+                                "postTitle02",
+                                "postContent",
+                                List.of(
+                                        new PostPhotoImageResponse("postImageUrl01"),
+                                        new PostPhotoImageResponse("postImageUrl02"),
+                                        new PostPhotoImageResponse("postImageUrl03")
+                                ),
+                                3
+                        )
+                )
+        );
+        given(curationQueryFacade.findCurationDetailsByCurationId(any()))
+                .willReturn(curationDetailLookupResponse);
+
+
+        //when
+        ResultActions result = mockMvc.perform(get("/api/curations/{curationId}", "curationId")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        //then
+        result.andExpectAll(
+                status().isOk(),
+                jsonPath("$.code").value("C002"),
                 jsonPath("$.message").isNotEmpty(),
                 jsonPath("$.data").isNotEmpty()
         );

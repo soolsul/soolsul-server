@@ -27,7 +27,7 @@ public class BarQueryController {
     public ResponseEntity<BaseResponse<FilteredBarsLookupResponse>> findBarFilteredByConditions(
             @RequestParam double latitude, // 위도
             @RequestParam double longitude, // 경도
-            @RequestParam(defaultValue = "3") int level, //확대 레벨
+            @RequestParam(defaultValue = "7") int level, //확대 레벨
             @RequestParam @NotNull String barMoodTagNames,
             @RequestParam @NotNull String barAlcoholTagNames
     ) {

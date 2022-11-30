@@ -31,23 +31,29 @@ public class Bar extends BaseTimeEntity {
 
     private String description;
 
+    private String phoneNumber;
+
+    @Embedded
+    private StreetNameAddress streetNameAddress;
+
     @Embedded
     private Location location;
 
-    public Bar(String id, String regionId, String barCategoryId, String name, String description, Location location) {
-        this.id = id;
+    public Bar(
+            String regionId,
+            String barCategoryId,
+            String name,
+            String description,
+            String phoneNumber,
+            StreetNameAddress streetNameAddress,
+            Location location
+    ) {
         this.regionId = regionId;
         this.barCategoryId = barCategoryId;
         this.name = name;
         this.description = description;
-        this.location = location;
-    }
-
-    public Bar(String regionId, String barCategoryId, String name, String description, Location location) {
-        this.regionId = regionId;
-        this.barCategoryId = barCategoryId;
-        this.name = name;
-        this.description = description;
+        this.phoneNumber = phoneNumber;
+        this.streetNameAddress = streetNameAddress;
         this.location = location;
     }
 

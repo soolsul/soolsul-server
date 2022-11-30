@@ -33,7 +33,7 @@ public class UserInfo {
 
     private boolean deleted = false;
 
-    private UserInfo(String userId, String phone, String nickname, String name) {
+    public UserInfo(String userId, String phone, String nickname, String name) {
         this.userId = userId;
         this.phone = phone;
         this.nickname = nickname;
