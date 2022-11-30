@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.user.auth.repository.dto;
+package com.soolsul.soolsulserver.user.auth.repository.dto.response;
 
 public record UserLookUpResponse(
         String userId,

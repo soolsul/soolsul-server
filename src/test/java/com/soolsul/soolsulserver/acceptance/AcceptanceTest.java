@@ -15,6 +15,8 @@ public class AcceptanceTest {
 
     protected static final String USER_EMAIL = "user@email.com";
     protected static final String USER_PASSWORD = "password";
+    protected static final String NICK_NAME = "shine";
+
     protected static final String NAME = "user";
     protected static final String STORE_UUID = "store_uuid";
 

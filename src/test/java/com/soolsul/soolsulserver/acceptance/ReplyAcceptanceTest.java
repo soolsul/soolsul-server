@@ -35,7 +35,7 @@ public class ReplyAcceptanceTest extends AcceptanceTest {
         String 첫_피드_아이디 = 피드_조회_응답_확인(피드_목록_조회_응답);
 
         // when
-        ExtractableResponse<Response> 댓글_추가_요청_응답 = 피드에_댓글_추가_요청(accessToken, 첫_피드_아이디);
+        ExtractableResponse<Response> 댓글_추가_요청_응답 = 피드에_댓글_추가_요청(accessToken, 첫_피드_아이디, "댓글 추가요!");
 
         // then
         댓글_추가_요청_응답_확인(댓글_추가_요청_응답);
@@ -54,7 +54,7 @@ public class ReplyAcceptanceTest extends AcceptanceTest {
         피드_생성_요청(accessToken, 피드_생성_정보_생성());
         var 피드_목록_조회_응답 = 피드_목록_조회_요청(accessToken);
         String 첫_피드_아이디 = 피드_조회_응답_확인(피드_목록_조회_응답);
-        피드에_댓글_추가_요청(accessToken, 첫_피드_아이디);
+        피드에_댓글_추가_요청(accessToken, 첫_피드_아이디, "댓글 추가요!");
 
         // when
         ExtractableResponse<Response> response = RestAssured

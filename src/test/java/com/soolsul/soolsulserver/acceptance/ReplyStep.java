@@ -20,12 +20,12 @@ public class ReplyStep {
         );
     }
 
-    public static ExtractableResponse<Response> 피드에_댓글_추가_요청(String accessToken, String 첫_피드_아이디) {
+    public static ExtractableResponse<Response> 피드에_댓글_추가_요청(String accessToken, String 첫_피드_아이디, String reply) {
         return RestAssured
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new PostReplyRequest("댓글 추가요!"))
+                .body(new PostReplyRequest(reply))
                 .pathParam("postId", 첫_피드_아이디)
                 .when()
                 .post("/api/posts/{postId}/replies")

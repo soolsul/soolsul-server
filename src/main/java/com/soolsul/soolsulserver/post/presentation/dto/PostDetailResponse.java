@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.post.presentation.dto;
 
-import com.soolsul.soolsulserver.user.auth.repository.dto.UserLookUpResponse;
+import com.soolsul.soolsulserver.user.auth.repository.dto.response.UserLookUpResponse;
 import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupResponse;
 import com.soolsul.soolsulserver.post.business.dto.response.PostDetailLikeResponse;
 import com.soolsul.soolsulserver.post.business.dto.response.PostDetailStoreResponse;
