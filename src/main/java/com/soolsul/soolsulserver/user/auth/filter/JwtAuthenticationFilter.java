@@ -1,6 +1,7 @@
 package com.soolsul.soolsulserver.user.auth.filter;
 
 import com.soolsul.soolsulserver.user.auth.CustomUser;
+import com.soolsul.soolsulserver.user.auth.Role;
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
 import com.soolsul.soolsulserver.user.auth.exception.UserUnauthorizedException;
 import com.soolsul.soolsulserver.user.auth.jwt.JwtTokenFactory;
@@ -9,7 +10,9 @@ import com.soolsul.soolsulserver.user.auth.util.AuthorizationExtractor;
 import com.soolsul.soolsulserver.user.auth.util.AuthorizationType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -49,6 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (isInvalidAccessToken(accessToken)) {
+            SecurityContextHolder.getContext().setAuthentication(anonymousAuthentication());
             filterChain.doFilter(wrappingRequest, wrappingResponse);
             wrappingResponse.copyBodyToResponse();
             return;
@@ -79,5 +83,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         CustomUser findUser = userDetailsService.findUserForAuthentication(userIdFromToken);
         log.info("[User Info] : {}", findUser.getEmail());
         return new UsernamePasswordAuthenticationToken(findUser, "", rolesFromToken);
+    }
+
+    protected Authentication anonymousAuthentication() {
+        CustomUser anonymousUser = new CustomUser("", "", "");
+        anonymousUser.addRole(Role.ANONYMOUS);
+        return new AnonymousAuthenticationToken("anonymous", anonymousUser, anonymousUser.getAuthorities());
     }
 }
