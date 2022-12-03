@@ -1,6 +1,7 @@
 package com.soolsul.soolsulserver.config;
 
 
+import com.soolsul.soolsulserver.user.auth.Role;
 import com.soolsul.soolsulserver.user.auth.common.JwtAuthenticationEntryPoint;
 import com.soolsul.soolsulserver.user.auth.filter.FirstLoginAuthenticationFilter;
 import com.soolsul.soolsulserver.user.auth.filter.JwtAuthenticationFilter;
@@ -12,6 +13,7 @@ import com.soolsul.soolsulserver.user.auth.handler.JwtLogoutSuccessHandler;
 import com.soolsul.soolsulserver.user.auth.provider.FirstLoginAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -29,8 +31,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String[] PUBLIC_URI = {
-            "/api/auth/register", "/actuator/**"
+    private static final String[] PUBLIC_GET_URI = {
+            "/api/bars", "/api/curations", "/api/posts/**", "/actuator/**"
+    };
+
+    private static final String[] PUBLIC_POST_URI = {
+            "/api/auth/register"
     };
 
     @Override
@@ -44,9 +50,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(PUBLIC_URI).permitAll()
-//                .antMatchers("/api/**").hasRole(Role.USER.name())
-                .antMatchers("/api/**").permitAll()
+                .antMatchers(HttpMethod.GET, PUBLIC_GET_URI).permitAll()
+                .antMatchers(HttpMethod.POST, PUBLIC_POST_URI).permitAll()
+                .antMatchers("/api/**").hasRole(Role.USER.name())
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -68,7 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/swagger-ui/**", "/v1/api-docs/**");
-         }
+    }
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
