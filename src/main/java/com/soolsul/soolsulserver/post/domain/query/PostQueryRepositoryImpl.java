@@ -53,11 +53,12 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                 .where(post.barId.eq(barId))
                 .transform(
                         groupBy(post.id).list(new QCurationPostLookupResponse(
-                                        post.contents.as("content"),
-                                        userInfo.name.as("userName"),
-                                        list(new QPostPhotoImageResponse(postPhoto.uuidFileUrl).as("postPhotoImageUrl")),
-                                        post.likes.likeUsers.size().as("userLikes")))
+                                post.contents.as("content"),
+                                userInfo.name.as("userName"),
+                                list(new QPostPhotoImageResponse(postPhoto.uuidFileUrl).as("postPhotoImageUrl")),
+                                post.likes.likeUsers.size().as("userLikes")))
                 );
+    }
 
     public List<UserPostLookUpResponse> findAllUserPost(String userId) {
         QPostPhoto subPhoto = new QPostPhoto("subPhoto");
