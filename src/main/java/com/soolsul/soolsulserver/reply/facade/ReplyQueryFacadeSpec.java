@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.reply.facade;
 
-import com.soolsul.soolsulserver.reply.presentation.dto.response.PostRepliesResponse;
+import com.soolsul.soolsulserver.reply.common.dto.response.PostRepliesResponse;
 import org.springframework.data.domain.Pageable;
 
 public interface ReplyQueryFacadeSpec {

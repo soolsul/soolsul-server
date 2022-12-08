@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.acceptance;
 
-import com.soolsul.soolsulserver.reply.presentation.dto.request.PostReplyRequest;
+import com.soolsul.soolsulserver.reply.common.dto.request.PostReplyRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

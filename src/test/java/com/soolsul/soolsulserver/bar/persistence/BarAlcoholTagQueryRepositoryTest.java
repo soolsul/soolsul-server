@@ -1,7 +1,7 @@
 package com.soolsul.soolsulserver.bar.persistence;
 
 import com.soolsul.soolsulserver.bar.domain.BarAlcoholTag;
-import com.soolsul.soolsulserver.config.QueryDslConfig;
+import com.soolsul.soolsulserver.common.config.QueryDslConfig;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

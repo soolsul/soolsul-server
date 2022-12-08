@@ -1,7 +1,7 @@
 package com.soolsul.soolsulserver.reply.facade;
 
 import com.soolsul.soolsulserver.reply.business.ReplyQueryService;
-import com.soolsul.soolsulserver.reply.business.dto.response.ReplyDetailResponse;
+import com.soolsul.soolsulserver.reply.common.dto.response.ReplyDetailResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;

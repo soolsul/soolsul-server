@@ -1,9 +1,9 @@
 package com.soolsul.soolsulserver.bar.persistence;
 
-import com.soolsul.soolsulserver.bar.businees.dto.BarSnackMenuResponse;
+import com.soolsul.soolsulserver.bar.common.dto.response.BarSnackMenuResponse;
 import com.soolsul.soolsulserver.bar.domain.Bar;
 import com.soolsul.soolsulserver.bar.domain.StreetNameAddress;
-import com.soolsul.soolsulserver.config.QueryDslConfig;
+import com.soolsul.soolsulserver.common.config.QueryDslConfig;
 import com.soolsul.soolsulserver.menu.snack.domain.Snack;
 import com.soolsul.soolsulserver.menu.snack.domain.SnackMenu;
 import com.soolsul.soolsulserver.region.domain.Location;

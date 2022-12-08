@@ -2,7 +2,7 @@ package com.soolsul.soolsulserver.bar.persistence;
 
 import com.soolsul.soolsulserver.bar.domain.BarMoodTag;
 import com.soolsul.soolsulserver.bar.domain.MoodTag;
-import com.soolsul.soolsulserver.config.QueryDslConfig;
+import com.soolsul.soolsulserver.common.config.QueryDslConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

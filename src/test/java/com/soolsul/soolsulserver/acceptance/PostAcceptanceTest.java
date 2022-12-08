@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.acceptance;
 
-import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
+import com.soolsul.soolsulserver.post.common.dto.request.PostCreateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

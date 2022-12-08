@@ -1,16 +1,16 @@
 package com.soolsul.soolsulserver.user.mypage.facade;
 
 import com.soolsul.soolsulserver.post.business.PostQueryService;
-import com.soolsul.soolsulserver.post.domain.dto.ScrapedPostLookUpResponse;
-import com.soolsul.soolsulserver.post.domain.dto.UserPostLookUpResponse;
-import com.soolsul.soolsulserver.post.domain.dto.UserReplyLookUpResponse;
+import com.soolsul.soolsulserver.post.common.dto.response.ScrapedPostLookUpResponse;
+import com.soolsul.soolsulserver.post.common.dto.response.UserPostLookUpResponse;
+import com.soolsul.soolsulserver.post.common.dto.response.UserReplyLookUpResponse;
 import com.soolsul.soolsulserver.reply.business.ReplyQueryService;
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
 import com.soolsul.soolsulserver.user.auth.repository.dto.response.UserEditFormResponse;
 import com.soolsul.soolsulserver.user.auth.repository.dto.response.UserLookUpResponse;
-import com.soolsul.soolsulserver.user.mypage.presentation.dto.response.ScrapedPostListLookUpResponse;
-import com.soolsul.soolsulserver.user.mypage.presentation.dto.response.UserPostListLookUpResponse;
-import com.soolsul.soolsulserver.user.mypage.presentation.dto.response.UserReplyListLookUpResponse;
+import com.soolsul.soolsulserver.user.mypage.common.dto.response.ScrapedPostListLookUpResponse;
+import com.soolsul.soolsulserver.user.mypage.common.dto.response.UserPostListLookUpResponse;
+import com.soolsul.soolsulserver.user.mypage.common.dto.response.UserReplyListLookUpResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

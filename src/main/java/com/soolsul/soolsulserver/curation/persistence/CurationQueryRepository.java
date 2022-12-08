@@ -2,9 +2,9 @@ package com.soolsul.soolsulserver.curation.persistence;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.soolsul.soolsulserver.curation.dto.CurationListLookupResponse;
-import com.soolsul.soolsulserver.curation.dto.CurationLookupResponse;
-import com.soolsul.soolsulserver.location.response.LocationSquareRangeCondition;
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationListLookupResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationLookupResponse;
+import com.soolsul.soolsulserver.location.common.dto.response.LocationSquareRangeCondition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.bar.businees;
 
-import com.soolsul.soolsulserver.bar.businees.dto.BarSnackMenuResponse;
+import com.soolsul.soolsulserver.bar.common.dto.response.BarSnackMenuResponse;
 import com.soolsul.soolsulserver.bar.persistence.BarSnackMenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

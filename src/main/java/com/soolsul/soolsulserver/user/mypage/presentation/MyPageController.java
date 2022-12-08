@@ -7,10 +7,10 @@ import com.soolsul.soolsulserver.user.auth.repository.dto.response.UserEditFormR
 import com.soolsul.soolsulserver.user.auth.repository.dto.response.UserLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.facade.MyPageCommandFacade;
 import com.soolsul.soolsulserver.user.mypage.facade.MyPageQueryFacade;
-import com.soolsul.soolsulserver.user.mypage.presentation.dto.reqeust.UserInfoEditRequest;
-import com.soolsul.soolsulserver.user.mypage.presentation.dto.response.ScrapedPostListLookUpResponse;
-import com.soolsul.soolsulserver.user.mypage.presentation.dto.response.UserPostListLookUpResponse;
-import com.soolsul.soolsulserver.user.mypage.presentation.dto.response.UserReplyListLookUpResponse;
+import com.soolsul.soolsulserver.user.mypage.common.dto.reqeust.UserInfoEditRequest;
+import com.soolsul.soolsulserver.user.mypage.common.dto.response.ScrapedPostListLookUpResponse;
+import com.soolsul.soolsulserver.user.mypage.common.dto.response.UserPostListLookUpResponse;
+import com.soolsul.soolsulserver.user.mypage.common.dto.response.UserReplyListLookUpResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
