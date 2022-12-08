@@ -1,7 +1,7 @@
 package com.soolsul.soolsulserver.acceptance;
 
-import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
-import com.soolsul.soolsulserver.post.presentation.dto.PostScrapRequest;
+import com.soolsul.soolsulserver.post.common.dto.request.PostCreateRequest;
+import com.soolsul.soolsulserver.post.common.dto.request.PostScrapRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

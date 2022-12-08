@@ -1,7 +1,7 @@
 package com.soolsul.soolsulserver.user.mypage.facade;
 
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
-import com.soolsul.soolsulserver.user.mypage.presentation.dto.reqeust.UserInfoEditRequest;
+import com.soolsul.soolsulserver.user.mypage.common.dto.reqeust.UserInfoEditRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

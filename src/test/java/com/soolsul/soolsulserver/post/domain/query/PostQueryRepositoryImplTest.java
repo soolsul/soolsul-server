@@ -1,7 +1,7 @@
 package com.soolsul.soolsulserver.post.domain.query;
 
-import com.soolsul.soolsulserver.config.QueryDslConfig;
-import com.soolsul.soolsulserver.curation.dto.CurationPostLookupResponse;
+import com.soolsul.soolsulserver.common.config.QueryDslConfig;
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationPostLookupResponse;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.domain.PostPhoto;
 import com.soolsul.soolsulserver.user.auth.CustomUser;

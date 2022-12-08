@@ -4,9 +4,9 @@ import com.querydsl.core.Tuple;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.soolsul.soolsulserver.post.common.dto.response.QScrapedPostLookUpResponse;
+import com.soolsul.soolsulserver.post.common.dto.response.ScrapedPostLookUpResponse;
 import com.soolsul.soolsulserver.post.domain.QPostPhoto;
-import com.soolsul.soolsulserver.post.domain.dto.QScrapedPostLookUpResponse;
-import com.soolsul.soolsulserver.post.domain.dto.ScrapedPostLookUpResponse;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

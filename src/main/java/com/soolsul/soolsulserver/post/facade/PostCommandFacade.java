@@ -1,7 +1,7 @@
 package com.soolsul.soolsulserver.post.facade;
 
 import com.soolsul.soolsulserver.post.business.PostCommandService;
-import com.soolsul.soolsulserver.post.presentation.dto.PostCreateRequest;
+import com.soolsul.soolsulserver.post.common.dto.request.PostCreateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

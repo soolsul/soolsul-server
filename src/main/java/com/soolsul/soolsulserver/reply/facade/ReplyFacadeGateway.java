@@ -1,8 +1,8 @@
 package com.soolsul.soolsulserver.reply.facade;
 
-import com.soolsul.soolsulserver.reply.business.dto.response.ReplyDetailResponse;
-import com.soolsul.soolsulserver.reply.presentation.dto.request.PostReplyRequest;
-import com.soolsul.soolsulserver.reply.presentation.dto.response.PostRepliesResponse;
+import com.soolsul.soolsulserver.reply.common.dto.response.ReplyDetailResponse;
+import com.soolsul.soolsulserver.reply.common.dto.request.PostReplyRequest;
+import com.soolsul.soolsulserver.reply.common.dto.response.PostRepliesResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;

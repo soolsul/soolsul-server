@@ -2,10 +2,10 @@ package com.soolsul.soolsulserver.curation.presentation;
 
 import com.soolsul.soolsulserver.common.response.BaseResponse;
 import com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages;
-import com.soolsul.soolsulserver.curation.dto.CurationDetailLookupResponse;
-import com.soolsul.soolsulserver.curation.dto.CurationsLookupResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationDetailLookupResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationsLookupResponse;
 import com.soolsul.soolsulserver.curation.facade.CurationQueryFacade;
-import com.soolsul.soolsulserver.location.request.LocationSquareRangeRequest;
+import com.soolsul.soolsulserver.location.common.dto.request.LocationSquareRangeRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

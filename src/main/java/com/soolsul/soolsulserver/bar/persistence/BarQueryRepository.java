@@ -3,12 +3,12 @@ package com.soolsul.soolsulserver.bar.persistence;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.soolsul.soolsulserver.bar.businees.dto.BarLookupServiceConditionRequest;
-import com.soolsul.soolsulserver.bar.businees.dto.BarStreetNameAddressResponse;
-import com.soolsul.soolsulserver.bar.businees.dto.FilteredBarLookupResponse;
-import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupResponse;
-import com.soolsul.soolsulserver.bar.presentation.dto.LocationLookupResponse;
-import com.soolsul.soolsulserver.curation.dto.BarOpeningHoursResponse;
+import com.soolsul.soolsulserver.bar.common.dto.request.BarLookupServiceConditionRequest;
+import com.soolsul.soolsulserver.bar.common.dto.response.BarStreetNameAddressResponse;
+import com.soolsul.soolsulserver.bar.common.dto.response.FilteredBarLookupResponse;
+import com.soolsul.soolsulserver.bar.common.dto.response.BarLookupResponse;
+import com.soolsul.soolsulserver.bar.common.dto.response.LocationLookupResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.BarOpeningHoursResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

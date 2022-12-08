@@ -1,8 +1,8 @@
 package com.soolsul.soolsulserver.bar.presentation;
 
 import com.soolsul.soolsulserver.bar.facade.BarQueryFacade;
-import com.soolsul.soolsulserver.bar.presentation.dto.BarLookupConditionRequest;
-import com.soolsul.soolsulserver.bar.presentation.dto.FilteredBarsLookupResponse;
+import com.soolsul.soolsulserver.bar.common.dto.request.BarLookupConditionRequest;
+import com.soolsul.soolsulserver.bar.common.dto.response.FilteredBarsLookupResponse;
 import com.soolsul.soolsulserver.common.response.BaseResponse;
 import com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages;
 import lombok.RequiredArgsConstructor;

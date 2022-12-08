@@ -1,8 +1,8 @@
 package com.soolsul.soolsulserver.reply.persistence;
 
-import com.soolsul.soolsulserver.config.QueryDslConfig;
+import com.soolsul.soolsulserver.common.config.QueryDslConfig;
 import com.soolsul.soolsulserver.post.domain.Post;
-import com.soolsul.soolsulserver.reply.business.dto.response.ReplyDetailResponse;
+import com.soolsul.soolsulserver.reply.common.dto.response.ReplyDetailResponse;
 import com.soolsul.soolsulserver.reply.domain.Reply;
 import com.soolsul.soolsulserver.reply.domain.ReplyRepository;
 import com.soolsul.soolsulserver.user.auth.CustomUser;

@@ -10,7 +10,7 @@ import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
 import com.soolsul.soolsulserver.user.auth.repository.UserInfoRepository;
 import com.soolsul.soolsulserver.user.auth.repository.UserRepository;
 import com.soolsul.soolsulserver.user.auth.repository.dto.response.UserLookUpResponse;
-import com.soolsul.soolsulserver.user.mypage.presentation.dto.reqeust.UserInfoEditRequest;
+import com.soolsul.soolsulserver.user.mypage.common.dto.reqeust.UserInfoEditRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

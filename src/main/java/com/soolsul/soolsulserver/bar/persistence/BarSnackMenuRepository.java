@@ -2,7 +2,7 @@ package com.soolsul.soolsulserver.bar.persistence;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.soolsul.soolsulserver.bar.businees.dto.BarSnackMenuResponse;
+import com.soolsul.soolsulserver.bar.common.dto.response.BarSnackMenuResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

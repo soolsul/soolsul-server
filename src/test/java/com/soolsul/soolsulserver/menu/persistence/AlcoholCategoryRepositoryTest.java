@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.menu.persistence;
 
-import com.soolsul.soolsulserver.config.QueryDslConfig;
+import com.soolsul.soolsulserver.common.config.QueryDslConfig;
 import com.soolsul.soolsulserver.menu.alcohol.domain.AlcoholCategory;
 import com.soolsul.soolsulserver.menu.alcohol.persistence.AlcoholCategoryRepository;
 import org.junit.jupiter.api.DisplayName;

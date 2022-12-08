@@ -1,12 +1,12 @@
 package com.soolsul.soolsulserver.curation.presentation;
 
-import com.soolsul.soolsulserver.bar.businees.dto.BarSnackMenuResponse;
-import com.soolsul.soolsulserver.bar.businees.dto.BarStreetNameAddressResponse;
-import com.soolsul.soolsulserver.curation.dto.BarOpeningHoursResponse;
-import com.soolsul.soolsulserver.curation.dto.CurationDetailLookupResponse;
-import com.soolsul.soolsulserver.curation.dto.CurationPostLookupResponse;
-import com.soolsul.soolsulserver.curation.dto.CurationsLookupResponse;
-import com.soolsul.soolsulserver.curation.dto.PostPhotoImageResponse;
+import com.soolsul.soolsulserver.bar.common.dto.response.BarSnackMenuResponse;
+import com.soolsul.soolsulserver.bar.common.dto.response.BarStreetNameAddressResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.BarOpeningHoursResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationDetailLookupResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationPostLookupResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationsLookupResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.PostPhotoImageResponse;
 import com.soolsul.soolsulserver.curation.facade.CurationQueryFacade;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
