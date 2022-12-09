@@ -2,7 +2,6 @@ package com.soolsul.soolsulserver.user.auth.domain;
 
 import com.soolsul.soolsulserver.user.auth.vo.Role;
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -16,12 +15,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 
 @Entity
 @Getter
-@EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Authority implements GrantedAuthority {
 
@@ -44,4 +43,18 @@ public class Authority implements GrantedAuthority {
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "userRoles")
     private Set<CustomUser> customUserDetails = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Authority authority = (Authority) o;
+        return Objects.equals(id, authority.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
 }
