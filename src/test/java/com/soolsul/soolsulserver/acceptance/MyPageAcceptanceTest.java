@@ -25,8 +25,8 @@ import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_정보
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_스크랩_요청;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_조회_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.ReplyStep.피드에_댓글_추가_요청;
-import static com.soolsul.soolsulserver.common.data.DataLoader.postIdOne;
-import static com.soolsul.soolsulserver.common.data.DataLoader.postIdTwo;
+import static com.soolsul.soolsulserver.data.DataLoader.postIdOne;
+import static com.soolsul.soolsulserver.data.DataLoader.postIdTwo;
 
 public class MyPageAcceptanceTest extends AcceptanceTest {
 

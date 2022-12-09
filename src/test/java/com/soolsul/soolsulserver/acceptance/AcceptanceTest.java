@@ -1,7 +1,7 @@
 package com.soolsul.soolsulserver.acceptance;
 
-import com.soolsul.soolsulserver.common.data.DataLoader;
-import com.soolsul.soolsulserver.utils.DatabaseCleanup;
+import com.soolsul.soolsulserver.data.DataLoader;
+import com.soolsul.soolsulserver.data.DatabaseCleanup;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
