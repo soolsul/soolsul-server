@@ -1,7 +1,7 @@
 package com.soolsul.soolsulserver.post.presentation;
 
-import com.soolsul.soolsulserver.user.auth.CurrentUser;
-import com.soolsul.soolsulserver.user.auth.CustomUser;
+import com.soolsul.soolsulserver.user.auth.annotation.CurrentUser;
+import com.soolsul.soolsulserver.user.auth.domain.CustomUser;
 import com.soolsul.soolsulserver.common.response.BaseResponse;
 import com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages;
 import com.soolsul.soolsulserver.location.common.dto.request.LocationSquareRangeRequest;

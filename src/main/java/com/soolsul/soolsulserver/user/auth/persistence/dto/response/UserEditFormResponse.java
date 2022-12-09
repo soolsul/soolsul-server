@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.user.auth.repository.dto.response;
+package com.soolsul.soolsulserver.user.auth.persistence.dto.response;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

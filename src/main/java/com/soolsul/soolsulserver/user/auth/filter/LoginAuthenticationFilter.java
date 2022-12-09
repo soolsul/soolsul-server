@@ -2,7 +2,7 @@ package com.soolsul.soolsulserver.user.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soolsul.soolsulserver.user.auth.filter.dto.UserDto;
-import com.soolsul.soolsulserver.user.auth.token.FirstLoginAuthenticationToken;
+import com.soolsul.soolsulserver.user.auth.token.LoginAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class FirstLoginAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public FirstLoginAuthenticationFilter() {
+    public LoginAuthenticationFilter() {
         super(new AntPathRequestMatcher("/api/auth/login"));
     }
 
@@ -33,7 +33,7 @@ public class FirstLoginAuthenticationFilter extends AbstractAuthenticationProces
             throw new IllegalArgumentException("UserId is empty");
         }
 
-        FirstLoginAuthenticationToken authenticationToken = new FirstLoginAuthenticationToken(userDto.getEmail(), userDto.getPassword());
+        LoginAuthenticationToken authenticationToken = new LoginAuthenticationToken(userDto.getEmail(), userDto.getPassword());
 
         return getAuthenticationManager().authenticate(authenticationToken);
     }

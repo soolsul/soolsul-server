@@ -1,7 +1,7 @@
 package com.soolsul.soolsulserver.post.common.dto.response;
 
 import com.querydsl.core.annotations.QueryProjection;
-import com.soolsul.soolsulserver.user.auth.UserInfo;
+import com.soolsul.soolsulserver.user.auth.domain.UserInfo;
 import com.soolsul.soolsulserver.post.domain.Post;
 
 import javax.validation.constraints.NotNull;

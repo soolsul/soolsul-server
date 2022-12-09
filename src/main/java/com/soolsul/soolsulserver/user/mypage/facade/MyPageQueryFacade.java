@@ -6,8 +6,8 @@ import com.soolsul.soolsulserver.post.common.dto.response.UserPostLookUpResponse
 import com.soolsul.soolsulserver.post.common.dto.response.UserReplyLookUpResponse;
 import com.soolsul.soolsulserver.reply.business.ReplyQueryService;
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
-import com.soolsul.soolsulserver.user.auth.repository.dto.response.UserEditFormResponse;
-import com.soolsul.soolsulserver.user.auth.repository.dto.response.UserLookUpResponse;
+import com.soolsul.soolsulserver.user.auth.persistence.dto.response.UserEditFormResponse;
+import com.soolsul.soolsulserver.user.auth.persistence.dto.response.UserLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.common.dto.response.ScrapedPostListLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.common.dto.response.UserPostListLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.common.dto.response.UserReplyListLookUpResponse;

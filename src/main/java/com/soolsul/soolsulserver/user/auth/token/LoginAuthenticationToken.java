@@ -5,13 +5,13 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
-public class FirstLoginAuthenticationToken extends AbstractAuthenticationToken {
+public class LoginAuthenticationToken extends AbstractAuthenticationToken {
 
     private final Object principal;
     private Object credentials;
 
     // 인증 이전에 사용
-    public FirstLoginAuthenticationToken(Object principal, Object credentials) {
+    public LoginAuthenticationToken(Object principal, Object credentials) {
         super(null);
         this.principal = principal;
         this.credentials = credentials;
@@ -19,7 +19,7 @@ public class FirstLoginAuthenticationToken extends AbstractAuthenticationToken {
     }
 
     // 인증 이후 사용
-    public FirstLoginAuthenticationToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
+    public LoginAuthenticationToken(Object principal, Object credentials, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
         this.principal = principal;
         this.credentials = credentials;

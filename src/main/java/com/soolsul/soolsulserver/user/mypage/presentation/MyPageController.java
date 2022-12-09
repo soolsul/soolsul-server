@@ -1,10 +1,10 @@
 package com.soolsul.soolsulserver.user.mypage.presentation;
 
 import com.soolsul.soolsulserver.common.response.BaseResponse;
-import com.soolsul.soolsulserver.user.auth.CurrentUser;
-import com.soolsul.soolsulserver.user.auth.CustomUser;
-import com.soolsul.soolsulserver.user.auth.repository.dto.response.UserEditFormResponse;
-import com.soolsul.soolsulserver.user.auth.repository.dto.response.UserLookUpResponse;
+import com.soolsul.soolsulserver.user.auth.annotation.CurrentUser;
+import com.soolsul.soolsulserver.user.auth.domain.CustomUser;
+import com.soolsul.soolsulserver.user.auth.persistence.dto.response.UserEditFormResponse;
+import com.soolsul.soolsulserver.user.auth.persistence.dto.response.UserLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.facade.MyPageCommandFacade;
 import com.soolsul.soolsulserver.user.mypage.facade.MyPageQueryFacade;
 import com.soolsul.soolsulserver.user.mypage.common.dto.reqeust.UserInfoEditRequest;

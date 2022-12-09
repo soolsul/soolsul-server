@@ -1,5 +1,6 @@
-package com.soolsul.soolsulserver.user.auth;
+package com.soolsul.soolsulserver.user.auth.domain;
 
+import com.soolsul.soolsulserver.user.auth.vo.Role;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

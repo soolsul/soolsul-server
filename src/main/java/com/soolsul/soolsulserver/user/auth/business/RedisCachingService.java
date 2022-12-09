@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.user.auth.redis;
+package com.soolsul.soolsulserver.user.auth.business;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;

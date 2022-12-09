@@ -1,15 +1,15 @@
 package com.soolsul.soolsulserver.user.auth.business;
 
-import com.soolsul.soolsulserver.user.auth.CustomUser;
-import com.soolsul.soolsulserver.user.auth.UserContext;
-import com.soolsul.soolsulserver.user.auth.UserInfo;
+import com.soolsul.soolsulserver.user.auth.domain.CustomUser;
+import com.soolsul.soolsulserver.user.auth.vo.UserContext;
+import com.soolsul.soolsulserver.user.auth.domain.UserInfo;
 import com.soolsul.soolsulserver.user.auth.exception.UserAlreadyExistsException;
 import com.soolsul.soolsulserver.user.auth.exception.UserNicknameDuplicatedException;
 import com.soolsul.soolsulserver.user.auth.exception.UserNotFoundException;
 import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
-import com.soolsul.soolsulserver.user.auth.repository.UserInfoRepository;
-import com.soolsul.soolsulserver.user.auth.repository.UserRepository;
-import com.soolsul.soolsulserver.user.auth.repository.dto.response.UserLookUpResponse;
+import com.soolsul.soolsulserver.user.auth.persistence.UserInfoRepository;
+import com.soolsul.soolsulserver.user.auth.persistence.UserRepository;
+import com.soolsul.soolsulserver.user.auth.persistence.dto.response.UserLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.common.dto.reqeust.UserInfoEditRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

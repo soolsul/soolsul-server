@@ -1,6 +1,6 @@
-package com.soolsul.soolsulserver.user.auth.repository;
+package com.soolsul.soolsulserver.user.auth.persistence;
 
-import com.soolsul.soolsulserver.user.auth.UserInfo;
+import com.soolsul.soolsulserver.user.auth.domain.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

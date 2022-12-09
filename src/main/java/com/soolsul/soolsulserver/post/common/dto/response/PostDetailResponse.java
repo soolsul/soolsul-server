@@ -1,10 +1,7 @@
 package com.soolsul.soolsulserver.post.common.dto.response;
 
-import com.soolsul.soolsulserver.user.auth.repository.dto.response.UserLookUpResponse;
+import com.soolsul.soolsulserver.user.auth.persistence.dto.response.UserLookUpResponse;
 import com.soolsul.soolsulserver.bar.common.dto.response.BarLookupResponse;
-import com.soolsul.soolsulserver.post.common.dto.response.PostDetailLikeResponse;
-import com.soolsul.soolsulserver.post.common.dto.response.PostDetailStoreResponse;
-import com.soolsul.soolsulserver.post.common.dto.response.PostDetailUserResponse;
 import com.soolsul.soolsulserver.post.domain.Post;
 import org.hibernate.validator.constraints.URL;
 

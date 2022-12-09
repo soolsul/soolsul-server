@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.user.auth;
+package com.soolsul.soolsulserver.user.auth.annotation;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 

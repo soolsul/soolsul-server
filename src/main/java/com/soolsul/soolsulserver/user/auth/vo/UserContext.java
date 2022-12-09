@@ -1,5 +1,6 @@
-package com.soolsul.soolsulserver.user.auth;
+package com.soolsul.soolsulserver.user.auth.vo;
 
+import com.soolsul.soolsulserver.user.auth.domain.CustomUser;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;

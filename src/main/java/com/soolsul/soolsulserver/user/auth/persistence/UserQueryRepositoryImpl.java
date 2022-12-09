@@ -1,8 +1,8 @@
-package com.soolsul.soolsulserver.user.auth.repository;
+package com.soolsul.soolsulserver.user.auth.persistence;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.soolsul.soolsulserver.user.auth.repository.dto.response.UserLookUpResponse;
+import com.soolsul.soolsulserver.user.auth.persistence.dto.response.UserLookUpResponse;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;

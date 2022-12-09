@@ -1,8 +1,8 @@
 package com.soolsul.soolsulserver.user.auth.presentation;
 
 import com.soolsul.soolsulserver.common.response.BaseResponse;
-import com.soolsul.soolsulserver.user.auth.CurrentUser;
-import com.soolsul.soolsulserver.user.auth.CustomUser;
+import com.soolsul.soolsulserver.user.auth.annotation.CurrentUser;
+import com.soolsul.soolsulserver.user.auth.domain.CustomUser;
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
 import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
 import lombok.RequiredArgsConstructor;

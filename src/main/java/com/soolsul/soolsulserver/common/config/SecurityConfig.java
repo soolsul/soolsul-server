@@ -1,16 +1,16 @@
 package com.soolsul.soolsulserver.common.config;
 
 
-import com.soolsul.soolsulserver.user.auth.Role;
+import com.soolsul.soolsulserver.user.auth.vo.Role;
 import com.soolsul.soolsulserver.user.auth.common.JwtAuthenticationEntryPoint;
-import com.soolsul.soolsulserver.user.auth.filter.FirstLoginAuthenticationFilter;
+import com.soolsul.soolsulserver.user.auth.filter.LoginAuthenticationFilter;
 import com.soolsul.soolsulserver.user.auth.filter.JwtAuthenticationFilter;
-import com.soolsul.soolsulserver.user.auth.handler.FirstLoginAuthenticationFailureHandler;
-import com.soolsul.soolsulserver.user.auth.handler.FirstLoginAuthenticationSuccessHandler;
+import com.soolsul.soolsulserver.user.auth.handler.LoginAuthenticationFailureHandler;
+import com.soolsul.soolsulserver.user.auth.handler.LoginAuthenticationSuccessHandler;
 import com.soolsul.soolsulserver.user.auth.handler.JwtDeniedHandler;
 import com.soolsul.soolsulserver.user.auth.handler.JwtLogoutHandler;
 import com.soolsul.soolsulserver.user.auth.handler.JwtLogoutSuccessHandler;
-import com.soolsul.soolsulserver.user.auth.provider.FirstLoginAuthenticationProvider;
+import com.soolsul.soolsulserver.user.auth.provider.LoginAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .addFilterAt(firstLoginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtAuthenticationFilter(), FirstLoginAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter(), LoginAuthenticationFilter.class);
 
         http
                 .exceptionHandling()
@@ -82,22 +82,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public FirstLoginAuthenticationFilter firstLoginAuthenticationFilter() throws Exception {
-        FirstLoginAuthenticationFilter firstLoginAuthenticationFilter = new FirstLoginAuthenticationFilter();
-        firstLoginAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
-        firstLoginAuthenticationFilter.setAuthenticationSuccessHandler(firstLoginAuthenticationSuccessHandler());
-        firstLoginAuthenticationFilter.setAuthenticationFailureHandler(firstLoginAuthenticationFailureHandler());
-        return firstLoginAuthenticationFilter;
+    public LoginAuthenticationFilter firstLoginAuthenticationFilter() throws Exception {
+        LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter();
+        loginAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
+        loginAuthenticationFilter.setAuthenticationSuccessHandler(firstLoginAuthenticationSuccessHandler());
+        loginAuthenticationFilter.setAuthenticationFailureHandler(firstLoginAuthenticationFailureHandler());
+        return loginAuthenticationFilter;
     }
 
     @Bean
-    public FirstLoginAuthenticationSuccessHandler firstLoginAuthenticationSuccessHandler() {
-        return new FirstLoginAuthenticationSuccessHandler();
+    public LoginAuthenticationSuccessHandler firstLoginAuthenticationSuccessHandler() {
+        return new LoginAuthenticationSuccessHandler();
     }
 
     @Bean
-    public FirstLoginAuthenticationFailureHandler firstLoginAuthenticationFailureHandler() {
-        return new FirstLoginAuthenticationFailureHandler();
+    public LoginAuthenticationFailureHandler firstLoginAuthenticationFailureHandler() {
+        return new LoginAuthenticationFailureHandler();
     }
 
     @Bean
@@ -112,7 +112,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationProvider firstLoginAuthenticationProvider() {
-        return new FirstLoginAuthenticationProvider();
+        return new LoginAuthenticationProvider();
     }
 
     @Bean

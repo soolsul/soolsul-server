@@ -1,7 +1,7 @@
 package com.soolsul.soolsulserver.user.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.soolsul.soolsulserver.user.auth.CustomUser;
+import com.soolsul.soolsulserver.user.auth.domain.CustomUser;
 import com.soolsul.soolsulserver.user.auth.jwt.JwtToken;
 import com.soolsul.soolsulserver.user.auth.jwt.JwtTokenFactory;
 import com.soolsul.soolsulserver.common.response.BaseResponse;
@@ -22,7 +22,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FirstLoginAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 

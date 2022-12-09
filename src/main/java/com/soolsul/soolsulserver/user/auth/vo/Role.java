@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.user.auth;
+package com.soolsul.soolsulserver.user.auth.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,11 +1,11 @@
 package com.soolsul.soolsulserver.user.auth.filter;
 
-import com.soolsul.soolsulserver.user.auth.CustomUser;
-import com.soolsul.soolsulserver.user.auth.Role;
+import com.soolsul.soolsulserver.user.auth.domain.CustomUser;
+import com.soolsul.soolsulserver.user.auth.vo.Role;
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
 import com.soolsul.soolsulserver.user.auth.exception.UserUnauthorizedException;
 import com.soolsul.soolsulserver.user.auth.jwt.JwtTokenFactory;
-import com.soolsul.soolsulserver.user.auth.redis.RedisCachingService;
+import com.soolsul.soolsulserver.user.auth.business.RedisCachingService;
 import com.soolsul.soolsulserver.user.auth.util.AuthorizationExtractor;
 import com.soolsul.soolsulserver.user.auth.util.AuthorizationType;
 import lombok.extern.slf4j.Slf4j;

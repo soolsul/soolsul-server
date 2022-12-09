@@ -1,7 +1,7 @@
 package com.soolsul.soolsulserver.post.domain;
 
 import com.soolsul.soolsulserver.common.domain.BaseTimeEntity;
-import com.soolsul.soolsulserver.user.auth.CustomUser;
+import com.soolsul.soolsulserver.user.auth.domain.CustomUser;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

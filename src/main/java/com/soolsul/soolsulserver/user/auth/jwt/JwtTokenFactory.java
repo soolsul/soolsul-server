@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.user.auth.jwt;
 
-import com.soolsul.soolsulserver.user.auth.redis.RedisCachingService;
+import com.soolsul.soolsulserver.user.auth.business.RedisCachingService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;

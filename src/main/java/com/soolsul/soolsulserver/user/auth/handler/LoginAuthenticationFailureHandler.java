@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-public class FirstLoginAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class LoginAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 

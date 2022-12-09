@@ -1,8 +1,8 @@
 package com.soolsul.soolsulserver.user.auth.provider;
 
-import com.soolsul.soolsulserver.user.auth.UserContext;
+import com.soolsul.soolsulserver.user.auth.vo.UserContext;
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
-import com.soolsul.soolsulserver.user.auth.token.FirstLoginAuthenticationToken;
+import com.soolsul.soolsulserver.user.auth.token.LoginAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.transaction.Transactional;
 
-public class FirstLoginAuthenticationProvider implements AuthenticationProvider {
+public class LoginAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
@@ -33,11 +33,11 @@ public class FirstLoginAuthenticationProvider implements AuthenticationProvider 
             throw new BadCredentialsException("Invalid password");
         }
 
-        return new FirstLoginAuthenticationToken(accountContext.getUser(), null, accountContext.getAuthorities());
+        return new LoginAuthenticationToken(accountContext.getUser(), null, accountContext.getAuthorities());
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return authentication.equals(FirstLoginAuthenticationToken.class);
+        return authentication.equals(LoginAuthenticationToken.class);
     }
 }
