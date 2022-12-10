@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.common.data;
+package com.soolsul.soolsulserver.data;
 
 import com.soolsul.soolsulserver.bar.domain.Bar;
 import com.soolsul.soolsulserver.bar.domain.BarRepository;
@@ -11,13 +11,11 @@ import com.soolsul.soolsulserver.post.domain.PostRepository;
 import com.soolsul.soolsulserver.region.domain.Location;
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
 import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class DataLoader {
 
     private static final Logger log = LoggerFactory.getLogger(DataLoader.class);
@@ -34,6 +32,18 @@ public class DataLoader {
     public static String postIdOne;
     public static String postIdTwo;
     public static String barId;
+
+    public DataLoader(
+            CustomUserDetailsService userDetailsService,
+            LocationMagnificationLevelRepository locationMagnificationLevelRepositoryDsl,
+            PostRepository postRepository,
+            BarRepository barRepository
+    ) {
+        this.userDetailsService = userDetailsService;
+        this.locationMagnificationLevelRepositoryDsl = locationMagnificationLevelRepositoryDsl;
+        this.postRepository = postRepository;
+        this.barRepository = barRepository;
+    }
 
     public void loadData() {
         log.info("[call DataLoader]");

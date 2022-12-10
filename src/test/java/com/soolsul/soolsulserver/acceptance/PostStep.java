@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static com.soolsul.soolsulserver.common.data.DataLoader.barId;
+import static com.soolsul.soolsulserver.data.DataLoader.barId;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 

@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.utils;
+package com.soolsul.soolsulserver.data;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;

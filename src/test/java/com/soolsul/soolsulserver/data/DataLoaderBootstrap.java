@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.common.data;
+package com.soolsul.soolsulserver.data;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
