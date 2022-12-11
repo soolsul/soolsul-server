@@ -1,7 +1,7 @@
 package com.soolsul.soolsulserver.user.auth.business;
 
 import com.soolsul.soolsulserver.user.auth.domain.RoleHierarchy;
-import com.soolsul.soolsulserver.user.auth.repository.RoleHierarchyRepository;
+import com.soolsul.soolsulserver.user.auth.persistence.RoleHierarchyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
