@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.data;
+package com.soolsul.soolsulserver.common.data;
 
 import com.soolsul.soolsulserver.bar.domain.Bar;
 import com.soolsul.soolsulserver.bar.domain.BarRepository;
@@ -11,11 +11,13 @@ import com.soolsul.soolsulserver.post.domain.PostRepository;
 import com.soolsul.soolsulserver.region.domain.Location;
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
 import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class DataLoader {
 
     private static final Logger log = LoggerFactory.getLogger(DataLoader.class);
@@ -28,23 +30,13 @@ public class DataLoader {
     private final LocationMagnificationLevelRepository locationMagnificationLevelRepositoryDsl;
     private final PostRepository postRepository;
     private final BarRepository barRepository;
+    private final RoleHierarchyRepository roleHierarchyRepository;
 
     public static String postIdOne;
     public static String postIdTwo;
     public static String barId;
 
-    public DataLoader(
-            CustomUserDetailsService userDetailsService,
-            LocationMagnificationLevelRepository locationMagnificationLevelRepositoryDsl,
-            PostRepository postRepository,
-            BarRepository barRepository
-    ) {
-        this.userDetailsService = userDetailsService;
-        this.locationMagnificationLevelRepositoryDsl = locationMagnificationLevelRepositoryDsl;
-        this.postRepository = postRepository;
-        this.barRepository = barRepository;
-    }
-
+    @Transactional
     public void loadData() {
         log.info("[call DataLoader]");
         userDetailsService.register(new UserRegisterRequest(USER_EMAIL, USER_PASSWORD, "02-123-4567", NAME, NICK_NAME));
@@ -81,5 +73,32 @@ public class DataLoader {
         barId = saveBar.getId();
 
         log.info("[init complete DataLoader]");
+
+        log.info("[Init Role Hierarchy]");
+        createRoleHierarchyIfNotFound(Role.USER, Role.ADMIN);
+        createRoleHierarchyIfNotFound(Role.ANONYMOUS, Role.USER);
+        log.info("[Completed init Role Hierarchy]");
+    }
+
+    @Transactional
+    public void createRoleHierarchyIfNotFound(Role childRole, Role parentRole) {
+        RoleHierarchy roleHierarchy = roleHierarchyRepository.findByChildName(parentRole.getRole());
+
+        if (roleHierarchy == null) {
+            roleHierarchy = RoleHierarchy.builder()
+                    .childName(parentRole.getRole())
+                    .build();
+        }
+        RoleHierarchy parentRoleHierarchy = roleHierarchyRepository.save(roleHierarchy);
+
+        roleHierarchy = roleHierarchyRepository.findByChildName(childRole.getRole());
+        if (roleHierarchy == null) {
+            roleHierarchy = RoleHierarchy.builder()
+                    .childName(childRole.getRole())
+                    .build();
+        }
+
+        RoleHierarchy childRoleHierarchy = roleHierarchyRepository.save(roleHierarchy);
+        childRoleHierarchy.setParentName(parentRoleHierarchy);
     }
 }
