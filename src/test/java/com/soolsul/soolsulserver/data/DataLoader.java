@@ -11,11 +11,15 @@ import com.soolsul.soolsulserver.post.domain.PostRepository;
 import com.soolsul.soolsulserver.region.domain.Location;
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
 import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
+
 @Component
+@RequiredArgsConstructor
 public class DataLoader {
 
     private static final Logger log = LoggerFactory.getLogger(DataLoader.class);
@@ -29,22 +33,12 @@ public class DataLoader {
     private final PostRepository postRepository;
     private final BarRepository barRepository;
 
+
     public static String postIdOne;
     public static String postIdTwo;
     public static String barId;
 
-    public DataLoader(
-            CustomUserDetailsService userDetailsService,
-            LocationMagnificationLevelRepository locationMagnificationLevelRepositoryDsl,
-            PostRepository postRepository,
-            BarRepository barRepository
-    ) {
-        this.userDetailsService = userDetailsService;
-        this.locationMagnificationLevelRepositoryDsl = locationMagnificationLevelRepositoryDsl;
-        this.postRepository = postRepository;
-        this.barRepository = barRepository;
-    }
-
+    @Transactional
     public void loadData() {
         log.info("[call DataLoader]");
         userDetailsService.register(new UserRegisterRequest(USER_EMAIL, USER_PASSWORD, "02-123-4567", NAME, NICK_NAME));
@@ -82,4 +76,6 @@ public class DataLoader {
 
         log.info("[init complete DataLoader]");
     }
+
+
 }

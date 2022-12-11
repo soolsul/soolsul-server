@@ -13,8 +13,8 @@ import org.springframework.data.domain.SliceImpl;
 import java.util.List;
 
 import static com.soolsul.soolsulserver.reply.domain.QReply.reply;
-import static com.soolsul.soolsulserver.user.auth.QCustomUser.customUser;
-import static com.soolsul.soolsulserver.user.auth.QUserInfo.userInfo;
+import static com.soolsul.soolsulserver.user.auth.domain.QCustomUser.customUser;
+import static com.soolsul.soolsulserver.user.auth.domain.QUserInfo.userInfo;
 
 @RequiredArgsConstructor
 public class ReplyQueryRepositoryImpl implements ReplyQueryRepository {
