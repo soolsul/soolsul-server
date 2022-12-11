@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.common.data;
+package com.soolsul.soolsulserver.data;
 
 import com.soolsul.soolsulserver.bar.domain.Bar;
 import com.soolsul.soolsulserver.bar.domain.BarRepository;
@@ -16,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
+
 @Component
 @RequiredArgsConstructor
 public class DataLoader {
@@ -30,7 +32,7 @@ public class DataLoader {
     private final LocationMagnificationLevelRepository locationMagnificationLevelRepositoryDsl;
     private final PostRepository postRepository;
     private final BarRepository barRepository;
-    private final RoleHierarchyRepository roleHierarchyRepository;
+
 
     public static String postIdOne;
     public static String postIdTwo;
@@ -73,32 +75,7 @@ public class DataLoader {
         barId = saveBar.getId();
 
         log.info("[init complete DataLoader]");
-
-        log.info("[Init Role Hierarchy]");
-        createRoleHierarchyIfNotFound(Role.USER, Role.ADMIN);
-        createRoleHierarchyIfNotFound(Role.ANONYMOUS, Role.USER);
-        log.info("[Completed init Role Hierarchy]");
     }
 
-    @Transactional
-    public void createRoleHierarchyIfNotFound(Role childRole, Role parentRole) {
-        RoleHierarchy roleHierarchy = roleHierarchyRepository.findByChildName(parentRole.getRole());
 
-        if (roleHierarchy == null) {
-            roleHierarchy = RoleHierarchy.builder()
-                    .childName(parentRole.getRole())
-                    .build();
-        }
-        RoleHierarchy parentRoleHierarchy = roleHierarchyRepository.save(roleHierarchy);
-
-        roleHierarchy = roleHierarchyRepository.findByChildName(childRole.getRole());
-        if (roleHierarchy == null) {
-            roleHierarchy = RoleHierarchy.builder()
-                    .childName(childRole.getRole())
-                    .build();
-        }
-
-        RoleHierarchy childRoleHierarchy = roleHierarchyRepository.save(roleHierarchy);
-        childRoleHierarchy.setParentName(parentRoleHierarchy);
-    }
 }

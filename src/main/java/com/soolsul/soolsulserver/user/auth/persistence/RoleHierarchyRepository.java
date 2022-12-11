@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.user.auth.repository;
 
-import com.soolsul.soolsulserver.user.auth.RoleHierarchy;
+import com.soolsul.soolsulserver.user.auth.domain.RoleHierarchy;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RoleHierarchyRepository extends JpaRepository<RoleHierarchy, String> {

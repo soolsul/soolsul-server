@@ -23,7 +23,7 @@ import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.list;
 import static com.soolsul.soolsulserver.post.domain.QPost.post;
 import static com.soolsul.soolsulserver.post.domain.QPostPhoto.postPhoto;
-import static com.soolsul.soolsulserver.user.auth.QUserInfo.userInfo;
+import static com.soolsul.soolsulserver.user.auth.domain.QUserInfo.userInfo;
 
 @RequiredArgsConstructor
 public class PostQueryRepositoryImpl implements PostQueryRepository {
