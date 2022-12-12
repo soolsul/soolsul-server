@@ -11,7 +11,6 @@ import com.soolsul.soolsulserver.post.domain.PostRepository;
 import com.soolsul.soolsulserver.region.domain.Location;
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
 import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 
 @Component
-@RequiredArgsConstructor
 public class DataLoader {
 
     private static final Logger log = LoggerFactory.getLogger(DataLoader.class);
@@ -33,6 +31,15 @@ public class DataLoader {
     private final PostRepository postRepository;
     private final BarRepository barRepository;
 
+    public DataLoader(CustomUserDetailsService userDetailsService,
+                      LocationMagnificationLevelRepository locationMagnificationLevelRepositoryDsl,
+                      PostRepository postRepository,
+                      BarRepository barRepository) {
+        this.userDetailsService = userDetailsService;
+        this.locationMagnificationLevelRepositoryDsl = locationMagnificationLevelRepositoryDsl;
+        this.postRepository = postRepository;
+        this.barRepository = barRepository;
+    }
 
     public static String postIdOne;
     public static String postIdTwo;

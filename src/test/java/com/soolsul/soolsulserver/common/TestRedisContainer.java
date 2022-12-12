@@ -1,5 +1,7 @@
 package com.soolsul.soolsulserver.common;
 
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.utility.DockerImageName;
 
@@ -14,8 +16,11 @@ public abstract class TestRedisContainer {
 
     static {
         REDIS_CONTAINER.start();
+    }
 
-        System.setProperty("spring.redis.host", REDIS_CONTAINER.getHost());
-        System.setProperty("spring.redis.port", REDIS_CONTAINER.getMappedPort(6379).toString());
+    @DynamicPropertySource
+    public static void overrideProps(DynamicPropertyRegistry registry) {
+        registry.add("spring.redis.host", REDIS_CONTAINER::getHost);
+        registry.add("spring.redis.port", () -> REDIS_CONTAINER.getMappedPort(6379).toString());
     }
 }
