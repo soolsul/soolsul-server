@@ -11,6 +11,7 @@ plugins {
     id 'org.asciidoctor.convert' version '1.5.8'
     id 'java'
     id 'jacoco'
+    id "org.sonarqube" version "3.4.0.2513"
 }
 
 group = 'com.soolsul'
@@ -124,22 +125,62 @@ jacoco {
 }
 
 jacocoTestReport {
+    dependsOn test
     reports {
         html.enabled true
         xml.enabled false
         csv.enabled false
+
+        html.destination file("src/jacoco/jacoco.html")
+    }
+
+    // QueryDSL은 분석에서 제외시켜야 함
+    def Qdomains = []
+    for (qPattern in '**/QA'..'**/QZ') {
+        Qdomains.add(qPattern + '*')
+    }
+
+    afterEvaluate {
+        classDirectories.setFrom(
+                files(classDirectories.files.collect {
+                    fileTree(dir: it, excludes: [
+                            '**/*Request.*',
+                            '**/*Response.*',
+                            '**/*Dto.*',
+                            '**/*Interceptor.*',
+                            '**/*Exception.*',
+                            '**/*Storage.*',
+                            '**/SoolsulServerApplication.*'
+                    ] + Qdomains)
+                })
+        )
     }
 
     finalizedBy 'jacocoTestCoverageVerification'
 }
 
 jacocoTestCoverageVerification {
+    def Qdomains = []
+    for (qPattern in '*.QA'..'*.QZ') {
+        Qdomains.add(qPattern + '*')
+    }
+
     violationRules {
         rule {
             limit {
                 element = 'CLASS'
-                minimum = 0.00
+                minimum = 0.0
             }
+
+            excludes = [
+                    '**.*Request.*',
+                    '**.*Response.*',
+                    '**.*Dto.*',
+                    '**.*Interceptor.*',
+                    '**.*Exception.*',
+                    '**.*Storage.*',
+                    '**.SoolsulServerApplication.*'
+            ] + Qdomains
         }
     }
 }
@@ -154,4 +195,10 @@ task testCoverage(type: Test) {
 
     tasks['jacocoTestReport'].mustRunAfter(tasks['test'])
     tasks['jacocoTestCoverageVerification'].mustRunAfter(tasks['jacocoTestReport'])
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "project key"
+    }
 }
