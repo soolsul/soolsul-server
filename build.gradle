@@ -124,22 +124,62 @@ jacoco {
 }
 
 jacocoTestReport {
+    dependsOn test
     reports {
         html.enabled true
         xml.enabled false
         csv.enabled false
+
+        html.destination file("src/jacoco/jacoco.html")
+    }
+
+    // QueryDSL은 분석에서 제외시켜야 함
+    def Qdomains = []
+    for (qPattern in '**/QA'..'**/QZ') {
+        Qdomains.add(qPattern + '*')
+    }
+
+    afterEvaluate {
+        classDirectories.setFrom(
+                files(classDirectories.files.collect {
+                    fileTree(dir: it, excludes: [
+                            '**/*Request.*',
+                            '**/*Response.*',
+                            '**/*Dto.*',
+                            '**/*Interceptor.*',
+                            '**/*Exception.*',
+                            '**/*Storage.*',
+                            '**/SoolsulServerApplication.*'
+                    ] + Qdomains)
+                })
+        )
     }
 
     finalizedBy 'jacocoTestCoverageVerification'
 }
 
 jacocoTestCoverageVerification {
+    def Qdomains = []
+    for (qPattern in '*.QA'..'*.QZ') {
+        Qdomains.add(qPattern + '*')
+    }
+
     violationRules {
         rule {
             limit {
                 element = 'CLASS'
-                minimum = 0.00
+                minimum = 0.0
             }
+
+            excludes = [
+                    '**.*Request.*',
+                    '**.*Response.*',
+                    '**.*Dto.*',
+                    '**.*Interceptor.*',
+                    '**.*Exception.*',
+                    '**.*Storage.*',
+                    '**.SoolsulServerApplication.*'
+            ] + Qdomains
         }
     }
 }
