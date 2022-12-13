@@ -18,6 +18,9 @@ spring:
         format_sql: true
   profiles:
     include: aws
+logging:
+  level:
+    com.soolsul.soolsulserver: debug
 
 jwt:
   expire-length: 1800000 # 30min
