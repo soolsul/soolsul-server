@@ -33,10 +33,10 @@ public class PostAcceptanceTest extends AcceptanceTest {
         PostCreateRequest postCreateRequest = 피드_생성_정보_생성();
 
         // when
-        var response = 피드_생성_요청(accessToken, postCreateRequest);
+        var 피드_생성_응답 = 피드_생성_요청(accessToken, postCreateRequest);
 
         // then
-        피드_생성_응답_확인(response);
+        피드_생성_응답_확인(피드_생성_응답);
     }
 
     /**
