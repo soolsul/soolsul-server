@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class BarStep {
 
-    public static ExtractableResponse<Response> findBarFilteredRequest(
+    public static ExtractableResponse<Response> 술집_목록_요청(
             double latitude,
             double longitude,
             String batMoodTagNames,
