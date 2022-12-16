@@ -5,6 +5,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 
 import static com.soolsul.soolsulserver.acceptance.AuthStep.권한_없는_요청;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그아웃_요청;
@@ -36,7 +37,49 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> 유저_생성_응답 = 유저_생성_요청(userRegisterRequest);
 
         // then
-        유저_생성_응답_확인(유저_생성_응답);
+        유저_생성_응답_확인(유저_생성_응답, HttpStatus.CREATED, "U001", "유저 생성에 성공했습니다.");
+    }
+
+    /**
+     * Given 이미 해당 이메일로 가입된 회원이다.
+     * When 이메일을 통해 회원가입을 한다.
+     * Then 회원가입 실패.
+     */
+    @DisplayName("이미 가입된 Email로는 다시 가입되지 않는다.")
+    @Test
+    public void user_register_duplicate_email_exception_test() {
+        // given
+        로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
+
+        var 유저_생성_정보 = new UserRegisterRequest(USER_EMAIL,
+                "password", "010-1234-5678", "test_user", "test_nickname");
+
+        // when
+        var 유저_생성_응답 = 유저_생성_요청(유저_생성_정보);
+
+        // then
+        유저_생성_응답_확인(유저_생성_응답, HttpStatus.CONFLICT, "U008", "이미 가입된 회원 입니다.");
+    }
+
+    /**
+     * Given 이미 존재하는 별칭으로 가입된 회원이다.
+     * When 이메일을 통해 회원가입을 한다.
+     * Then 회원가입 실패.
+     */
+    @DisplayName("이미 가입된 NickName으로는 다시 가입되지 않는다.")
+    @Test
+    public void user_register_duplicate_nickname_exception_test() {
+        // given
+        로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
+
+        var 유저_생성_정보 = new UserRegisterRequest("test@test.com",
+                "password", "010-1234-5678", "test_user", NICK_NAME);
+
+        // when
+        var 유저_생성_응답 = 유저_생성_요청(유저_생성_정보);
+
+        // then
+        유저_생성_응답_확인(유저_생성_응답, HttpStatus.CONFLICT, "U008", "이미 사용중인 별칭 입니다.");
     }
 
     /**

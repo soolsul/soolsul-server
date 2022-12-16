@@ -98,11 +98,11 @@ public class AuthStep {
                 .extract();
     }
 
-    public static void 유저_생성_응답_확인(ExtractableResponse<Response> response) {
+    public static void 유저_생성_응답_확인(ExtractableResponse<Response> response, HttpStatus status, String code, String message) {
         assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value()),
-                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("U001"),
-                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("유저 생성에 성공했습니다.")
+                () -> assertThat(response.statusCode()).isEqualTo(status.value()),
+                () -> assertThat(response.jsonPath().getString("code")).isEqualTo(code),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo(message)
         );
     }
 
