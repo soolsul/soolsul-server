@@ -1,5 +1,8 @@
 package com.soolsul.soolsulserver.acceptance;
 
+import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -8,12 +11,33 @@ import static com.soolsul.soolsulserver.acceptance.AuthStep.로그아웃_요청;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그아웃_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그인_되어_있음;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.베어러_인증으로_내_회원_정보_조회_요청;
+import static com.soolsul.soolsulserver.acceptance.AuthStep.유저_생성_요청;
+import static com.soolsul.soolsulserver.acceptance.AuthStep.유저_생성_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.회원_정보_조회;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.회원_탈퇴_요청;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.회원_탈퇴_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_목록_조회_요청;
 
 public class AuthAcceptanceTest extends AcceptanceTest {
+
+    /**
+     * Given 해당 서비스에 회원가입이 되어있지 않은 이메일이 있다.
+     * When 이메일을 통해 회원가입을 한다.
+     * Then 사용자의 회원 가입이 완료된다.
+     */
+    @DisplayName("사용자 회원 가입 테스트")
+    @Test
+    public void user_register_test() {
+        // given
+        UserRegisterRequest userRegisterRequest = new UserRegisterRequest("test@email.com",
+                "password", "010-1234-5678", "test_user", "test_nickname");
+
+        // when
+        ExtractableResponse<Response> 유저_생성_응답 = 유저_생성_요청(userRegisterRequest);
+
+        // then
+        유저_생성_응답_확인(유저_생성_응답);
+    }
 
     /**
      * Given 이미 가입된 사용자가 있고
@@ -33,7 +57,6 @@ public class AuthAcceptanceTest extends AcceptanceTest {
         // then
         회원_정보_조회(베어러_로그인_응답, USER_EMAIL, NAME);
     }
-
 
     /**
      * Given 마이페이지를 보고있는 User가

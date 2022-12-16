@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.acceptance;
 
+import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -93,6 +94,24 @@ public class AuthStep {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .when().delete("/api/auth")
+                .then().log().all()
+                .extract();
+    }
+
+    public static void 유저_생성_응답_확인(ExtractableResponse<Response> response) {
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value()),
+                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("U001"),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("유저 생성에 성공했습니다.")
+        );
+    }
+
+    public static ExtractableResponse<Response> 유저_생성_요청(UserRegisterRequest userRegisterRequest) {
+        return RestAssured
+                .given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(userRegisterRequest)
+                .when().post("/api/auth/register")
                 .then().log().all()
                 .extract();
     }
