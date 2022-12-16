@@ -26,7 +26,7 @@ public class AuthStep {
                 .body(params)
                 .when().post("/api/auth/login")
                 .then().log().all()
-                .statusCode(HttpStatus.OK.value()).extract();
+                .extract();
     }
 
     public static String 로그인_되어_있음(String email, String password) {
@@ -114,5 +114,13 @@ public class AuthStep {
                 .when().post("/api/auth/register")
                 .then().log().all()
                 .extract();
+    }
+
+    public static void 유저_로그인_응답_확인(ExtractableResponse<Response> response, HttpStatus status, String code, String message) {
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(status.value()),
+                () -> assertThat(response.jsonPath().getString("code")).isEqualTo(code),
+                () -> assertThat(response.jsonPath().getString("message")).isEqualTo(message)
+        );
     }
 }

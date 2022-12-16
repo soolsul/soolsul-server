@@ -1,8 +1,6 @@
 package com.soolsul.soolsulserver.acceptance;
 
 import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -11,7 +9,9 @@ import static com.soolsul.soolsulserver.acceptance.AuthStep.권한_없는_요청
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그아웃_요청;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그아웃_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그인_되어_있음;
+import static com.soolsul.soolsulserver.acceptance.AuthStep.로그인_요청;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.베어러_인증으로_내_회원_정보_조회_요청;
+import static com.soolsul.soolsulserver.acceptance.AuthStep.유저_로그인_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.유저_생성_요청;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.유저_생성_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.회원_정보_조회;
@@ -34,7 +34,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
                 "password", "010-1234-5678", "test_user", "test_nickname");
 
         // when
-        ExtractableResponse<Response> 유저_생성_응답 = 유저_생성_요청(userRegisterRequest);
+        var 유저_생성_응답 = 유저_생성_요청(userRegisterRequest);
 
         // then
         유저_생성_응답_확인(유저_생성_응답, HttpStatus.CREATED, "U001", "유저 생성에 성공했습니다.");
@@ -80,6 +80,36 @@ public class AuthAcceptanceTest extends AcceptanceTest {
 
         // then
         유저_생성_응답_확인(유저_생성_응답, HttpStatus.CONFLICT, "U008", "이미 사용중인 별칭 입니다.");
+    }
+
+    /**
+     * Given 해당 이메일로 가입된 계정이 없다.
+     * When 이메일을 통해 로그인 한다.
+     * Then 로그인 실패
+     */
+    @DisplayName("가입되지 않은 이메일을 통해 로그인을 시도하는 경우 실패한다")
+    @Test
+    public void invalid_email_login_test() {
+        // when
+        var 로그인_요청_응답 = 로그인_요청("invalid@email.com", USER_PASSWORD);
+
+        // then
+        유저_로그인_응답_확인(로그인_요청_응답, HttpStatus.UNAUTHORIZED, "U004", "Invalid Username or Password");
+    }
+
+    /**
+     * Given 해당 이메일로 생성된 계정이 존재한다.
+     * When 잘못된 비밀번호를 통해 로그인 한다.
+     * Then 로그인 실패
+     */
+    @DisplayName("잘못된 비밀번호로 로그인을 시도한다")
+    @Test
+    public void invalid_password_login_test() {
+        // when
+        var 로그인_요청_응답 = 로그인_요청(USER_EMAIL, "invalidPassword");
+
+        // then
+        유저_로그인_응답_확인(로그인_요청_응답, HttpStatus.UNAUTHORIZED, "U004", "Invalid Username or Password");
     }
 
     /**
