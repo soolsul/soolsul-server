@@ -1,0 +1,60 @@
+package com.soolsul.soolsulserver.bar.businees.client;
+
+import com.soolsul.soolsulserver.bar.businees.client.dto.KakaoAddressResponse;
+import com.soolsul.soolsulserver.bar.businees.client.dto.KakaoRoadAddressResponse;
+import com.soolsul.soolsulserver.bar.common.dto.request.AddressLookupRequest;
+import com.soolsul.soolsulserver.bar.common.dto.response.AddressLookupResponse;
+import com.soolsul.soolsulserver.bar.common.dto.response.AddressResponse;
+import com.soolsul.soolsulserver.bar.exception.InvalidAddressException;
+import com.soolsul.soolsulserver.common.client.KakaoAddressSearchClient;
+import com.soolsul.soolsulserver.common.client.dto.response.KakaoAddressSearchResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class KakaoPlaceApiService {
+
+    private final KakaoAddressSearchClient addressSearchClient;
+
+    public AddressLookupResponse searchAddress(AddressLookupRequest searchRequest) {
+        String addressName = searchRequest.query();
+        validateAddressName(addressName);
+
+        KakaoAddressSearchResponse addressResponse = addressSearchClient.searchAddress(addressName);
+
+        return new AddressLookupResponse(convertToAddressResponseList(addressResponse));
+    }
+
+    private void validateAddressName(String addressName) {
+        if (addressName == null || addressName.isBlank()) {
+            throw new InvalidAddressException();
+        }
+    }
+
+    private List<AddressResponse> convertToAddressResponseList(
+            KakaoAddressSearchResponse addressResponse) {
+        return addressResponse.getDocuments()
+                .stream()
+                .map(document -> getAddressResponse(document.getAddress(), document.getRoadAddress()))
+                .toList();
+    }
+
+    private AddressResponse getAddressResponse(KakaoAddressResponse address, KakaoRoadAddressResponse roadAddress) {
+        return AddressResponse.builder()
+                .addressName(address.getAddressName())
+                .roadAddressName(roadAddress.getAddressName())
+                .region1DepthName(address.getRegion1DepthName())
+                .region2DepthName(address.getRegion2DepthName())
+                .region3DepthName(address.getRegion3DepthName())
+                .region3DepthHName(address.getRegion3DepthHName())
+                .mainAddressNo(address.getMainAddressNo())
+                .subAddressNo(address.getSubAddressNo())
+                .roadName(roadAddress.getRoadName())
+                .mainBuildingNo(roadAddress.getMainBuildingNo())
+                .subBuildingNo(roadAddress.getSubBuildingNo())
+                .build();
+    }
+}
