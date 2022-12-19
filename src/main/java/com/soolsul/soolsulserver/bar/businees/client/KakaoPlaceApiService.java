@@ -7,8 +7,7 @@ import com.soolsul.soolsulserver.bar.common.dto.response.AddressConvertResponse;
 import com.soolsul.soolsulserver.bar.common.dto.response.AddressLookupResponse;
 import com.soolsul.soolsulserver.bar.common.dto.response.AddressResponse;
 import com.soolsul.soolsulserver.bar.exception.InvalidAddressException;
-import com.soolsul.soolsulserver.common.client.KakaoAddressSearchClient;
-import com.soolsul.soolsulserver.common.client.dto.response.KakaoAddressResponse;
+import com.soolsul.soolsulserver.bar.businees.client.dto.KakaoAddressResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

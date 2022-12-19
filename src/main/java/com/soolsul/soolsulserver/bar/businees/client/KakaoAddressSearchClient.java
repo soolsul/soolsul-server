@@ -1,6 +1,6 @@
-package com.soolsul.soolsulserver.common.client;
+package com.soolsul.soolsulserver.bar.businees.client;
 
-import com.soolsul.soolsulserver.common.client.dto.response.KakaoAddressResponse;
+import com.soolsul.soolsulserver.bar.businees.client.dto.KakaoAddressResponse;
 import com.soolsul.soolsulserver.common.config.client.KakaoClientAuthHeaderConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

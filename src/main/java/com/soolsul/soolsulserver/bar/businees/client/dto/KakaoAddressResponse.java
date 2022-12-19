@@ -1,6 +1,5 @@
-package com.soolsul.soolsulserver.common.client.dto.response;
+package com.soolsul.soolsulserver.bar.businees.client.dto;
 
-import com.soolsul.soolsulserver.bar.businees.client.dto.KakaoAddressDocumentResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
