@@ -1,6 +1,5 @@
 package com.soolsul.soolsulserver.bar.businees.client;
 
-import com.soolsul.soolsulserver.bar.common.dto.request.AddressLookupRequest;
 import com.soolsul.soolsulserver.bar.common.dto.response.AddressConvertResponse;
 import com.soolsul.soolsulserver.bar.common.dto.response.AddressLookupResponse;
 import com.soolsul.soolsulserver.common.TestRedisContainer;
@@ -25,10 +24,9 @@ class KakaoPlaceApiServiceTest extends TestRedisContainer {
     public void lookup_address_by_query() {
         // given
         String query = "전북 삼성동 100";
-        AddressLookupRequest request = new AddressLookupRequest(query);
 
         // when
-        AddressLookupResponse lookupResponse = placeApiService.searchAddress(request);
+        AddressLookupResponse lookupResponse = placeApiService.searchAddress(query);
 
         // then
         assertThat(lookupResponse.addressResponses())

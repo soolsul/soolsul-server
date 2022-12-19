@@ -1,13 +1,12 @@
 package com.soolsul.soolsulserver.bar.businees.client;
 
+import com.soolsul.soolsulserver.bar.businees.client.dto.KakaoAddressResponse;
 import com.soolsul.soolsulserver.bar.businees.client.dto.KakaoSearchAddressResponse;
 import com.soolsul.soolsulserver.bar.businees.client.dto.KakaoSearchRoadAddressResponse;
-import com.soolsul.soolsulserver.bar.common.dto.request.AddressLookupRequest;
 import com.soolsul.soolsulserver.bar.common.dto.response.AddressConvertResponse;
 import com.soolsul.soolsulserver.bar.common.dto.response.AddressLookupResponse;
 import com.soolsul.soolsulserver.bar.common.dto.response.AddressResponse;
 import com.soolsul.soolsulserver.bar.exception.InvalidAddressException;
-import com.soolsul.soolsulserver.bar.businees.client.dto.KakaoAddressResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +18,9 @@ public class KakaoPlaceApiService {
 
     private final KakaoAddressSearchClient addressSearchClient;
 
-    public AddressLookupResponse searchAddress(AddressLookupRequest searchRequest) {
-        String addressName = searchRequest.query();
-        validateAddressName(addressName);
-
-        KakaoAddressResponse addressResponse = addressSearchClient.searchAddress(addressName);
+    public AddressLookupResponse searchAddress(String query) {
+        validateAddressName(query);
+        KakaoAddressResponse addressResponse = addressSearchClient.searchAddress(query);
         return new AddressLookupResponse(buildAddressResponseList(addressResponse));
     }
 
