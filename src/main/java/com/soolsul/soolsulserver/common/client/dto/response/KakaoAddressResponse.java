@@ -8,6 +8,6 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class KakaoAddressSearchResponse {
+public class KakaoAddressResponse {
     private List<KakaoAddressDocumentResponse> documents;
 }

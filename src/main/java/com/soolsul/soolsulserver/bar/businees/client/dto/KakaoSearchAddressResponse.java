@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class KakaoAddressResponse {
+public class KakaoSearchAddressResponse {
 
     private String addressName;
 

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class KakaoRoadAddressResponse {
+public class KakaoSearchRoadAddressResponse {
 
     private String addressName;
 
@@ -31,7 +31,7 @@ public class KakaoRoadAddressResponse {
 
     private String subBuildingNo;
 
-    private KakaoRoadAddressResponse(String addressName, String region1DepthName, String region2DepthName, String region3DepthName, String region3DepthHName, String roadName, String mainBuildingNo, String subBuildingNo) {
+    private KakaoSearchRoadAddressResponse(String addressName, String region1DepthName, String region2DepthName, String region3DepthName, String region3DepthHName, String roadName, String mainBuildingNo, String subBuildingNo) {
         this.addressName = addressName;
         this.region1DepthName = region1DepthName;
         this.region2DepthName = region2DepthName;
@@ -42,8 +42,8 @@ public class KakaoRoadAddressResponse {
         this.subBuildingNo = subBuildingNo;
     }
 
-    public static KakaoRoadAddressResponse defaultResponse() {
-        return new KakaoRoadAddressResponse("addressName", "region1DepthName", "region2DepthName",
+    public static KakaoSearchRoadAddressResponse defaultResponse() {
+        return new KakaoSearchRoadAddressResponse("addressName", "region1DepthName", "region2DepthName",
                 "region3DepthName", "region3DepthHName", "roadName", "mainBuildingNo", "subBuildingNo"
         );
     }

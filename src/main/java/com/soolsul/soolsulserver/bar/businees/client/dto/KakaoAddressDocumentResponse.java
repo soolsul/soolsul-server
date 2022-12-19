@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class KakaoAddressDocumentResponse {
-    private KakaoAddressResponse address;
-    private KakaoRoadAddressResponse roadAddress;
+    private KakaoSearchAddressResponse address;
+    private KakaoSearchRoadAddressResponse roadAddress;
 
-    public KakaoRoadAddressResponse getRoadAddress() {
+    public KakaoSearchRoadAddressResponse getRoadAddress() {
         if (roadAddress == null) {
-            return KakaoRoadAddressResponse.defaultResponse();
+            return KakaoSearchRoadAddressResponse.defaultResponse();
         }
         return roadAddress;
     }

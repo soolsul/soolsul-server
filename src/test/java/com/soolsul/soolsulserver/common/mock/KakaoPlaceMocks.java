@@ -19,23 +19,37 @@ import static org.springframework.util.StreamUtils.copyToString;
 public abstract class KakaoPlaceMocks {
 
     private final static String ADDRESS_SEARCH_URL = "/v2/local/search/address.json";
+    private static final String ADDRESS_CONVERT_URL = "/v2/local/geo/coord2address.json";
 
     private static StubMapping addressSearchStub;
+    private static StubMapping addressConvertStub;
 
     public static void startAllMocks() {
         setupSearchAddressStub();
+        setupConvertAddressStub();
     }
 
     public static void removeAllMocks() {
         WireMock.removeStub(addressSearchStub);
+        WireMock.removeStub(addressConvertStub);
     }
 
-    public static void setupSearchAddressStub() {
+    private static void setupSearchAddressStub() {
         addressSearchStub = stubFor(get(urlPathEqualTo(ADDRESS_SEARCH_URL))
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.OK.value())
                         .withHeader(HttpHeaders.CONTENT_TYPE, "application/json; charset=utf-8")
                         .withBody(getMockResponseBodyByPath("payload/get-kakao-lookup-address-response.json"))
+                )
+        );
+    }
+
+    private static void setupConvertAddressStub() {
+        addressConvertStub = stubFor(get(urlPathEqualTo(ADDRESS_CONVERT_URL))
+                .willReturn(aResponse()
+                        .withStatus(HttpStatus.OK.value())
+                        .withHeader(HttpHeaders.CONTENT_TYPE, "application/json; charset=utf-8")
+                        .withBody(getMockResponseBodyByPath("payload/get-kakao-convert-address-response.json"))
                 )
         );
     }

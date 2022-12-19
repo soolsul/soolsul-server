@@ -1,13 +1,14 @@
 package com.soolsul.soolsulserver.bar.businees.client;
 
-import com.soolsul.soolsulserver.bar.businees.client.dto.KakaoAddressResponse;
-import com.soolsul.soolsulserver.bar.businees.client.dto.KakaoRoadAddressResponse;
+import com.soolsul.soolsulserver.bar.businees.client.dto.KakaoSearchAddressResponse;
+import com.soolsul.soolsulserver.bar.businees.client.dto.KakaoSearchRoadAddressResponse;
 import com.soolsul.soolsulserver.bar.common.dto.request.AddressLookupRequest;
+import com.soolsul.soolsulserver.bar.common.dto.response.AddressConvertResponse;
 import com.soolsul.soolsulserver.bar.common.dto.response.AddressLookupResponse;
 import com.soolsul.soolsulserver.bar.common.dto.response.AddressResponse;
 import com.soolsul.soolsulserver.bar.exception.InvalidAddressException;
 import com.soolsul.soolsulserver.common.client.KakaoAddressSearchClient;
-import com.soolsul.soolsulserver.common.client.dto.response.KakaoAddressSearchResponse;
+import com.soolsul.soolsulserver.common.client.dto.response.KakaoAddressResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +24,13 @@ public class KakaoPlaceApiService {
         String addressName = searchRequest.query();
         validateAddressName(addressName);
 
-        KakaoAddressSearchResponse addressResponse = addressSearchClient.searchAddress(addressName);
+        KakaoAddressResponse addressResponse = addressSearchClient.searchAddress(addressName);
+        return new AddressLookupResponse(buildAddressResponseList(addressResponse));
+    }
 
-        return new AddressLookupResponse(convertToAddressResponseList(addressResponse));
+    public AddressConvertResponse convertAddress(double longitude, double latitude) {
+        KakaoAddressResponse convertResponse = addressSearchClient.convertAddress(longitude, latitude);
+        return new AddressConvertResponse(buildAddressResponseList(convertResponse));
     }
 
     private void validateAddressName(String addressName) {
@@ -34,15 +39,15 @@ public class KakaoPlaceApiService {
         }
     }
 
-    private List<AddressResponse> convertToAddressResponseList(
-            KakaoAddressSearchResponse addressResponse) {
+    private List<AddressResponse> buildAddressResponseList(
+            KakaoAddressResponse addressResponse) {
         return addressResponse.getDocuments()
                 .stream()
                 .map(document -> getAddressResponse(document.getAddress(), document.getRoadAddress()))
                 .toList();
     }
 
-    private AddressResponse getAddressResponse(KakaoAddressResponse address, KakaoRoadAddressResponse roadAddress) {
+    private AddressResponse getAddressResponse(KakaoSearchAddressResponse address, KakaoSearchRoadAddressResponse roadAddress) {
         return AddressResponse.builder()
                 .addressName(address.getAddressName())
                 .roadAddressName(roadAddress.getAddressName())
