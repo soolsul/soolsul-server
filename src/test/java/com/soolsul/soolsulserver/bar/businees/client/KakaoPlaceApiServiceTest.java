@@ -1,6 +1,7 @@
 package com.soolsul.soolsulserver.bar.businees.client;
 
 import com.soolsul.soolsulserver.bar.common.dto.request.AddressLookupRequest;
+import com.soolsul.soolsulserver.bar.common.dto.response.AddressConvertResponse;
 import com.soolsul.soolsulserver.bar.common.dto.response.AddressLookupResponse;
 import com.soolsul.soolsulserver.common.TestRedisContainer;
 import com.soolsul.soolsulserver.common.WireMockClientTest;
@@ -35,5 +36,19 @@ class KakaoPlaceApiServiceTest extends TestRedisContainer {
                 .allSatisfy(address ->
                         assertThat(address).satisfiesAnyOf(addr -> assertThat(addr.addressName()).contains("전북"))
                 );
+    }
+
+    @DisplayName("위도, 경도를 통해 주소로 변환한다.")
+    @Test
+    public void convert_position_to_address() {
+        // given
+        double longitude = 127.423084873712;
+        double latitude = 37.5145458257413;
+        
+        // when
+        AddressConvertResponse convertResponse = placeApiService.convertAddress(longitude, latitude);
+
+        // then
+        assertThat(convertResponse.documents()).isNotEmpty();
     }
 }
