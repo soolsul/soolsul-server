@@ -27,7 +27,7 @@ public class PostAcceptanceTest extends AcceptanceTest {
      */
     @DisplayName("사용자가 피드를 작성후 작성 완료를 누르는 경우 서버에 정상저장 된다.")
     @Test
-    public void create_post_test() {
+    void create_post_test() {
         // given
         String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
         PostCreateRequest postCreateRequest = 피드_생성_정보_생성();
@@ -51,7 +51,7 @@ public class PostAcceptanceTest extends AcceptanceTest {
      */
     @DisplayName("사용자가 피드 스토리 테스트")
     @Test
-    public void find_post_list_test() {
+    void find_post_list_test() {
         // given
         String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
         피드_생성_요청(accessToken, 피드_생성_정보_생성());

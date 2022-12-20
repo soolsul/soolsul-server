@@ -39,7 +39,7 @@ public class MyPageAcceptanceTest extends AcceptanceTest {
      */
     @DisplayName("스크랩된 피드를 전부 가져온다.")
     @Test
-    public void scraped_post_find_all_test() {
+    void scraped_post_find_all_test() {
         // given
         String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
         피드_스크랩_요청(accessToken, postIdOne);
@@ -59,7 +59,7 @@ public class MyPageAcceptanceTest extends AcceptanceTest {
      */
     @DisplayName("사용자가 작성한 피드를 전부 가져온다.")
     @Test
-    public void my_post_find_all_test() {
+    void my_post_find_all_test() {
         // given
         String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
         피드_생성_요청(accessToken, 피드_생성_정보_생성());
@@ -78,7 +78,7 @@ public class MyPageAcceptanceTest extends AcceptanceTest {
      */
     @DisplayName("사용자가 작성한 피드를 전부 가져온다.")
     @Test
-    public void my_reply_find_all_test() {
+    void my_reply_find_all_test() {
         // given
         String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
         피드_생성_요청(accessToken, 피드_생성_정보_생성());
@@ -106,7 +106,7 @@ public class MyPageAcceptanceTest extends AcceptanceTest {
      */
     @DisplayName("사용자의 상세 정보를 수정한다.")
     @Test
-    public void my_info_find_test() {
+    void my_info_find_test() {
         // given
         String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
 

@@ -54,7 +54,7 @@ public class PostCommandFacadeSpecTest {
 
     @DisplayName("가게가 존재할 경우, 정상적으로 게시물을 생성한다.")
     @Test
-    public void create_post_test() {
+    void create_post_test() {
         // given
         BarLookupResponse barLookupResponse = new BarLookupResponse(
                 BAR_ID,
@@ -81,7 +81,7 @@ public class PostCommandFacadeSpecTest {
 
     @DisplayName("가게가 존재하지 않은 경우, 게시물 생성시 예외를 던진다.")
     @Test
-    public void not_exists_bar_cant_create_post_test() {
+    void not_exists_bar_cant_create_post_test() {
         // given
         PostCreateRequest request = new PostCreateRequest("bar_id", "본문 내용", 4.3f, LocalDate.now(), postPhotos, null);
 
@@ -101,7 +101,7 @@ public class PostCommandFacadeSpecTest {
 
     @DisplayName("사용자의 id가 존재하는 경우에만 글을 생성할 수 있다.")
     @Test
-    public void create_post_if_exists_user_test() {
+    void create_post_if_exists_user_test() {
         // given
         BarLookupResponse barLookupResponse = new BarLookupResponse(
                 BAR_ID,
@@ -127,7 +127,7 @@ public class PostCommandFacadeSpecTest {
 
     @DisplayName("사용자의 id가 존재하지 않는 경우 예외를 던진다.")
     @Test
-    public void throw_exception_if_not_exists_user_test() {
+    void throw_exception_if_not_exists_user_test() {
         // given
         CustomUser noEmailCustomUser = new CustomUser(null, "1234");
 

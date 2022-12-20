@@ -11,14 +11,14 @@ class PostScrapTest {
 
     @DisplayName("Post 생성 테스트")
     @Test
-    public void post_scrap_create_test() {
+    void post_scrap_create_test() {
         assertThatCode(() -> new PostScrap("owner_id", "post_id"))
                 .doesNotThrowAnyException();
     }
 
     @DisplayName("PostScrap ID가 같은 경우 equals를 통해 동일한 객체로 판단하는지 확인한다.")
     @Test
-    public void compare_equal_test() {
+    void compare_equal_test() {
         PostScrap postScrapOne = createPostScrap("1", "owner_id", "post_id");
         PostScrap postScrapTwo = createPostScrap("1", "owner_id2", "post_id2");
         Assertions.assertThat(postScrapOne).isEqualTo(postScrapTwo);
@@ -26,7 +26,7 @@ class PostScrapTest {
 
     @DisplayName("PostScrap Id가 다른 경우 equals를 통해 다른 객체로 판단한다.")
     @Test
-    public void compare_not_equal_test() {
+    void compare_not_equal_test() {
         PostScrap postScrapOne = createPostScrap("1", "owner_id", "post_id");
         PostScrap postScrapTwo = createPostScrap("2", "owner_id", "post_id");
         Assertions.assertThat(postScrapOne).isNotEqualTo(postScrapTwo);

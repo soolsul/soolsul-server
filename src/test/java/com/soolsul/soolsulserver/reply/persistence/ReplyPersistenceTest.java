@@ -42,7 +42,7 @@ public class ReplyPersistenceTest {
     @Rollback(value = false)
     @DisplayName("해당 피드에 추가되어 있는 댓글을 찾아온다.")
     @Test
-    public void find_all_replies_in_post_test() {
+    void find_all_replies_in_post_test() {
         // given
         Post savedPost = testEntityManager.persist(new Post("test_user_id", "bar_id", 4.3f, "contents"));
         CustomUser savedUser = testEntityManager.persist(new CustomUser("custom_user", "1234"));

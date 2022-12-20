@@ -28,7 +28,7 @@ public class DeleteTest {
 
     @Transactional
     @Test
-    public void delete_test() {
+    void delete_test() {
         // given
         Post post = new Post("ownerId", "barId", 4.2f, "contents");
         PostPhoto newPhoto1 = new PostPhoto(BAR_ID, "file1", "uuid1", ".jpg");

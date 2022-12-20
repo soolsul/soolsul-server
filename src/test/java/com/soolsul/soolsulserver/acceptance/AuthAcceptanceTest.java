@@ -28,7 +28,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
      */
     @DisplayName("사용자 회원 가입 테스트")
     @Test
-    public void user_register_test() {
+    void user_register_test() {
         // given
         UserRegisterRequest userRegisterRequest = new UserRegisterRequest("test@email.com",
                 "password", "010-1234-5678", "test_user", "test_nickname");
@@ -47,7 +47,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
      */
     @DisplayName("이미 가입된 Email로는 다시 가입되지 않는다.")
     @Test
-    public void user_register_duplicate_email_exception_test() {
+    void user_register_duplicate_email_exception_test() {
         // given
         로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
 
@@ -68,7 +68,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
      */
     @DisplayName("이미 가입된 NickName으로는 다시 가입되지 않는다.")
     @Test
-    public void user_register_duplicate_nickname_exception_test() {
+    void user_register_duplicate_nickname_exception_test() {
         // given
         로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
 
@@ -89,7 +89,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
      */
     @DisplayName("가입되지 않은 이메일을 통해 로그인을 시도하는 경우 실패한다")
     @Test
-    public void invalid_email_login_test() {
+    void invalid_email_login_test() {
         // when
         var 로그인_요청_응답 = 로그인_요청("invalid@email.com", USER_PASSWORD);
 
@@ -104,7 +104,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
      */
     @DisplayName("잘못된 비밀번호로 로그인을 시도한다")
     @Test
-    public void invalid_password_login_test() {
+    void invalid_password_login_test() {
         // when
         var 로그인_요청_응답 = 로그인_요청(USER_EMAIL, "invalidPassword");
 
@@ -120,7 +120,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
      */
     @DisplayName("Bearer Token 인증방식의 로그인")
     @Test
-    public void bearer_token_login() {
+    void bearer_token_login() {
         // given
         String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
 
@@ -140,7 +140,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
      */
     @DisplayName("Bearer Token 인증방식의 로그아웃")
     @Test
-    public void bearer_token_logout() {
+    void bearer_token_logout() {
         // given
         String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
 
@@ -164,7 +164,7 @@ public class AuthAcceptanceTest extends AcceptanceTest {
      */
     @DisplayName("회원은 탈퇴할 수 있다.")
     @Test
-    public void user_delete_test() {
+    void user_delete_test() {
         // given
         String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
 

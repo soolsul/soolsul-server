@@ -27,7 +27,7 @@ public class ReplyAcceptanceTest extends AcceptanceTest {
      */
     @DisplayName("Post에 댓글을 추가할 수 있다.")
     @Test
-    public void add_reply_test() {
+    void add_reply_test() {
         // given
         String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
         피드_생성_요청(accessToken, 피드_생성_정보_생성());
@@ -48,7 +48,7 @@ public class ReplyAcceptanceTest extends AcceptanceTest {
      */
     @DisplayName("Post에 추가된 댓글을 확인할 수 있다.")
     @Test
-    public void find_all_replies_test() {
+    void find_all_replies_test() {
         // given
         String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
         피드_생성_요청(accessToken, 피드_생성_정보_생성());

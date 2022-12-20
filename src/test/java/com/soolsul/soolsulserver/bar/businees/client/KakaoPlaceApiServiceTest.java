@@ -21,7 +21,7 @@ class KakaoPlaceApiServiceTest extends TestRedisContainer {
 
     @DisplayName("주소를 검색을 통해 장소 목록을 조회한다.")
     @Test
-    public void lookup_address_by_query() {
+    void lookup_address_by_query() {
         // given
         String query = "전북 삼성동 100";
 
@@ -38,11 +38,11 @@ class KakaoPlaceApiServiceTest extends TestRedisContainer {
 
     @DisplayName("위도, 경도를 통해 주소로 변환한다.")
     @Test
-    public void convert_position_to_address() {
+    void convert_position_to_address() {
         // given
         double longitude = 127.423084873712;
         double latitude = 37.5145458257413;
-        
+
         // when
         AddressConvertResponse convertResponse = placeApiService.convertAddress(longitude, latitude);
 
