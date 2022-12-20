@@ -48,13 +48,12 @@ public class Authority implements GrantedAuthority {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Authority authority = (Authority) o;
-        return Objects.equals(id, authority.id);
+        Authority authority1 = (Authority) o;
+        return getAuthority() == authority1.getAuthority();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(getAuthority());
     }
-
 }
