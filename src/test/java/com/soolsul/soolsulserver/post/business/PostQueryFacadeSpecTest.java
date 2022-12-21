@@ -37,7 +37,7 @@ public class PostQueryFacadeSpecTest {
 
     @DisplayName("단건 Post 조회에 성공한다.")
     @Test
-    public void find_detail_post_test() {
+    void find_detail_post_test() {
         // given
         CustomUser customUser = new CustomUser("id1", "test@email.com", "1234");
         UserLookUpResponse userLookUpResponse = new UserLookUpResponse(

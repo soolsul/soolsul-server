@@ -29,7 +29,7 @@ public class PostPhotosTest {
 
     @DisplayName("Photos에 Photo한장을 추가한다.")
     @Test
-    public void add_post_photo_test() {
+    void add_post_photo_test() {
         // when
         post.addPhoto(newPhoto1);
         post.addPhoto(newPhoto2);
@@ -41,7 +41,7 @@ public class PostPhotosTest {
 
     @DisplayName("Photos일급컬랙션을 리스트로 초기화 할 수 있다.")
     @Test
-    public void add_post_photo_list_test() {
+    void add_post_photo_list_test() {
         // given
         List<PostPhoto> photos = List.of(this.newPhoto1, newPhoto2, newPhoto3);
 
@@ -54,7 +54,7 @@ public class PostPhotosTest {
 
     @DisplayName("Phtots일급컬랙션에서 단건 사진을 삭제할 수 있다.")
     @Test
-    public void delete_post_photo_test() {
+    void delete_post_photo_test() {
         // given
         List<PostPhoto> photos = List.of(newPhoto1, newPhoto2, newPhoto3);
         post.addPhotoList(photos);
@@ -68,7 +68,7 @@ public class PostPhotosTest {
 
     @DisplayName("Phtots일급컬랙션에는 최소 한장의 사진은 남아야 한다.")
     @Test
-    public void cant_delete_last_photo_test() {
+    void cant_delete_last_photo_test() {
         // given
         List<PostPhoto> photos = List.of(newPhoto1);
         post.addPhotoList(photos);
@@ -84,7 +84,7 @@ public class PostPhotosTest {
 
     @DisplayName("Photos일급컬랙션을 초기화 할 수 있다.")
     @Test
-    public void clear_photo_test() {
+    void clear_photo_test() {
         // given
         List<PostPhoto> photos = List.of(newPhoto1, newPhoto2, newPhoto3);
         post.addPhotoList(photos);

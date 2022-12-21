@@ -46,6 +46,11 @@ jwt:
       zG2WKmhogAFA0t014rZr4/NAeSDLAiEA0+SpdBmmaUvKOgptFuJ3d3Zphqrrc3Tc
       yEreggkRiG0=
 
+api:
+  kakao:
+    api-url: https://kapi.kakao.com
+    token: test-token
+
 springdoc:
   version: v.1.0.0
   packages-to-scan: com.soolsul.soolsulserver

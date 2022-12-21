@@ -55,16 +55,12 @@ public class AuthStep {
     public static void 권한_없는_요청(ExtractableResponse<Response> response) {
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value()),
-                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("U005"),
-                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("해당 유저는 권한이 없습니다.")
+                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("U005")
         );
     }
 
     public static void 로그아웃_응답_확인(ExtractableResponse<Response> response) {
-        assertAll(
-                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("U007"),
-                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("로그아웃에 성공하였습니다.")
-        );
+        assertThat(response.jsonPath().getString("code")).isEqualTo("U007");
     }
 
     public static ExtractableResponse<Response> 로그아웃_요청(String accessToken) {
@@ -84,8 +80,7 @@ public class AuthStep {
     public static void 회원_탈퇴_응답_확인(ExtractableResponse<Response> response) {
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("U003"),
-                () -> assertThat(response.jsonPath().getString("message")).isEqualTo("유저 삭제에 성공했습니다.")
+                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("U003")
         );
     }
 
