@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @TestPropertySource(properties = {
         "api.kakao.api-url=http://localhost:${wiremock.server.port}"
 })
-@ExtendWith(ClientMocksExtention.class)
+@ExtendWith(ClientMocksExtension.class)
 public @interface WireMockClientTest {
 }
 

@@ -18,7 +18,7 @@ import static org.springframework.util.StreamUtils.copyToString;
 // https://www.baeldung.com/spring-cloud-feign-integration-tests
 public abstract class KakaoPlaceMocks {
 
-    private final static String ADDRESS_SEARCH_URL = "/v2/local/search/address.json";
+    private static final String ADDRESS_SEARCH_URL = "/v2/local/search/address.json";
     private static final String ADDRESS_CONVERT_URL = "/v2/local/geo/coord2address.json";
 
     private static StubMapping addressSearchStub;
