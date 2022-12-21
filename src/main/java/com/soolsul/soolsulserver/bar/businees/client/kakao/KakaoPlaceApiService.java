@@ -1,5 +1,6 @@
-package com.soolsul.soolsulserver.bar.businees.client;
+package com.soolsul.soolsulserver.bar.businees.client.kakao;
 
+import com.soolsul.soolsulserver.bar.businees.client.PlaceApiService;
 import com.soolsul.soolsulserver.bar.businees.client.dto.KakaoAddressResponse;
 import com.soolsul.soolsulserver.bar.businees.client.dto.KakaoSearchAddressResponse;
 import com.soolsul.soolsulserver.bar.businees.client.dto.KakaoSearchRoadAddressResponse;
@@ -14,16 +15,18 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class KakaoPlaceApiService {
+public class KakaoPlaceApiService implements PlaceApiService {
 
     private final KakaoAddressSearchClient addressSearchClient;
 
+    @Override
     public AddressLookupResponse searchAddress(String query) {
         validateAddressName(query);
         KakaoAddressResponse addressResponse = addressSearchClient.searchAddress(query);
         return new AddressLookupResponse(buildAddressResponseList(addressResponse));
     }
 
+    @Override
     public AddressConvertResponse convertAddress(double longitude, double latitude) {
         KakaoAddressResponse convertResponse = addressSearchClient.convertAddress(longitude, latitude);
         return new AddressConvertResponse(buildAddressResponseList(convertResponse));

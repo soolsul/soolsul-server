@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.bar.businees.client;
 
+import com.soolsul.soolsulserver.bar.businees.client.kakao.KakaoPlaceApiService;
 import com.soolsul.soolsulserver.bar.common.dto.response.AddressConvertResponse;
 import com.soolsul.soolsulserver.bar.common.dto.response.AddressLookupResponse;
 import com.soolsul.soolsulserver.common.TestRedisContainer;
