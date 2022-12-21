@@ -15,8 +15,7 @@ public class ReplyStep {
     public static void 댓글_추가_요청_응답_확인(ExtractableResponse<Response> 댓글_추가_요청_응답) {
         assertAll(
                 () -> assertThat(댓글_추가_요청_응답.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(댓글_추가_요청_응답.jsonPath().getString("code")).isEqualTo("R001"),
-                () -> assertThat(댓글_추가_요청_응답.jsonPath().getString("message")).isEqualTo("댓글을 추가하는데 성공하였습니다.")
+                () -> assertThat(댓글_추가_요청_응답.jsonPath().getString("code")).isEqualTo("R001")
         );
     }
 
