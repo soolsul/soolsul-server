@@ -8,7 +8,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.5'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
-    id 'org.asciidoctor.convert' version '1.5.8'
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
     id 'java'
     id 'jacoco'
     id "org.sonarqube" version "3.4.0.2513"
@@ -19,6 +19,7 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 configurations {
+    asciidoctorExtensions
     compileOnly {
         extendsFrom annotationProcessor
     }
@@ -26,10 +27,6 @@ configurations {
 
 repositories {
     mavenCentral()
-}
-
-ext {
-    set('snippetsDir', file("build/generated-snippets"))
 }
 
 dependencies {
@@ -72,7 +69,8 @@ dependencies {
             'io.jsonwebtoken:jjwt-jackson:0.11.5' // or 'io.jsonwebtoken:jjwt-gson:0.11.5' for gson
 
     // API Docs
-    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -90,17 +88,43 @@ dependencies {
     testImplementation 'org.testcontainers:localstack:1.17.4'
 }
 
-tasks.named('test') {
-    outputs.dir snippetsDir
-    useJUnitPlatform()
+// -- API 문서화 설정 -------------------------------------------------------
+ext {
+    snippetsDir = file("${project.buildDir}/generated-snippets")
 }
 
-tasks.named('asciidoctor') {
-    inputs.dir snippetsDir
+asciidoctor {
     dependsOn test
+    configurations 'asciidoctorExtensions'
+    inputs.dir snippetsDir
+
+    sources {
+        include '**/index.adoc'
+    }
+
+    baseDirFollowsSourceFile()
 }
 
-//querydsl
+asciidoctor.doFirst {
+    delete file("${project.rootDir}/src/main/resources/static/docs")
+}
+
+task copyDocument(type: Copy) {
+    dependsOn asciidoctor
+
+    from "${project.buildDir}/docs/asciidoc"
+    into "${project.rootDir}/src/main/resources/static/docs"
+}
+
+bootJar {
+    dependsOn copyDocument
+    copy {
+        from "${project.buildDir}/docs/asciidoc"
+        into "${project.buildDir}/resources/main/static/docs"
+    }
+}
+
+// -- QueryDsl 설정 -------------------------------------------------------
 def querydslDir = "$buildDir/generated/querydsl"
 querydsl {
     jpa = true
@@ -116,7 +140,7 @@ compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
 }
 
-//jacoco
+// -- Jacoco 설정 -------------------------------------------------------
 test {
     jacoco {
         destinationFile = file("$buildDir/jacoco/jacoco.exec")
@@ -206,6 +230,7 @@ task testCoverage(type: Test) {
     tasks['jacocoTestCoverageVerification'].mustRunAfter(tasks['jacocoTestReport'])
 }
 
+// -- SonarQube 설정 -------------------------------------------------------
 sonarqube {
     properties {
         property "sonar.projectKey", "project key"
