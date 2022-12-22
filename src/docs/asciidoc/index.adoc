@@ -1,0 +1,15 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+= Soolsul 백엔드 서버 API 문서
+notification-api-docs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+= 리뷰 API
+
+include::{docdir}/post/post.adoc[]
