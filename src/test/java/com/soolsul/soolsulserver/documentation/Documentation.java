@@ -1,27 +1,35 @@
 package com.soolsul.soolsulserver.documentation;
 
-import com.soolsul.soolsulserver.acceptance.AcceptanceTest;
-import io.restassured.builder.RequestSpecBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
-
+@AutoConfigureMockMvc(addFilters = false)
+@AutoConfigureRestDocs
 @ExtendWith(RestDocumentationExtension.class)
-public class Documentation extends AcceptanceTest {
+public class Documentation {
 
     protected RequestSpecification spec;
 
+    @Autowired
+    protected MockMvc mockMvc;
+
+    @Autowired
+    protected ObjectMapper objectMapper;
+
     @BeforeEach
     public void setUp(RestDocumentationContextProvider restDocumentation) {
-        super.setUp();
-
-        this.spec = new RequestSpecBuilder()
-                .addFilter(documentationConfiguration(restDocumentation))
-                .build();
+//
+//        this.spec = new RequestSpecBuilder()
+//                .addFilter(documentationConfiguration(restDocumentation))
+//                .build();
     }
 }
