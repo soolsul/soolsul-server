@@ -1,6 +1,10 @@
 package com.soolsul.soolsulserver.documentation;
 
 import com.soolsul.soolsulserver.post.common.dto.request.PostCreateRequest;
+import com.soolsul.soolsulserver.post.common.dto.response.PostDetailLikeResponse;
+import com.soolsul.soolsulserver.post.common.dto.response.PostDetailResponse;
+import com.soolsul.soolsulserver.post.common.dto.response.PostDetailStoreResponse;
+import com.soolsul.soolsulserver.post.common.dto.response.PostDetailUserResponse;
 import com.soolsul.soolsulserver.post.facade.PostFacadeGateway;
 import com.soolsul.soolsulserver.post.presentation.PostController;
 import org.junit.jupiter.api.DisplayName;
@@ -11,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.contract.spec.internal.MediaTypes;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
@@ -22,6 +27,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
@@ -30,6 +36,8 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,7 +59,7 @@ public class PostDocumentation extends Documentation {
         LocalDate date = LocalDate.parse(LocalDate.now().toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         PostCreateRequest postCreateRequest = new PostCreateRequest("barId", "본문 내용 입니다", 4.3f, date, imagesUrl, tags);
 
-        doNothing().when(postFacadeGateway).create(anyString(), any());
+        doNothing().when(postFacadeGateway).create(any(), any());
 
         mockMvc.perform(post("/api/posts/")
                         .header("Authorization", "bearer login-jwt-token")
@@ -65,56 +73,64 @@ public class PostDocumentation extends Documentation {
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint()),
                                 createPostRequestBody(),
-                                postResponseBody())
+                                createPostResponseBody())
                 );
-
     }
 
-//    @DisplayName("문서화 : Post 생성")
-//    @Test
-//    void create_post_success() throws Exception {
-//        String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
-//
-//        PostCreateRequest postCreateRequest = 피드_생성_정보_생성();
-//
-//        RestAssured
-//                .given(spec).log().all()
-//                .auth().oauth2(accessToken)
-//                .contentType(MediaType.APPLICATION_JSON_VALUE)
-//                .accept(MediaType.APPLICATION_JSON_VALUE)
-//                .body(postCreateRequest)
-//                .filter(
-//                        document("create-post",
-//                                preprocessRequest(prettyPrint()),
-//                                preprocessResponse(prettyPrint()),
-//                                createPostRequestBody(),
-//                                postResponseBody())
-//                )
-//                .when().post("/api/posts")
-//                .then().log().all()
-//                .extract();
-//    }
+    @DisplayName("문서화 : Post 단건 조회")
+    @WithMockUser
+    @Test
+    void find_post_success() throws Exception {
+        List<String> imagesUrl = List.of("url1", "url2", "url3");
+        PostDetailResponse postDetailResponse = new PostDetailResponse(
+                "post_id", 4.3f, "contents", imagesUrl,
+                new PostDetailLikeResponse(42, true),
+                new PostDetailUserResponse("userId", "nick name", "profile_url"),
+                new PostDetailStoreResponse("store_id", "name", "this is store")
+        );
 
-//    @DisplayName("문서화 : Post 단건 조회")
-//    @Test
-//    void find_post_success() {
-//        String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
-//
-//        RestAssured
-//                .given(spec).log().all()
-//                .auth().oauth2(accessToken)
-//                .accept(MediaType.APPLICATION_JSON_VALUE)
-//                .filter(
-//                        document("find-post",
-//                                preprocessRequest(prettyPrint()),
-//                                preprocessResponse(prettyPrint()),
-//                                postResponseBody()
-//                        )
-//                )
-//                .when().get("/api/posts/{postId}", DataLoader.postIdOne)
-//                .then().log().all()
-//                .extract();
-//    }
+        given(postFacadeGateway.find(any(), anyString())).willReturn(postDetailResponse);
+
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts/{postId}", "post_uuid")
+                        .header("Authorization", "bearer login-jwt-token")
+                        .accept(MediaTypes.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(
+                        document("find-post",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
+                                findPostRequestParam(),
+                                findPostResponseBody())
+                );
+    }
+
+    private Snippet findPostResponseBody() {
+        return responseFields(
+                fieldWithPath("code").type(JsonFieldType.STRING).description(Constants.RESPONSE_ID),
+                fieldWithPath("message").type(JsonFieldType.STRING).description(Constants.RESPONSE_MESSAGE),
+                fieldWithPath("data").type(JsonFieldType.OBJECT).description(Constants.RESPONSE_DATA).optional(),
+                fieldWithPath("data.postId").type(JsonFieldType.STRING).description("피드 ID"),
+                fieldWithPath("data.score").type(JsonFieldType.NUMBER).description("피드에 남긴 가게 평점"),
+                fieldWithPath("data.contents").type(JsonFieldType.STRING).description("피드 본문"),
+                fieldWithPath("data.imageUrls").type(JsonFieldType.ARRAY).description("피드에 게시된 사진들"),
+                fieldWithPath("data.like.count").type(JsonFieldType.NUMBER).description("피드 좋아요 수"),
+                fieldWithPath("data.like.userLikeStatus").type(JsonFieldType.BOOLEAN).description("피드에 사용자가 좋아요를 눌렀는지"),
+                fieldWithPath("data.user.userId").type(JsonFieldType.STRING).description("피드 작성자 ID"),
+                fieldWithPath("data.user.userNickname").type(JsonFieldType.STRING).description("피드 작성자 별칭"),
+                fieldWithPath("data.user.userProfileUrl").type(JsonFieldType.STRING).description("피드 작성자 이미지 주소"),
+                fieldWithPath("data.store.storeId").type(JsonFieldType.STRING).description("가게 ID"),
+                fieldWithPath("data.store.storeName").type(JsonFieldType.STRING).description("가게 이름"),
+                fieldWithPath("data.store.description").type(JsonFieldType.STRING).description("가게 설명")
+
+        );
+    }
+
+    private Snippet findPostRequestParam() {
+        return pathParameters(
+                parameterWithName("postId").description("리뷰 ID")
+        );
+    }
 
     private Snippet createPostRequestBody() {
         return requestFields(
@@ -126,7 +142,7 @@ public class PostDocumentation extends Documentation {
                 fieldWithPath("tags").type(JsonFieldType.ARRAY).description("리뷰에 포함된 태그 목록"));
     }
 
-    private Snippet postResponseBody() {
+    private Snippet createPostResponseBody() {
         return responseFields(
                 fieldWithPath("code").description(Constants.RESPONSE_ID),
                 fieldWithPath("message").description(Constants.RESPONSE_MESSAGE),
@@ -137,15 +153,5 @@ public class PostDocumentation extends Documentation {
         private static final String RESPONSE_ID = "응답 상태 코드";
         private static final String RESPONSE_MESSAGE = "응답 메시지";
         private static final String RESPONSE_DATA = "응답 데이터";
-
-        private static final String ID_DESCRIPTION = "가게 아이디";
-        private static final String STORE_NAME_DESCRIPTION = "가게 이름";
-        private static final String CONTACT_NUMBER_DESCRIPTION = "가게 연락처";
-        private static final String ADDRESS_NAME_DESCRIPTION = "지번 주소";
-        private static final String ROAD_ADDRESS_NAME_DESCRIPTION = "도로명 주소";
-        private static final String Y_DESCRIPTION = "위도(최대값: 90.0 / 최소값: -90.0)";
-        private static final String X_DESCRIPTION = "경도(최대값: 180.0 / 최소값: -180.0)";
-        private static final String REVIEW_SCORE_AVERAGE = "가게의 리뷰 평균 점수 입니다.";
-        private static final String REVIEW_COUNTS = "가게의 리뷰 개수입니다.";
     }
 }
