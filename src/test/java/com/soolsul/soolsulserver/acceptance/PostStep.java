@@ -18,13 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class PostStep {
 
-    public static void 피드_생성_응답_확인(ExtractableResponse<Response> response) {
-        assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("P001")
-        );
-    }
-
     public static ExtractableResponse<Response> 피드_생성_요청(String accessToken, PostCreateRequest postCreateRequest) {
         return RestAssured
                 .given().log().all()
@@ -69,20 +62,6 @@ public class PostStep {
                 .extract();
     }
 
-    public static void 피드_단건_조회_응답_확인(ExtractableResponse<Response> 피드_단건_조회_응답) {
-        assertAll(
-                () -> assertThat(피드_단건_조회_응답.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(피드_단건_조회_응답.jsonPath().getString("code")).isEqualTo("P002")
-        );
-    }
-
-    public static void 피드_스크랩_응답_확인(ExtractableResponse<Response> response) {
-        assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("P005")
-        );
-    }
-
     public static ExtractableResponse<Response> 피드_스크랩_요청(String accessToken, String 첫_피드_아이디) {
         return RestAssured
                 .given().log().all()
@@ -101,5 +80,15 @@ public class PostStep {
         LocalDate date = LocalDate.parse(LocalDate.now().toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         PostCreateRequest postCreateRequest = new PostCreateRequest(barId, "본문 내용 입니다", 4.3f, date, imagesUrl, tags);
         return postCreateRequest;
+    }
+
+    public static ExtractableResponse<Response> 피드_삭제_요청(String accessToken, String 첫_피드_아이디) {
+        return RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .when()
+                .delete("/api/posts/{postId}", 첫_피드_아이디)
+                .then().log().all()
+                .extract();
     }
 }

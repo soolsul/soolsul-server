@@ -1,25 +1,19 @@
 package com.soolsul.soolsulserver.acceptance;
 
 import com.soolsul.soolsulserver.post.common.dto.request.PostCreateRequest;
-import io.restassured.RestAssured;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그인_되어_있음;
+import static com.soolsul.soolsulserver.acceptance.CommonStep.응답_확인;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_단건_조회_요청;
-import static com.soolsul.soolsulserver.acceptance.PostStep.피드_단건_조회_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_목록_조회_요청;
+import static com.soolsul.soolsulserver.acceptance.PostStep.피드_삭제_요청;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_요청;
-import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_정보_생성;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_스크랩_요청;
-import static com.soolsul.soolsulserver.acceptance.PostStep.피드_스크랩_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_조회_응답_확인;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 
 public class PostAcceptanceTest extends AcceptanceTest {
@@ -42,7 +36,7 @@ public class PostAcceptanceTest extends AcceptanceTest {
         var 피드_생성_응답 = 피드_생성_요청(accessToken, postCreateRequest);
 
         // then
-        피드_생성_응답_확인(피드_생성_응답);
+        응답_확인(피드_생성_응답, HttpStatus.OK, "P001");
     }
 
     /**
@@ -74,27 +68,18 @@ public class PostAcceptanceTest extends AcceptanceTest {
         var 피드_단건_조회_응답 = 피드_단건_조회_요청(accessToken, 첫_피드_아이디);
 
         // then
-        피드_단건_조회_응답_확인(피드_단건_조회_응답);
+        응답_확인(피드_단건_조회_응답, HttpStatus.OK, "P002");
 
         // when
         var 피드_스크랩_응답 = 피드_스크랩_요청(accessToken, 첫_피드_아이디);
 
         // then
-        피드_스크랩_응답_확인(피드_스크랩_응답);
+        응답_확인(피드_스크랩_응답, HttpStatus.OK, "P005");
 
         // when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .when()
-                .delete("/api/posts/{postId}", 첫_피드_아이디)
-                .then().log().all()
-                .extract();
+        var 피드_삭제_요청_응답 = 피드_삭제_요청(accessToken, 첫_피드_아이디);
 
         // then
-        assertAll(
-                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
-                () -> assertThat(response.jsonPath().getString("code")).isEqualTo("P003")
-        );
+        응답_확인(피드_삭제_요청_응답, HttpStatus.OK, "P003");
     }
 }
