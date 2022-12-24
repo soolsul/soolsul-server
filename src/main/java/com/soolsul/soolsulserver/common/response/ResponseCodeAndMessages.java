@@ -21,7 +21,7 @@ public enum ResponseCodeAndMessages {
     FEED_CREATE_SUCCESS("P001", "피드 생성 성공했습니다."),
     FEED_FIND_SUCCESS("P002", "피드 찾기에 성공하였습니다."),
     // POO2 : update
-    // POO3 : delete
+    FEED_DELETE_SUCCESS("P003", "피드 삭제에 성공하였습니다."),
     FEED_FIND_ALL_SUCCESS("P004", "모든 피드를 찾는데 성공하였습니다."),
     FEED_SCRAP_SUCCESS("P005", "피드 스크랩을 성공했습니다."),
     FEED_FIND_ALL_SCRAP_SUCCESS("P006", "모든 스크랩 된 피드를 찾는데 성공하였습니다."),
