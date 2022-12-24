@@ -173,6 +173,33 @@ public class PostDocumentation extends Documentation {
                 );
     }
 
+    @DisplayName("문서화 : Post 삭제")
+    @WithMockUser
+    @Test
+    void post_delete_success() throws Exception {
+
+        doNothing().when(postFacadeGateway).scrap(any(), any());
+
+        mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/posts/{postId}", "post_uuid")
+                        .header("Authorization", "bearer login-jwt-token")
+                        .accept(MediaTypes.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(
+                        document("delete-post",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
+                                deletePostRequestBody(),
+                                noContentsPostResponseBody())
+                );
+    }
+
+    private Snippet deletePostRequestBody() {
+        return pathParameters(
+                parameterWithName("postId").description("피드 ID")
+        );
+    }
+
     private Snippet scrapPostRequestBody() {
         return requestFields(
                 fieldWithPath("postId").type(JsonFieldType.STRING).description("피드 아이디")
@@ -210,7 +237,7 @@ public class PostDocumentation extends Documentation {
 
     private Snippet findPostRequestParam() {
         return pathParameters(
-                parameterWithName("postId").description("리뷰 ID")
+                parameterWithName("postId").description("피드 ID")
         );
     }
 
@@ -238,11 +265,11 @@ public class PostDocumentation extends Documentation {
     private Snippet createPostRequestBody() {
         return requestFields(
                 fieldWithPath("barId").type(JsonFieldType.STRING).description("가게 아이디"),
-                fieldWithPath("postContent").type(JsonFieldType.STRING).description("리뷰 글 내용"),
-                fieldWithPath("score").type(JsonFieldType.NUMBER).description("리뷰 평점"),
+                fieldWithPath("postContent").type(JsonFieldType.STRING).description("피드 글 내용"),
+                fieldWithPath("score").type(JsonFieldType.NUMBER).description("피드 평점"),
                 fieldWithPath("visitedDate").type(JsonFieldType.STRING).description("가게 방문일"),
-                fieldWithPath("images").type(JsonFieldType.ARRAY).description("리뷰를 위한 사진 URL"),
-                fieldWithPath("tags").type(JsonFieldType.ARRAY).description("리뷰에 포함된 태그 목록"));
+                fieldWithPath("images").type(JsonFieldType.ARRAY).description("피드를 위한 사진 URL"),
+                fieldWithPath("tags").type(JsonFieldType.ARRAY).description("피드에 포함된 태그 목록"));
     }
 
     private Snippet noContentsPostResponseBody() {
