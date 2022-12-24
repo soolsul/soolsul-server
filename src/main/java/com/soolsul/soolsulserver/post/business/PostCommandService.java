@@ -1,15 +1,17 @@
 package com.soolsul.soolsulserver.post.business;
 
-import com.soolsul.soolsulserver.user.auth.exception.UserNotFoundException;
+import com.soolsul.soolsulserver.bar.common.dto.response.BarLookupResponse;
 import com.soolsul.soolsulserver.bar.exception.BarNotFoundException;
 import com.soolsul.soolsulserver.bar.persistence.BarQueryRepository;
-import com.soolsul.soolsulserver.bar.common.dto.response.BarLookupResponse;
+import com.soolsul.soolsulserver.post.common.dto.request.PostCreateRequest;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.domain.PostPhoto;
 import com.soolsul.soolsulserver.post.domain.PostRepository;
 import com.soolsul.soolsulserver.post.domain.PostScrap;
 import com.soolsul.soolsulserver.post.domain.PostScrapRepository;
-import com.soolsul.soolsulserver.post.common.dto.request.PostCreateRequest;
+import com.soolsul.soolsulserver.post.exception.PostNotFoundException;
+import com.soolsul.soolsulserver.post.exception.PostOwnerException;
+import com.soolsul.soolsulserver.user.auth.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -43,6 +45,25 @@ public class PostCommandService {
         postRepository.save(newPost);
     }
 
+    public void scrap(String userId, String postId) {
+        postScrapRepository.save(new PostScrap(userId, postId));
+    }
+
+    public void delete(String userId, String postId) {
+        if (isInvalidUserId(userId)) {
+            throw new UserNotFoundException();
+        }
+
+        Post findPost = postRepository.findById(postId)
+                .orElseThrow(PostNotFoundException::new);
+
+        if (!findPost.isOwner(userId)) {
+            throw new PostOwnerException();
+        }
+
+        postRepository.deleteById(findPost.getId());
+    }
+
     private List<PostPhoto> convertPhotoList(PostCreateRequest request, BarLookupResponse findBar) {
         return request.getImages()
                 .stream()
@@ -52,9 +73,5 @@ public class PostCommandService {
 
     private boolean isInvalidUserId(String userId) {
         return !StringUtils.hasText(userId);
-    }
-
-    public void scrap(String userId, String postId) {
-        postScrapRepository.save(new PostScrap(userId, postId));
     }
 }

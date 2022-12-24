@@ -5,7 +5,7 @@ public interface PostCommandFacadeSpec<T> {
 
     void update(String id, T param);
 
-    void delete(String id);
+    void delete(String userId, String postId);
 
     void scrap(String userId, String postId);
 }

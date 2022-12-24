@@ -26,8 +26,8 @@ public class PostFacadeGateway implements PostCommandFacadeSpec<PostCreateReques
     }
 
     @Override
-    public void delete(String id) {
-
+    public void delete(String userId, String postId) {
+        postCommandFacade.delete(userId, postId);
     }
 
     @Override
