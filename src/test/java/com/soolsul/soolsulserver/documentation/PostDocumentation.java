@@ -1,6 +1,7 @@
 package com.soolsul.soolsulserver.documentation;
 
 import com.soolsul.soolsulserver.post.common.dto.request.PostCreateRequest;
+import com.soolsul.soolsulserver.post.common.dto.request.PostScrapRequest;
 import com.soolsul.soolsulserver.post.common.dto.response.PostDetailLikeResponse;
 import com.soolsul.soolsulserver.post.common.dto.response.PostDetailResponse;
 import com.soolsul.soolsulserver.post.common.dto.response.PostDetailStoreResponse;
@@ -75,7 +76,7 @@ public class PostDocumentation extends Documentation {
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint()),
                                 createPostRequestBody(),
-                                createPostResponseBody())
+                                noContentsPostResponseBody())
                 );
     }
 
@@ -148,6 +149,36 @@ public class PostDocumentation extends Documentation {
                 );
     }
 
+    @DisplayName("문서화 : Post 스크랩")
+    @WithMockUser
+    @Test
+    void post_scrap_success() throws Exception {
+        PostScrapRequest scrapRequest = new PostScrapRequest("post_id");
+
+        doNothing().when(postFacadeGateway).scrap(any(), any());
+
+        mockMvc.perform(post("/api/posts/scraps")
+                        .header("Authorization", "bearer login-jwt-token")
+                        .contentType(MediaTypes.APPLICATION_JSON)
+                        .accept(MediaTypes.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(scrapRequest)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(
+                        document("scrap-post",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
+                                scrapPostRequestBody(),
+                                noContentsPostResponseBody())
+                );
+    }
+
+    private Snippet scrapPostRequestBody() {
+        return requestFields(
+                fieldWithPath("postId").type(JsonFieldType.STRING).description("피드 아이디")
+        );
+    }
+
     private Snippet findAllPostRequestParam() {
         return requestParameters(
                 parameterWithName("longitude").description("위도"),
@@ -214,7 +245,7 @@ public class PostDocumentation extends Documentation {
                 fieldWithPath("tags").type(JsonFieldType.ARRAY).description("리뷰에 포함된 태그 목록"));
     }
 
-    private Snippet createPostResponseBody() {
+    private Snippet noContentsPostResponseBody() {
         return responseFields(
                 fieldWithPath("code").description(Constants.RESPONSE_ID),
                 fieldWithPath("message").description(Constants.RESPONSE_MESSAGE),
