@@ -16,4 +16,8 @@ public class ReplyCommandFacade {
     public void create(String userId, String postId, PostReplyRequest request) {
         replyCommandService.create(userId, postId, request.contents());
     }
+
+    public void delete(String userId, String postId, String replyId) {
+        replyCommandService.delete(userId, postId, replyId);
+    }
 }

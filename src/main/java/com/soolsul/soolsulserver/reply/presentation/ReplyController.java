@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,5 +45,15 @@ public class ReplyController {
     ) {
         PostRepliesResponse repliesResponse = replyFacadeGateway.findReplies(postId, pageable);
         return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.REPLY_READ_SUCCESS, repliesResponse));
+    }
+
+    @DeleteMapping("/{replyId}")
+    public ResponseEntity<BaseResponse<Void>> deleteReply(
+            @PathVariable String postId,
+            @PathVariable String replyId,
+            @CurrentUser CustomUser currentUser
+    ) {
+        replyFacadeGateway.delete(currentUser.getId(), postId, replyId);
+        return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.REPLY_DELETE_SUCCESS, null));
     }
 }

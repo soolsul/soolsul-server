@@ -21,6 +21,12 @@ public class ReplyFacadeGateway implements ReplyCommandFacadeSpec, ReplyQueryFac
     }
 
     @Override
+    public void delete(String userId, String postId, String replyId) {
+        replyCommandFacade.delete(userId, postId, replyId);
+    }
+
+
+    @Override
     public PostRepliesResponse findReplies(String postId, Pageable pageable) {
         Slice<ReplyDetailResponse> replies = replyQueryFacade.findReplies(postId, pageable);
         return new PostRepliesResponse(replies);
