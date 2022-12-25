@@ -25,13 +25,14 @@ public class ReplyStep {
                 .extract();
     }
 
-    public static void 댓글_조회_응답_확인(ExtractableResponse<Response> 댓글_조회_요청_응답) {
+    public static String 댓글_조회_응답_확인(ExtractableResponse<Response> 댓글_조회_요청_응답) {
         assertAll(
                 () -> assertThat(댓글_조회_요청_응답.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(댓글_조회_요청_응답.jsonPath().getString("code")).isEqualTo("R002"),
                 () -> assertThat(댓글_조회_요청_응답.jsonPath().getString("message")).isEqualTo("댓글을 읽는데 성공하였습니다."),
                 () -> assertThat(댓글_조회_요청_응답.jsonPath().getList("data.replies.content").size()).isNotEqualTo(0)
         );
+        return 댓글_조회_요청_응답.jsonPath().getString("data.replies.content[0].replyId");
     }
 
     public static ExtractableResponse<Response> 댓글_조회_요청(String accessToken, String 첫_피드_아이디) {

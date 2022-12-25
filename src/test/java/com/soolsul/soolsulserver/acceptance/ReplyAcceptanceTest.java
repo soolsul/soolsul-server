@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.acceptance;
 
+import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
@@ -59,6 +60,17 @@ public class ReplyAcceptanceTest extends AcceptanceTest {
         var 댓글_조회_요청_응답 = 댓글_조회_요청(accessToken, 첫_피드_아이디);
 
         // then
-        댓글_조회_응답_확인(댓글_조회_요청_응답);
+        String 첫_댓글_아이디 = 댓글_조회_응답_확인(댓글_조회_요청_응답);
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .when()
+                .delete("/api/posts/{postId}/replies/{replyId}", 첫_피드_아이디, 첫_댓글_아이디)
+                .then().log().all()
+                .extract();
+
+        응답_확인(response, HttpStatus.OK, "R004");
     }
 }
