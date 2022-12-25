@@ -44,4 +44,14 @@ public class ReplyStep {
                 .then().log().all()
                 .extract();
     }
+
+    public static ExtractableResponse<Response> 댓글_삭제_요청(String accessToken, String 첫_피드_아이디, String 첫_댓글_아이디) {
+        return RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .when()
+                .delete("/api/posts/{postId}/replies/{replyId}", 첫_피드_아이디, 첫_댓글_아이디)
+                .then().log().all()
+                .extract();
+    }
 }

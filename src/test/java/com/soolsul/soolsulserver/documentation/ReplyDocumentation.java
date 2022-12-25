@@ -47,7 +47,7 @@ public class ReplyDocumentation extends Documentation {
 
     @DisplayName("문서화 : Reply 생성")
     @Test
-    public void create_reply_success() throws Exception {
+    void create_reply_success() throws Exception {
         PostReplyRequest replyRequest = new PostReplyRequest("this is reply contents");
 
         doNothing().when(replyFacadeGateway).create(any(), any(), any());
@@ -65,6 +65,26 @@ public class ReplyDocumentation extends Documentation {
                                 preprocessResponse(prettyPrint()),
                                 createReplyRequestPath(),
                                 createReplyRequestBody(),
+                                noContentsReplyResponseBody())
+                );
+    }
+
+    @DisplayName("문서화 : Reply 삭제")
+    @Test
+    void delete_reply_success() throws Exception {
+
+        doNothing().when(replyFacadeGateway).create(any(), any(), any());
+
+        mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/posts/{postId}/replies/{replyId}", "post_uuid", "reply_uuid")
+                        .header("Authorization", "bearer login-jwt-token")
+                        .accept(MediaTypes.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(
+                        document("delete-reply",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
+                                deleteReplyRequestPath(),
                                 noContentsReplyResponseBody())
                 );
     }
@@ -92,6 +112,13 @@ public class ReplyDocumentation extends Documentation {
                                 findAllReplyRequestPath(),
                                 findAllReplyResponseBody())
                 );
+    }
+
+    private Snippet deleteReplyRequestPath() {
+        return pathParameters(
+                parameterWithName("postId").description("피드 ID"),
+                parameterWithName("replyId").description("댓글 ID")
+        );
     }
 
     private Snippet findAllReplyRequestPath() {

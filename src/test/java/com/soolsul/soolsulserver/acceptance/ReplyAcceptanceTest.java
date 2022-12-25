@@ -1,6 +1,5 @@
 package com.soolsul.soolsulserver.acceptance;
 
-import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +12,7 @@ import static com.soolsul.soolsulserver.acceptance.PostStep.피드_목록_조회
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_요청;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_생성_정보_생성;
 import static com.soolsul.soolsulserver.acceptance.PostStep.피드_조회_응답_확인;
+import static com.soolsul.soolsulserver.acceptance.ReplyStep.댓글_삭제_요청;
 import static com.soolsul.soolsulserver.acceptance.ReplyStep.댓글_조회_요청;
 import static com.soolsul.soolsulserver.acceptance.ReplyStep.댓글_조회_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.ReplyStep.피드에_댓글_추가_요청;
@@ -63,14 +63,9 @@ public class ReplyAcceptanceTest extends AcceptanceTest {
         String 첫_댓글_아이디 = 댓글_조회_응답_확인(댓글_조회_요청_응답);
 
         // when
-        ExtractableResponse<Response> response = RestAssured
-                .given().log().all()
-                .auth().oauth2(accessToken)
-                .when()
-                .delete("/api/posts/{postId}/replies/{replyId}", 첫_피드_아이디, 첫_댓글_아이디)
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> 댓글_삭제_요청_응답 = 댓글_삭제_요청(accessToken, 첫_피드_아이디, 첫_댓글_아이디);
 
-        응답_확인(response, HttpStatus.OK, "R004");
+        // then
+        응답_확인(댓글_삭제_요청_응답, HttpStatus.OK, "R004");
     }
 }
