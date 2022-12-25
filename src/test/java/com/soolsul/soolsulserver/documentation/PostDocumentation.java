@@ -258,7 +258,6 @@ public class PostDocumentation extends Documentation {
                 fieldWithPath("data.store.storeId").type(JsonFieldType.STRING).description("가게 ID"),
                 fieldWithPath("data.store.storeName").type(JsonFieldType.STRING).description("가게 이름"),
                 fieldWithPath("data.store.description").type(JsonFieldType.STRING).description("가게 설명")
-
         );
     }
 
@@ -277,11 +276,5 @@ public class PostDocumentation extends Documentation {
                 fieldWithPath("code").description(Constants.RESPONSE_ID),
                 fieldWithPath("message").description(Constants.RESPONSE_MESSAGE),
                 fieldWithPath("data").description(Constants.RESPONSE_DATA).optional());
-    }
-
-    private static class Constants {
-        private static final String RESPONSE_ID = "응답 상태 코드";
-        private static final String RESPONSE_MESSAGE = "응답 메시지";
-        private static final String RESPONSE_DATA = "응답 데이터";
     }
 }
