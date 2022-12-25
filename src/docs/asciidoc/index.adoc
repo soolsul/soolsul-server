@@ -13,3 +13,4 @@ notification-api-docs
 = 리뷰 API
 
 include::{docdir}/post/post.adoc[]
+include::{docdir}/reply/reply.adoc[]

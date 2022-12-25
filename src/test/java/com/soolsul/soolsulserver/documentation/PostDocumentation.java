@@ -189,12 +189,12 @@ public class PostDocumentation extends Documentation {
                         document("delete-post",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint()),
-                                deletePostRequestBody(),
+                                deletePostRequestPath(),
                                 noContentsPostResponseBody())
                 );
     }
 
-    private Snippet deletePostRequestBody() {
+    private Snippet deletePostRequestPath() {
         return pathParameters(
                 parameterWithName("postId").description("피드 ID")
         );
