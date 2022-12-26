@@ -36,6 +36,7 @@ public enum ResponseCodeAndMessages {
     /* REPLY */
     REPLY_CREATE_SUCCESS("R001", "댓글을 추가하는데 성공하였습니다."),
     REPLY_READ_SUCCESS("R002", "댓글을 읽는데 성공하였습니다."),
+    REPLY_UPDATE_SUCCESS("R003", "댓글을 수정하는데 성공하였습니다."),
     REPLY_DELETE_SUCCESS("R004", "댓글을 삭제하는데 성공하였습니다.");
 
     private final String code;

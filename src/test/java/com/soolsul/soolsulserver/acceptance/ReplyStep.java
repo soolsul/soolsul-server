@@ -1,6 +1,7 @@
 package com.soolsul.soolsulserver.acceptance;
 
-import com.soolsul.soolsulserver.reply.common.dto.request.PostReplyRequest;
+import com.soolsul.soolsulserver.reply.common.dto.request.ReplyCreateRequest;
+import com.soolsul.soolsulserver.reply.common.dto.request.ReplyModifyRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -17,7 +18,7 @@ public class ReplyStep {
                 .given().log().all()
                 .auth().oauth2(accessToken)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new PostReplyRequest(reply))
+                .body(new ReplyCreateRequest(reply))
                 .pathParam("postId", 첫_피드_아이디)
                 .when()
                 .post("/api/posts/{postId}/replies")
@@ -51,6 +52,20 @@ public class ReplyStep {
                 .auth().oauth2(accessToken)
                 .when()
                 .delete("/api/posts/{postId}/replies/{replyId}", 첫_피드_아이디, 첫_댓글_아이디)
+                .then().log().all()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> 댓글_수정_요청(String accessToken, String 첫_피드_아이디, String 첫_댓글_아이디, ReplyModifyRequest modifyRequest) {
+        return RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .pathParam("postId", 첫_피드_아이디)
+                .pathParam("replyId", 첫_댓글_아이디)
+                .body(modifyRequest)
+                .when()
+                .put("/api/posts/{postId}/replies/{replyId}")
                 .then().log().all()
                 .extract();
     }
