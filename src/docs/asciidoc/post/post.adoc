@@ -100,3 +100,35 @@ operation::delete-post[snippets='http-request,path-parameters']
 ===== `Response`
 
 operation::delete-post[snippets='http-response,response-fields']
+
+=== 피드 좋아요
+
+API : `PUT /api/posts/{postId}/like`
+
+피드 좋아요 (단, 로그인 유저만 가능)
+
+==== `200 OK`
+
+===== Request
+
+operation::like-post[snippets='http-request,path-parameters']
+
+===== `Response`
+
+operation::like-post[snippets='http-response,response-fields']
+
+=== 피드 좋아요 취소
+
+API : `PUT /api/posts/{postId}/unlike`
+
+피드 좋아요 취소 (단, 로그인 유저만 가능)
+
+==== `200 OK`
+
+===== Request
+
+operation::unlike-post[snippets='http-request,path-parameters']
+
+===== `Response`
+
+operation::unlike-post[snippets='http-response,response-fields']

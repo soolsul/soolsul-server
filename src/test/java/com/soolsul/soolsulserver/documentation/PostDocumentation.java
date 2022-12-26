@@ -194,6 +194,54 @@ public class PostDocumentation extends Documentation {
                 );
     }
 
+    @DisplayName("문서화 : Post 좋아요")
+    @WithMockUser
+    @Test
+    void post_like_success() throws Exception {
+
+        doNothing().when(postFacadeGateway).likePost(any(), any());
+
+        mockMvc.perform(RestDocumentationRequestBuilders.put("/api/posts/{postId}/like", "post_uuid")
+                        .header("Authorization", "bearer login-jwt-token")
+                        .accept(MediaTypes.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(
+                        document("like-post",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
+                                likePostRequestPath(),
+                                noContentsPostResponseBody())
+                );
+    }
+
+    @DisplayName("문서화 : Post 좋아요 취소")
+    @WithMockUser
+    @Test
+    void post_unlike_success() throws Exception {
+
+        doNothing().when(postFacadeGateway).likePost(any(), any());
+
+        mockMvc.perform(RestDocumentationRequestBuilders.put("/api/posts/{postId}/unlike", "post_uuid")
+                        .header("Authorization", "bearer login-jwt-token")
+                        .accept(MediaTypes.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(
+                        document("unlike-post",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
+                                likePostRequestPath(),
+                                noContentsPostResponseBody())
+                );
+    }
+
+    private Snippet likePostRequestPath() {
+        return pathParameters(
+                parameterWithName("postId").description("피드 ID")
+        );
+    }
+
     private Snippet deletePostRequestPath() {
         return pathParameters(
                 parameterWithName("postId").description("피드 ID")
