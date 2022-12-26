@@ -3,6 +3,7 @@ package com.soolsul.soolsulserver.reply.business;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.domain.PostRepository;
 import com.soolsul.soolsulserver.post.exception.PostNotFoundException;
+import com.soolsul.soolsulserver.reply.common.dto.request.ReplyModifyRequest;
 import com.soolsul.soolsulserver.reply.domain.Reply;
 import com.soolsul.soolsulserver.reply.domain.ReplyRepository;
 import com.soolsul.soolsulserver.reply.exception.ReplyNotFoundException;
@@ -35,6 +36,15 @@ public class ReplyCommandService {
 
         if (findReply.isOwner(userId) && findReply.isSamePostId(postId)) {
             replyRepository.deleteById(replyId);
+        }
+    }
+
+    public void modify(String userId, String postId, String replyId, ReplyModifyRequest request) {
+        Reply findReply = replyRepository.findById(replyId)
+                .orElseThrow(ReplyNotFoundException::new);
+
+        if (findReply.isOwner(userId) && findReply.isSamePostId(postId)) {
+            findReply.modifyContents(request.contents());
         }
     }
 }

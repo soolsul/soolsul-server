@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.documentation;
 
-import com.soolsul.soolsulserver.reply.common.dto.request.PostReplyRequest;
+import com.soolsul.soolsulserver.reply.common.dto.request.ReplyCreateRequest;
 import com.soolsul.soolsulserver.reply.common.dto.response.PostRepliesResponse;
 import com.soolsul.soolsulserver.reply.common.dto.response.ReplyDetailResponse;
 import com.soolsul.soolsulserver.reply.facade.ReplyFacadeGateway;
@@ -48,7 +48,7 @@ public class ReplyDocumentation extends Documentation {
     @DisplayName("문서화 : Reply 생성")
     @Test
     void create_reply_success() throws Exception {
-        PostReplyRequest replyRequest = new PostReplyRequest("this is reply contents");
+        ReplyCreateRequest replyRequest = new ReplyCreateRequest("this is reply contents");
 
         doNothing().when(replyFacadeGateway).create(any(), any(), any());
 

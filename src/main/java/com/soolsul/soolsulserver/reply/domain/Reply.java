@@ -52,6 +52,10 @@ public class Reply extends BaseTimeEntity {
         return this.postId.equals(postId);
     }
 
+    public void modifyContents(String contents) {
+        this.contents.modify(contents);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

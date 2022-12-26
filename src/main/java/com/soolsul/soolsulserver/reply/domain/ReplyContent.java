@@ -19,6 +19,10 @@ public class ReplyContent {
     @Column(length = LIMIT_LENGTH)
     private String reviewContent;
 
+    public void modify(String contents) {
+        this.reviewContent = contents;
+    }
+
     public ReplyContent(String reviewContent) {
         if (Objects.isNull(reviewContent)
                 || reviewContent.isBlank()
