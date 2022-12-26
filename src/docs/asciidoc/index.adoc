@@ -12,3 +12,4 @@ notification-api-docs
 
 include::{docdir}/post/post.adoc[]
 include::{docdir}/reply/reply.adoc[]
+include::{docdir}/mypage/mypage.adoc[]
