@@ -1,4 +1,6 @@
-== 전체 목록 (/api/posts/*)
+= 리뷰 API
+
+=== 전체 목록 (/api/posts/*)
 
 [cols=2*]
 |===
@@ -9,6 +11,8 @@
 | <<인근 지역 피드 전체 조회>> | GET /api/posts?latitude={latitude}&longitude={longitude}&level={level}&page={page}
 | <<피드 스크랩>> | POST /api/posts/scrap
 | <<피드 삭제>> | DELETE /api/posts/{postId}
+| <<피드 좋아요>> | PUT /api/posts/{postId}
+| <<피드 좋아요 취소>> | PUT /api/posts/{postId}
 
 |===
 

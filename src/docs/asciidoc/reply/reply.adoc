@@ -1,12 +1,14 @@
-== 전체 목록 (/api/posts/{postId}/replies*)
+= 댓글 API
+=== 전체 목록 (/api/posts/{postId}/replies*)
 
 [cols=2*]
 |===
 | 기능 | API
 
 | <<댓글 생성>> | POST /api/posts/{postId}/replies
-| <<댓글 삭제>> | DELETE /api/posts/{postId}/replies/{replyId}
 | <<모든 댓글 조회>> | GET /api/posts/{postId}/replies
+| <<댓글 수정>> | PUT /api/posts/{postId}/replies/{replyId}
+| <<댓글 삭제>> | DELETE /api/posts/{postId}/replies/{replyId}
 
 |===
 
@@ -27,6 +29,40 @@ operation::create-reply[snippets='http-request,request-fields']
 
 operation::create-reply[snippets='http-response,response-fields']
 
+=== 댓글 조회
+
+API : `GET /api/posts/{postId}/replies`
+
+모든 댓글을 조회합니다.
+(익명사용자도 조회 가능)
+
+==== `200 OK`
+
+===== Request
+
+operation::find-all-reply[snippets='http-request,path-parameters']
+
+===== `Response`
+
+operation::find-all-reply[snippets='http-response,response-fields']
+
+=== 댓글 수정
+
+API : `PUT /api/posts/{postId}/replies/{replyId}`
+
+댓글을 수정합니다.
+(단, 로그인 유저만 가능)
+
+==== `200 OK`
+
+===== Request
+
+operation::modify-reply[snippets='http-request,request-fields']
+
+===== `Response`
+
+operation::modify-reply[snippets='http-response,response-fields']
+
 === 댓글 삭제
 
 API : `DELETE /api/posts/{postId}/replies/{replyId}`
@@ -44,19 +80,3 @@ operation::delete-reply[snippets='http-request,path-parameters']
 
 operation::delete-reply[snippets='http-response,response-fields']
 
-=== 댓글 조회
-
-API : `GET /api/posts/{postId}/replies`
-
-모든 댓글을 조회합니다.
-(익명사용자도 조회 가능)
-
-==== `200 OK`
-
-===== Request
-
-operation::find-all-reply[snippets='http-request,path-parameters']
-
-===== `Response`
-
-operation::find-all-reply[snippets='http-response,response-fields']

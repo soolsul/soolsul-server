@@ -10,7 +10,5 @@ notification-api-docs
 :toclevels: 2
 :sectlinks:
 
-= 리뷰 API
-
 include::{docdir}/post/post.adoc[]
 include::{docdir}/reply/reply.adoc[]

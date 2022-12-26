@@ -1,6 +1,7 @@
 package com.soolsul.soolsulserver.documentation;
 
 import com.soolsul.soolsulserver.reply.common.dto.request.ReplyCreateRequest;
+import com.soolsul.soolsulserver.reply.common.dto.request.ReplyModifyRequest;
 import com.soolsul.soolsulserver.reply.common.dto.response.PostRepliesResponse;
 import com.soolsul.soolsulserver.reply.common.dto.response.ReplyDetailResponse;
 import com.soolsul.soolsulserver.reply.facade.ReplyFacadeGateway;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.SliceImpl;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
@@ -69,26 +71,6 @@ public class ReplyDocumentation extends Documentation {
                 );
     }
 
-    @DisplayName("문서화 : Reply 삭제")
-    @Test
-    void delete_reply_success() throws Exception {
-
-        doNothing().when(replyFacadeGateway).create(any(), any(), any());
-
-        mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/posts/{postId}/replies/{replyId}", "post_uuid", "reply_uuid")
-                        .header("Authorization", "bearer login-jwt-token")
-                        .accept(MediaTypes.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andDo(
-                        document("delete-reply",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()),
-                                deleteReplyRequestPath(),
-                                noContentsReplyResponseBody())
-                );
-    }
-
     @DisplayName("문서화 : Reply 목록 조회")
     @Test
     void find_reply_list_success() throws Exception {
@@ -111,6 +93,49 @@ public class ReplyDocumentation extends Documentation {
                                 preprocessResponse(prettyPrint()),
                                 findAllReplyRequestPath(),
                                 findAllReplyResponseBody())
+                );
+    }
+
+    @DisplayName("문서화 : Reply 수정")
+    @Test
+    void modify_reply_success() throws Exception {
+        ReplyModifyRequest modifyRequest = new ReplyModifyRequest("modify contents");
+
+        doNothing().when(replyFacadeGateway).modify(any(), any(), any(), any());
+
+        mockMvc.perform(RestDocumentationRequestBuilders.put("/api/posts/{postId}/replies/{replyId}", "post_uuid", "reply_uuid")
+                        .header("Authorization", "bearer login-jwt-token")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaTypes.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(modifyRequest)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(
+                        document("modify-reply",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
+                                modifyReplyRequestPath(),
+                                noContentsReplyResponseBody())
+                );
+    }
+
+    @DisplayName("문서화 : Reply 삭제")
+    @Test
+    void delete_reply_success() throws Exception {
+
+        doNothing().when(replyFacadeGateway).create(any(), any(), any());
+
+        mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/posts/{postId}/replies/{replyId}", "post_uuid", "reply_uuid")
+                        .header("Authorization", "bearer login-jwt-token")
+                        .accept(MediaTypes.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(
+                        document("delete-reply",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
+                                deleteReplyRequestPath(),
+                                noContentsReplyResponseBody())
                 );
     }
 
@@ -155,6 +180,10 @@ public class ReplyDocumentation extends Documentation {
                 fieldWithPath("data.replies.numberOfElements").type(JsonFieldType.NUMBER).description("원소의 수"),
                 fieldWithPath("data.replies.empty").type(JsonFieldType.BOOLEAN).description("비어있는지")
         );
+    }
+
+    private Snippet modifyReplyRequestPath() {
+        return requestFields(fieldWithPath("contents").type(JsonFieldType.STRING).description("수정된 댓글 내용"));
     }
 
     private Snippet createReplyRequestPath() {
