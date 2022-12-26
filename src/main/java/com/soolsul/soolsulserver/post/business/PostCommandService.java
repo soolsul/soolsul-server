@@ -74,4 +74,18 @@ public class PostCommandService {
     private boolean isInvalidUserId(String userId) {
         return !StringUtils.hasText(userId);
     }
+
+    public void likePost(String userId, String postId) {
+        Post findPost = postRepository.findById(postId)
+                .orElseThrow(PostNotFoundException::new);
+
+        findPost.like(userId);
+    }
+
+    public void unlikePost(String userId, String postId) {
+        Post findPost = postRepository.findById(postId)
+                .orElseThrow(PostNotFoundException::new);
+
+        findPost.undoLike(userId);
+    }
 }

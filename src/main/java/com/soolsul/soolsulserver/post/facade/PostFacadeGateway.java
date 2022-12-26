@@ -36,6 +36,16 @@ public class PostFacadeGateway implements PostCommandFacadeSpec<PostCreateReques
     }
 
     @Override
+    public void likePost(String userId, String postId) {
+        postCommandFacade.likePost(userId, postId);
+    }
+
+    @Override
+    public void unlikePost(String userId, String postId) {
+        postCommandFacade.unlikePost(userId, postId);
+    }
+
+    @Override
     public PostDetailResponse find(String userId, String postId) {
         return postQueryFacade.findPostDetail(userId, postId);
     }

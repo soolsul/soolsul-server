@@ -94,8 +94,16 @@ public class Post extends BaseTimeEntity {
         this.likes.add(customUser.getId());
     }
 
+    public void like(String userId) {
+        this.likes.add(userId);
+    }
+
     public void undoLike(CustomUser customUser) {
         this.likes.remove(customUser.getId());
+    }
+
+    public void undoLike(String userId) {
+        this.likes.remove(userId);
     }
 
     public int likeCount() {

@@ -25,6 +25,8 @@ public enum ResponseCodeAndMessages {
     FEED_FIND_ALL_SUCCESS("P004", "모든 피드를 찾는데 성공하였습니다."),
     FEED_SCRAP_SUCCESS("P005", "피드 스크랩을 성공했습니다."),
     FEED_FIND_ALL_SCRAP_SUCCESS("P006", "모든 스크랩 된 피드를 찾는데 성공하였습니다."),
+    FEED_LIKE_SUCCESS("P007", "피드 좋아요에 성공하였습니다."),
+    FEED_UNLIKE_SUCCESS("P008", "피드 좋아요 취소에 성공하였습니다."),
 
     /* BAR */
     BAR_LOOK_UP_SUCCESS("B001", "술집 목록 조회에 성공하였습니다."),
