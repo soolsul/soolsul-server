@@ -1,6 +1,8 @@
 package com.soolsul.soolsulserver.documentation;
 
+import com.soolsul.soolsulserver.post.common.dto.response.UserPostLookUpResponse;
 import com.soolsul.soolsulserver.user.auth.persistence.dto.response.UserLookUpResponse;
+import com.soolsul.soolsulserver.user.mypage.common.dto.response.UserPostListLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.facade.MyPageCommandFacade;
 import com.soolsul.soolsulserver.user.mypage.facade.MyPageQueryFacade;
 import com.soolsul.soolsulserver.user.mypage.presentation.MyPageController;
@@ -16,6 +18,8 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
+
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -65,6 +69,38 @@ public class MypageDocumentation extends Documentation {
                                 preprocessResponse(prettyPrint()),
                                 lookupMyPageResponseBody())
                 );
+    }
+
+    @DisplayName("문서화 : 사용자 작성 리뷰 전체 조회")
+    @Test
+    public void find_all_post() throws Exception {
+        UserPostLookUpResponse postOne = new UserPostLookUpResponse("post_id_1", "url_1");
+        UserPostLookUpResponse postTwo = new UserPostLookUpResponse("post_id_2", "url_2");
+        UserPostListLookUpResponse postListLookUpResponse = new UserPostListLookUpResponse(List.of(postOne, postTwo));
+
+        given(myPageQueryFacade.findAllUserPost(any())).willReturn(postListLookUpResponse);
+
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/mypages/posts")
+                        .header("Authorization", "bearer login-jwt-token")
+                        .accept(MediaTypes.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(
+                        document("search-posts-mypage",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
+                                lookupPostListResponseBody())
+                );
+    }
+
+    private Snippet lookupPostListResponseBody() {
+        return responseFields(
+                fieldWithPath("code").type(JsonFieldType.STRING).description(Constants.RESPONSE_ID),
+                fieldWithPath("message").type(JsonFieldType.STRING).description(Constants.RESPONSE_MESSAGE),
+                fieldWithPath("data").type(JsonFieldType.OBJECT).description(Constants.RESPONSE_DATA).optional(),
+                fieldWithPath("data.postList[].postId").type(JsonFieldType.STRING).description("피드 ID"),
+                fieldWithPath("data.postList[].imageUrl").type(JsonFieldType.STRING).description("피드 대표 사진")
+        );
     }
 
     private Snippet lookupMyPageResponseBody() {
