@@ -1,8 +1,10 @@
 package com.soolsul.soolsulserver.documentation;
 
+import com.soolsul.soolsulserver.post.common.dto.response.ScrapedPostLookUpResponse;
 import com.soolsul.soolsulserver.post.common.dto.response.UserPostLookUpResponse;
 import com.soolsul.soolsulserver.post.common.dto.response.UserReplyLookUpResponse;
 import com.soolsul.soolsulserver.user.auth.persistence.dto.response.UserLookUpResponse;
+import com.soolsul.soolsulserver.user.mypage.common.dto.response.ScrapedPostListLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.common.dto.response.UserPostListLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.common.dto.response.UserReplyListLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.facade.MyPageCommandFacade;
@@ -102,6 +104,35 @@ public class MyPageDocumentation extends Documentation {
                         document("search-replies-mypage",
                                 lookupReplyListResponseBody())
                 );
+    }
+
+    @DisplayName("문서화 : 사용자 스크랩한 피드 전체 조회")
+    @Test
+    public void find_all_scrap() throws Exception {
+        ScrapedPostLookUpResponse scrapOne = new ScrapedPostLookUpResponse("post_id_1", "image_url_1");
+        ScrapedPostLookUpResponse scrapTwo = new ScrapedPostLookUpResponse("post_id_2", "image_url_2");
+        ScrapedPostListLookUpResponse scrapedPostListLookUpResponse = new ScrapedPostListLookUpResponse(List.of(scrapOne, scrapTwo));
+
+        given(myPageQueryFacade.findAllScrapedPost(any())).willReturn(scrapedPostListLookUpResponse);
+
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/mypages/scraps")
+                        .header("Authorization", "bearer login-jwt-token")
+                        .accept(MediaTypes.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(
+                        document("search-scraps-mypage",
+                                lookupScrapListResponseBody())
+                );
+    }
+
+    private Snippet lookupScrapListResponseBody() {
+        return responseFields(
+                fieldWithPath("code").type(JsonFieldType.STRING).description(Constants.RESPONSE_ID),
+                fieldWithPath("message").type(JsonFieldType.STRING).description(Constants.RESPONSE_MESSAGE),
+                fieldWithPath("data").type(JsonFieldType.OBJECT).description(Constants.RESPONSE_DATA).optional(),
+                fieldWithPath("data.postList[].postId").type(JsonFieldType.STRING).description("피드 ID"),
+                fieldWithPath("data.postList[].imageUrl").type(JsonFieldType.STRING).description("피드 대표 사진")
+        );
     }
 
     private Snippet lookupReplyListResponseBody() {

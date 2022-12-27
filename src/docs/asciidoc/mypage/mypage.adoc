@@ -9,6 +9,7 @@
 | <<사용자 정보 조회>> | GET /api/mypages/me
 | <<사용자 작성 리뷰 조회>> | GET /api/mypages/posts
 | <<사용자 작성 댓글 조회>> | GET /api/mypages/replies
+| <<사용자 스크랩 리뷰 조회>> | GET /api/mypages/scraps
 
 |===
 
@@ -62,3 +63,20 @@ operation::search-replies-mypage[snippets='http-request']
 ===== `Response`
 
 operation::search-replies-mypage[snippets='http-response,response-fields']
+
+=== 사용자 스크랩 리뷰 조회
+
+API : `GET /api/mypages/scraps`
+
+사용자가 스크랩한 리뷰 전체를 조회합니다.
+(단, 로그인 유저만 가능)
+
+==== `200 OK`
+
+===== Request
+
+operation::search-scraps-mypage[snippets='http-request']
+
+===== `Response`
+
+operation::search-scraps-mypage[snippets='http-response,response-fields']
