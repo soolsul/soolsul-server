@@ -10,7 +10,7 @@ import com.soolsul.soolsulserver.post.domain.PostRepository;
 import com.soolsul.soolsulserver.post.domain.PostScrap;
 import com.soolsul.soolsulserver.post.domain.PostScrapRepository;
 import com.soolsul.soolsulserver.post.exception.PostNotFoundException;
-import com.soolsul.soolsulserver.post.exception.PostOwnerException;
+import com.soolsul.soolsulserver.post.exception.InvalidPostOwnerException;
 import com.soolsul.soolsulserver.user.auth.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -58,7 +58,7 @@ public class PostCommandService {
                 .orElseThrow(PostNotFoundException::new);
 
         if (!findPost.isOwner(userId)) {
-            throw new PostOwnerException();
+            throw new InvalidPostOwnerException();
         }
 
         postRepository.deleteById(findPost.getId());
