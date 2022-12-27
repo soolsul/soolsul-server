@@ -1,5 +1,6 @@
 = 댓글 API
-=== 전체 목록 (/api/posts/{postId}/replies*)
+
+== 전체 목록 (/api/posts/{postId}/replies*)
 
 [cols=2*]
 |===

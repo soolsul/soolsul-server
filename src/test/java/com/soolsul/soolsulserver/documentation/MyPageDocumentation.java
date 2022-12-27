@@ -3,7 +3,9 @@ package com.soolsul.soolsulserver.documentation;
 import com.soolsul.soolsulserver.post.common.dto.response.ScrapedPostLookUpResponse;
 import com.soolsul.soolsulserver.post.common.dto.response.UserPostLookUpResponse;
 import com.soolsul.soolsulserver.post.common.dto.response.UserReplyLookUpResponse;
+import com.soolsul.soolsulserver.user.auth.persistence.dto.response.UserEditFormResponse;
 import com.soolsul.soolsulserver.user.auth.persistence.dto.response.UserLookUpResponse;
+import com.soolsul.soolsulserver.user.mypage.common.dto.reqeust.UserInfoEditRequest;
 import com.soolsul.soolsulserver.user.mypage.common.dto.response.ScrapedPostListLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.common.dto.response.UserPostListLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.common.dto.response.UserReplyListLookUpResponse;
@@ -18,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.contract.spec.internal.MediaTypes;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
@@ -27,8 +30,10 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -123,6 +128,70 @@ public class MyPageDocumentation extends Documentation {
                         document("search-scraps-mypage",
                                 lookupScrapListResponseBody())
                 );
+    }
+
+    @DisplayName("문서화 : 사용자 정보 수정 폼 요청")
+    @Test
+    public void request_modify_user_form() throws Exception {
+        UserEditFormResponse userEditFormResponse = new UserEditFormResponse("origin_image_url", "origin_nick_name", "origin@test.com");
+
+        given(myPageQueryFacade.findUserEditForm(any())).willReturn(userEditFormResponse);
+
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/mypages/edit")
+                        .header("Authorization", "bearer login-jwt-token")
+                        .accept(MediaTypes.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(
+                        document("modify-user-form-mypage",
+                                lookupModifyFormResponseBody())
+                );
+    }
+
+    @DisplayName("문서화 : 사용자 정보 수정 요청")
+    @Test
+    public void send_modified_user_data() throws Exception {
+        UserInfoEditRequest editRequest = new UserInfoEditRequest("edit_image_url", "edit_nick_name", "change@test.com");
+
+        doNothing().when(myPageCommandFacade).editUserInfo(any(), any());
+
+        mockMvc.perform(RestDocumentationRequestBuilders.patch("/api/mypages/edit")
+                        .header("Authorization", "bearer login-jwt-token")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaTypes.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(editRequest))
+                )
+                .andExpect(status().isOk())
+                .andDo(
+                        document("modify-user-mypage",
+                                userModifyRequestBody(),
+                                userModifyResponseBody())
+                );
+    }
+
+    private Snippet userModifyRequestBody() {
+        return requestFields(
+                fieldWithPath("imageUrl").type(JsonFieldType.STRING).description("프로필 사진"),
+                fieldWithPath("nickName").type(JsonFieldType.STRING).description("사용자 별칭"),
+                fieldWithPath("email").type(JsonFieldType.STRING).description("사용자 이메일")
+        );
+    }
+
+    private Snippet userModifyResponseBody() {
+        return responseFields(
+                fieldWithPath("code").description(Constants.RESPONSE_ID),
+                fieldWithPath("message").description(Constants.RESPONSE_MESSAGE),
+                fieldWithPath("data").description(Constants.RESPONSE_DATA).optional());
+    }
+
+    private Snippet lookupModifyFormResponseBody() {
+        return responseFields(
+                fieldWithPath("code").type(JsonFieldType.STRING).description(Constants.RESPONSE_ID),
+                fieldWithPath("message").type(JsonFieldType.STRING).description(Constants.RESPONSE_MESSAGE),
+                fieldWithPath("data").type(JsonFieldType.OBJECT).description(Constants.RESPONSE_DATA).optional(),
+                fieldWithPath("data.imageUrl").type(JsonFieldType.STRING).description("프로필 사진"),
+                fieldWithPath("data.nickName").type(JsonFieldType.STRING).description("사용자 별칭"),
+                fieldWithPath("data.email").type(JsonFieldType.STRING).description("사용자 이메일")
+        );
     }
 
     private Snippet lookupScrapListResponseBody() {

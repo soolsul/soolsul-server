@@ -1,6 +1,6 @@
 = 리뷰 API
 
-=== 전체 목록 (/api/posts/*)
+== 전체 목록 (/api/posts/*)
 
 [cols=2*]
 |===

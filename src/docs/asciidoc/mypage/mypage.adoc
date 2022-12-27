@@ -1,6 +1,6 @@
 = 마이페이지 API
 
-=== 전체 목록 (/api/mypages/*)
+== 전체 목록 (/api/mypages/*)
 
 [cols=2*]
 |===
@@ -10,6 +10,8 @@
 | <<사용자 작성 리뷰 조회>> | GET /api/mypages/posts
 | <<사용자 작성 댓글 조회>> | GET /api/mypages/replies
 | <<사용자 스크랩 리뷰 조회>> | GET /api/mypages/scraps
+| <<사용자 정보 수정 폼 요청>> | GET /api/mypages/edit
+| <<사용자 정보 수정 요청>> | PATCH /api/mypages/edit
 
 |===
 
@@ -80,3 +82,37 @@ operation::search-scraps-mypage[snippets='http-request']
 ===== `Response`
 
 operation::search-scraps-mypage[snippets='http-response,response-fields']
+
+=== 사용자 정보 수정 폼 요청
+
+API : `GET /api/mypages/edit`
+
+사용자가 정보 수정을 위해 원래의 정보와 함께 수정 폼을 제시합니다.
+(단, 로그인 유저만 가능)
+
+==== `200 OK`
+
+===== Request
+
+operation::modify-user-form-mypage[snippets='http-request']
+
+===== `Response`
+
+operation::modify-user-form-mypage[snippets='http-response,response-fields']
+
+=== 사용자 정보 수정 요청
+
+API : `PATCH /api/mypages/edit`
+
+사용자가 수정할 데이터를 전달합니다.
+(단, 로그인 유저만 가능)
+
+==== `200 OK`
+
+===== Request
+
+operation::modify-user-mypage[snippets='http-request']
+
+===== `Response`
+
+operation::modify-user-mypage[snippets='http-response,response-fields']
