@@ -20,4 +20,16 @@ public class PostCommandFacade {
     public void scrap(String userId, String postId) {
         postCommandService.scrap(userId, postId);
     }
+
+    public void delete(String userId, String postId) {
+        postCommandService.delete(userId, postId);
+    }
+
+    public void likePost(String userId, String postId) {
+        postCommandService.likePost(userId, postId);
+    }
+
+    public void unlikePost(String userId, String postId) {
+        postCommandService.unlikePost(userId, postId);
+    }
 }

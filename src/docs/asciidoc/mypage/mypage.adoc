@@ -1,0 +1,46 @@
+= 마이페이지 API
+
+=== 전체 목록 (/api/mypages/*)
+
+[cols=2*]
+|===
+| 기능 | API
+
+| <<사용자 정보 조회>> | GET /api/mypages/me
+| <<사용자 작성 리뷰 조회>> | GET /api/mypages/posts
+
+|===
+
+=== 사용자 정보 조회
+
+API : `GET /api/mypages/me`
+
+사용자의 상세 정보를 조회합니다.
+(단, 로그인 유저만 가능)
+
+==== `200 OK`
+
+===== Request
+
+operation::search-detail-info-mypage[snippets='http-request']
+
+===== `Response`
+
+operation::search-detail-info-mypage[snippets='http-response,response-fields']
+
+=== 사용자 작성 리뷰 전체 조회
+
+API : `GET /api/mypages/posts`
+
+사용자가 작성한 리뷰 전체를 조회합니다.
+(단, 로그인 유저만 가능)
+
+==== `200 OK`
+
+===== Request
+
+operation::search-posts-mypage[snippets='http-request']
+
+===== `Response`
+
+operation::search-posts-mypage[snippets='http-response,response-fields']

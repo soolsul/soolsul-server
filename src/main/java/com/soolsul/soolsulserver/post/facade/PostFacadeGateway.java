@@ -26,13 +26,23 @@ public class PostFacadeGateway implements PostCommandFacadeSpec<PostCreateReques
     }
 
     @Override
-    public void delete(String id) {
-
+    public void delete(String userId, String postId) {
+        postCommandFacade.delete(userId, postId);
     }
 
     @Override
     public void scrap(String userId, String postId) {
         postCommandFacade.scrap(userId, postId);
+    }
+
+    @Override
+    public void likePost(String userId, String postId) {
+        postCommandFacade.likePost(userId, postId);
+    }
+
+    @Override
+    public void unlikePost(String userId, String postId) {
+        postCommandFacade.unlikePost(userId, postId);
     }
 
     @Override

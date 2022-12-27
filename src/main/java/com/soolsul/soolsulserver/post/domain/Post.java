@@ -6,6 +6,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -18,6 +20,8 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@SQLDelete(sql = "update post set deleted = true where id = ?")
+@Where(clause = "deleted = false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseTimeEntity {
 
@@ -51,6 +55,8 @@ public class Post extends BaseTimeEntity {
 
     @Embedded
     private Likes likes = new Likes();
+
+    private Boolean deleted = Boolean.FALSE;
 
     public Post(String ownerId, String barId, Float score, String contents) {
         this.ownerId = ownerId;
@@ -88,8 +94,16 @@ public class Post extends BaseTimeEntity {
         this.likes.add(customUser.getId());
     }
 
+    public void like(String userId) {
+        this.likes.add(userId);
+    }
+
     public void undoLike(CustomUser customUser) {
         this.likes.remove(customUser.getId());
+    }
+
+    public void undoLike(String userId) {
+        this.likes.remove(userId);
     }
 
     public int likeCount() {
@@ -98,6 +112,10 @@ public class Post extends BaseTimeEntity {
 
     public boolean isLikeContain(String userId) {
         return likes.contains(userId);
+    }
+
+    public boolean isOwner(String userId) {
+        return ownerId.equals(userId);
     }
 
     @Override

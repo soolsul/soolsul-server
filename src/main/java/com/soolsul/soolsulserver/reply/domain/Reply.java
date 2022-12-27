@@ -44,6 +44,18 @@ public class Reply extends BaseTimeEntity {
         this.contents = new ReplyContent(contents);
     }
 
+    public boolean isOwner(String userId) {
+        return this.ownerId.equals(userId);
+    }
+
+    public boolean isSamePostId(String postId) {
+        return this.postId.equals(postId);
+    }
+
+    public void modifyContents(String contents) {
+        this.contents.modify(contents);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -56,5 +68,4 @@ public class Reply extends BaseTimeEntity {
     public int hashCode() {
         return Objects.hash(this.id);
     }
-
 }

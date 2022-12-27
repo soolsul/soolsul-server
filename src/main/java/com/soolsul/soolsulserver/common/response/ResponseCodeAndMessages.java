@@ -21,10 +21,12 @@ public enum ResponseCodeAndMessages {
     FEED_CREATE_SUCCESS("P001", "피드 생성 성공했습니다."),
     FEED_FIND_SUCCESS("P002", "피드 찾기에 성공하였습니다."),
     // POO2 : update
-    // POO3 : delete
+    FEED_DELETE_SUCCESS("P003", "피드 삭제에 성공하였습니다."),
     FEED_FIND_ALL_SUCCESS("P004", "모든 피드를 찾는데 성공하였습니다."),
     FEED_SCRAP_SUCCESS("P005", "피드 스크랩을 성공했습니다."),
     FEED_FIND_ALL_SCRAP_SUCCESS("P006", "모든 스크랩 된 피드를 찾는데 성공하였습니다."),
+    FEED_LIKE_SUCCESS("P007", "피드 좋아요에 성공하였습니다."),
+    FEED_UNLIKE_SUCCESS("P008", "피드 좋아요 취소에 성공하였습니다."),
 
     /* BAR */
     BAR_LOOK_UP_SUCCESS("B001", "술집 목록 조회에 성공하였습니다."),
@@ -35,7 +37,9 @@ public enum ResponseCodeAndMessages {
 
     /* REPLY */
     REPLY_CREATE_SUCCESS("R001", "댓글을 추가하는데 성공하였습니다."),
-    REPLY_READ_SUCCESS("R002", "댓글을 읽는데 성공하였습니다.");
+    REPLY_READ_SUCCESS("R002", "댓글을 읽는데 성공하였습니다."),
+    REPLY_UPDATE_SUCCESS("R003", "댓글을 수정하는데 성공하였습니다."),
+    REPLY_DELETE_SUCCESS("R004", "댓글을 삭제하는데 성공하였습니다.");
 
     private final String code;
     private final String message;

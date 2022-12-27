@@ -14,9 +14,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -69,5 +71,32 @@ public class PostController {
     ) {
         postFacadeGateway.scrap(currentUser.getId(), request.postId());
         return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.FEED_SCRAP_SUCCESS, null));
+    }
+
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<BaseResponse<Void>> deletePost(
+            @PathVariable String postId,
+            @CurrentUser CustomUser currentUser
+    ) {
+        postFacadeGateway.delete(currentUser.getId(), postId);
+        return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.FEED_DELETE_SUCCESS, null));
+    }
+
+    @PutMapping("/{postId}/like")
+    public ResponseEntity<BaseResponse<Void>> likePost(
+            @PathVariable String postId,
+            @CurrentUser CustomUser currentUser
+    ) {
+        postFacadeGateway.likePost(currentUser.getId(), postId);
+        return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.FEED_LIKE_SUCCESS, null));
+    }
+
+    @PutMapping("/{postId}/unlike")
+    public ResponseEntity<BaseResponse<Void>> unlikePost(
+            @PathVariable String postId,
+            @CurrentUser CustomUser currentUser
+    ) {
+        postFacadeGateway.unlikePost(currentUser.getId(), postId);
+        return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.FEED_UNLIKE_SUCCESS, null));
     }
 }
