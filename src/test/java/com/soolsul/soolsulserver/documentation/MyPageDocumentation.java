@@ -1,8 +1,10 @@
 package com.soolsul.soolsulserver.documentation;
 
 import com.soolsul.soolsulserver.post.common.dto.response.UserPostLookUpResponse;
+import com.soolsul.soolsulserver.post.common.dto.response.UserReplyLookUpResponse;
 import com.soolsul.soolsulserver.user.auth.persistence.dto.response.UserLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.common.dto.response.UserPostListLookUpResponse;
+import com.soolsul.soolsulserver.user.mypage.common.dto.response.UserReplyListLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.facade.MyPageCommandFacade;
 import com.soolsul.soolsulserver.user.mypage.facade.MyPageQueryFacade;
 import com.soolsul.soolsulserver.user.mypage.presentation.MyPageController;
@@ -31,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = MyPageController.class,
         excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = WebSecurityConfigurer.class)},
         excludeAutoConfiguration = {SecurityAutoConfiguration.class})
-public class MypageDocumentation extends Documentation {
+public class MyPageDocumentation extends Documentation {
 
     @MockBean
     MyPageQueryFacade myPageQueryFacade;
@@ -81,6 +83,35 @@ public class MypageDocumentation extends Documentation {
                         document("search-posts-mypage",
                                 lookupPostListResponseBody())
                 );
+    }
+
+    @DisplayName("문서화 : 사용자 작성 댓글 전체 조회")
+    @Test
+    public void find_all_reply() throws Exception {
+        UserReplyLookUpResponse replyOne = new UserReplyLookUpResponse("post_id_1", "댓글 1");
+        UserReplyLookUpResponse replyTwo = new UserReplyLookUpResponse("post_id_1", "댓글 2");
+        UserReplyListLookUpResponse replyListLookUpResponse = new UserReplyListLookUpResponse(List.of(replyOne, replyTwo));
+
+        given(myPageQueryFacade.findAllUserReplies(any())).willReturn(replyListLookUpResponse);
+
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/mypages/replies")
+                        .header("Authorization", "bearer login-jwt-token")
+                        .accept(MediaTypes.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(
+                        document("search-replies-mypage",
+                                lookupReplyListResponseBody())
+                );
+    }
+
+    private Snippet lookupReplyListResponseBody() {
+        return responseFields(
+                fieldWithPath("code").type(JsonFieldType.STRING).description(Constants.RESPONSE_ID),
+                fieldWithPath("message").type(JsonFieldType.STRING).description(Constants.RESPONSE_MESSAGE),
+                fieldWithPath("data").type(JsonFieldType.OBJECT).description(Constants.RESPONSE_DATA).optional(),
+                fieldWithPath("data.replyList[].postId").type(JsonFieldType.STRING).description("피드 ID"),
+                fieldWithPath("data.replyList[].contents").type(JsonFieldType.STRING).description("댓글 내용")
+        );
     }
 
     private Snippet lookupPostListResponseBody() {
