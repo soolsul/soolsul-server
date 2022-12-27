@@ -32,9 +32,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -42,7 +39,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = PostController.class,
@@ -69,12 +65,9 @@ public class PostDocumentation extends Documentation {
                         .contentType(MediaTypes.APPLICATION_JSON)
                         .accept(MediaTypes.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(postCreateRequest)))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(
                         document("create-post",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()),
                                 createPostRequestBody(),
                                 noContentsPostResponseBody())
                 );
@@ -97,12 +90,9 @@ public class PostDocumentation extends Documentation {
         mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts/{postId}", "post_uuid")
                         .header("Authorization", "bearer login-jwt-token")
                         .accept(MediaTypes.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(
                         document("find-post",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()),
                                 findPostRequestParam(),
                                 findPostResponseBody())
                 );
@@ -138,12 +128,9 @@ public class PostDocumentation extends Documentation {
                         .param("page", String.valueOf(0))
                         .accept(MediaTypes.APPLICATION_JSON)
                         .header("Authorization", "bearer login-jwt-token"))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(
                         document("find-all-post",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()),
                                 findAllPostRequestParam(),
                                 findAllPostResponseBody())
                 );
@@ -162,12 +149,9 @@ public class PostDocumentation extends Documentation {
                         .contentType(MediaTypes.APPLICATION_JSON)
                         .accept(MediaTypes.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(scrapRequest)))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(
                         document("scrap-post",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()),
                                 scrapPostRequestBody(),
                                 noContentsPostResponseBody())
                 );
@@ -183,12 +167,9 @@ public class PostDocumentation extends Documentation {
         mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/posts/{postId}", "post_uuid")
                         .header("Authorization", "bearer login-jwt-token")
                         .accept(MediaTypes.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(
                         document("delete-post",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()),
                                 deletePostRequestPath(),
                                 noContentsPostResponseBody())
                 );
@@ -204,12 +185,9 @@ public class PostDocumentation extends Documentation {
         mockMvc.perform(RestDocumentationRequestBuilders.put("/api/posts/{postId}/like", "post_uuid")
                         .header("Authorization", "bearer login-jwt-token")
                         .accept(MediaTypes.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(
                         document("like-post",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()),
                                 likePostRequestPath(),
                                 noContentsPostResponseBody())
                 );
@@ -225,12 +203,9 @@ public class PostDocumentation extends Documentation {
         mockMvc.perform(RestDocumentationRequestBuilders.put("/api/posts/{postId}/unlike", "post_uuid")
                         .header("Authorization", "bearer login-jwt-token")
                         .accept(MediaTypes.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(
                         document("unlike-post",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()),
                                 likePostRequestPath(),
                                 noContentsPostResponseBody())
                 );

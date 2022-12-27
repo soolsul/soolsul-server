@@ -28,15 +28,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = ReplyController.class,
@@ -59,12 +55,9 @@ public class ReplyDocumentation extends Documentation {
                         .contentType(MediaTypes.APPLICATION_JSON)
                         .accept(MediaTypes.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(replyRequest)))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(
                         document("create-reply",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()),
                                 createReplyRequestPath(),
                                 createReplyRequestBody(),
                                 noContentsReplyResponseBody())
@@ -85,12 +78,9 @@ public class ReplyDocumentation extends Documentation {
         mockMvc.perform(RestDocumentationRequestBuilders.get("/api/posts/{postId}/replies", "post_uuid")
                         .accept(MediaTypes.APPLICATION_JSON)
                         .header("Authorization", "bearer login-jwt-token"))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(
                         document("find-all-reply",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()),
                                 findAllReplyRequestPath(),
                                 findAllReplyResponseBody())
                 );
@@ -108,12 +98,9 @@ public class ReplyDocumentation extends Documentation {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaTypes.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(modifyRequest)))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(
                         document("modify-reply",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()),
                                 modifyReplyRequestPath(),
                                 noContentsReplyResponseBody())
                 );
@@ -128,12 +115,9 @@ public class ReplyDocumentation extends Documentation {
         mockMvc.perform(RestDocumentationRequestBuilders.delete("/api/posts/{postId}/replies/{replyId}", "post_uuid", "reply_uuid")
                         .header("Authorization", "bearer login-jwt-token")
                         .accept(MediaTypes.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(
                         document("delete-reply",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()),
                                 deleteReplyRequestPath(),
                                 noContentsReplyResponseBody())
                 );
