@@ -7,6 +7,7 @@
 | 기능 | API
 
 | <<사용자 정보 조회>> | GET /api/mypages/me
+| <<다른 사용자 정보 조회>> | GET /api/mypages/{userId}
 | <<사용자 작성 리뷰 조회>> | GET /api/mypages/posts
 | <<사용자 작성 댓글 조회>> | GET /api/mypages/replies
 | <<사용자 스크랩 리뷰 조회>> | GET /api/mypages/scraps
@@ -19,7 +20,7 @@
 
 API : `GET /api/mypages/me`
 
-사용자의 상세 정보를 조회합니다.
+유저 자신의 상세 정보를 조회합니다.
 (단, 로그인 유저만 가능)
 
 ==== `200 OK`
@@ -31,6 +32,23 @@ operation::search-detail-info-mypage[snippets='http-request']
 ===== `Response`
 
 operation::search-detail-info-mypage[snippets='http-response,response-fields']
+
+=== 다른 사용자 정보 조회
+
+API : `GET /api/mypages/{userId}`
+
+다른 사용자의 상세 정보를 조회합니다.
+(단, 로그인 유저만 가능)
+
+==== `200 OK`
+
+===== Request
+
+operation::search-detail-info-other-mypage[snippets='http-request']
+
+===== `Response`
+
+operation::search-detail-info-other-mypage[snippets='http-response,response-fields']
 
 === 사용자 작성 리뷰 전체 조회
 

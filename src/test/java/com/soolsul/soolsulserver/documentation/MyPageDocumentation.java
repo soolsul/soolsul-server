@@ -73,6 +73,31 @@ public class MyPageDocumentation extends Documentation {
                 );
     }
 
+    @DisplayName("문서화 : 다른 유저 정보 상세조회")
+    @Test
+    public void find_other_user_detail_info() throws Exception {
+        UserLookUpResponse userLookUpResponse = new UserLookUpResponse(
+                "ff808081854e558801854e559bbe0003",
+                "change@email.com",
+                "{bcrypt}$2a$10$aCz2zAlS/o.5csrY/7CJkuBY91tvo5.4b3BES.tcwQtu.hKQ5HA1a",
+                "02-123-4567",
+                "user",
+                "change",
+                "new_url"
+        );
+
+        given(myPageQueryFacade.findUserWithDetailInfo(any())).willReturn(userLookUpResponse);
+
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/api/mypages/{userId}", "ff808081854e558801854e559bbe0003")
+                        .header("Authorization", "bearer login-jwt-token")
+                        .accept(MediaTypes.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(
+                        document("search-detail-info-other-mypage",
+                                lookupMyPageResponseBody())
+                );
+    }
+
     @DisplayName("문서화 : 사용자 작성 리뷰 전체 조회")
     @Test
     public void find_all_post() throws Exception {
