@@ -11,8 +11,8 @@ public class BarAcceptanceTest extends AcceptanceTest {
     @DisplayName("기본으로 바 메뉴를 접속하면 사용자 위치를 기반으로 바 목록을 조회한다.")
     @Test
     void find_bar_filtered_by_conditions() {
-        double latitude = 37.5;
-        double longitude = 120;
+        double latitude = 37.4990973237d;
+        double longitude = 126.9459247225d;
         String batMoodTagNames = "";
         String barAlcoholTagNames = "";
 

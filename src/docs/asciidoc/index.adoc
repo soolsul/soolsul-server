@@ -10,6 +10,7 @@ notification-api-docs
 :toclevels: 2
 :sectlinks:
 
+include::{docdir}/bar/bar.adoc[]
 include::{docdir}/post/post.adoc[]
 include::{docdir}/reply/reply.adoc[]
 include::{docdir}/mypage/mypage.adoc[]
