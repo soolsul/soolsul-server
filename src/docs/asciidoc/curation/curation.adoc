@@ -1,0 +1,44 @@
+= 큐레이션 API
+
+== 전체 목록 (/api/curations/*)
+
+[cols=2*]
+|===
+| 기능 | API
+
+| <<위치기반 인근 가게의 큐레이션 조회>> | GET /api/curations
+| <<특정 큐레이션 조회>> | GET /api/curations/{curationId}
+
+|===
+
+=== 위치기반 인근 가게의 큐레이션 조회
+
+API : `GET /api/curations`
+
+유저는 자기 위치를 중심으로 인근의 가게들의 큐레이션을 검색합니다.
+
+==== `200 OK`
+
+===== Request
+
+operation::find-all-bar[snippets='http-request,request-parameters']
+
+===== `Response`
+
+operation::find-all-bar[snippets='http-response,response-fields']
+
+=== 특정 큐레이션 조회
+
+API : `GET /api/curations/{curationId}`
+
+특정 큐레이션을 조회합니다.
+
+==== `200 OK`
+
+===== Request
+
+operation::find-all-bar[snippets='http-request,request-parameters']
+
+===== `Response`
+
+operation::find-all-bar[snippets='http-response,response-fields']

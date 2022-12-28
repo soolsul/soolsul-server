@@ -11,6 +11,7 @@ notification-api-docs
 :sectlinks:
 
 include::{docdir}/bar/bar.adoc[]
+include::{docdir}/curation/curation.adoc[]
 include::{docdir}/post/post.adoc[]
 include::{docdir}/reply/reply.adoc[]
 include::{docdir}/mypage/mypage.adoc[]
