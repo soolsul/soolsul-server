@@ -21,11 +21,11 @@ API : `GET /api/curations`
 
 ===== Request
 
-operation::find-all-bar[snippets='http-request,request-parameters']
+operation::find-all-curation[snippets='http-request,request-parameters']
 
 ===== `Response`
 
-operation::find-all-bar[snippets='http-response,response-fields']
+operation::find-all-curation[snippets='http-response,response-fields']
 
 === 특정 큐레이션 조회
 
@@ -37,8 +37,8 @@ API : `GET /api/curations/{curationId}`
 
 ===== Request
 
-operation::find-all-bar[snippets='http-request,request-parameters']
+operation::find-specific-curation[snippets='http-request,path-parameters']
 
 ===== `Response`
 
-operation::find-all-bar[snippets='http-response,response-fields']
+operation::find-specific-curation[snippets='http-response,response-fields']
