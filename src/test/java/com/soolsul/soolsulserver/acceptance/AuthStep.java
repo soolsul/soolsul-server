@@ -44,12 +44,13 @@ public class AuthStep {
                 .extract();
     }
 
-    public static void 회원_정보_조회(ExtractableResponse<Response> response, String email, String name) {
+    public static String 회원_정보_조회(ExtractableResponse<Response> response, String email, String name) {
         assertAll(
                 () -> assertThat(response.jsonPath().getString("data.userId")).isNotNull(),
                 () -> assertThat(response.jsonPath().getString("data.email")).isEqualTo(email),
                 () -> assertThat(response.jsonPath().getString("data.name")).isEqualTo(name)
         );
+        return response.jsonPath().getString("data.userId");
     }
 
     public static void 권한_없는_요청(ExtractableResponse<Response> response) {
@@ -117,5 +118,16 @@ public class AuthStep {
                 () -> assertThat(response.jsonPath().getString("code")).isEqualTo(code),
                 () -> assertThat(response.jsonPath().getString("message")).isEqualTo(message)
         );
+    }
+
+    public static ExtractableResponse<Response> 사용자_프로필_조회(String accessToken, String userId) {
+        return RestAssured
+                .given().log().all()
+                .auth().oauth2(accessToken)
+                .when()
+                .pathParam("userId", userId)
+                .get("/api/mypages/{userId}")
+                .then().log().all()
+                .extract();
     }
 }

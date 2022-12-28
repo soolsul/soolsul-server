@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.soolsul.soolsulserver.acceptance.AuthStep.로그인_되어_있음;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.베어러_인증으로_내_회원_정보_조회_요청;
+import static com.soolsul.soolsulserver.acceptance.AuthStep.사용자_프로필_조회;
 import static com.soolsul.soolsulserver.acceptance.AuthStep.회원_정보_조회;
 import static com.soolsul.soolsulserver.acceptance.MyPageStep.사용자_댓글_조회_응답_확인;
 import static com.soolsul.soolsulserver.acceptance.MyPageStep.사용자_프로필_편집_요청;
@@ -76,7 +77,7 @@ public class MyPageAcceptanceTest extends AcceptanceTest {
      * when: 내 댓글 조회 요청시
      * then: 내가 추가한 댓글 목록을 전부 조회해온다.
      */
-    @DisplayName("사용자가 작성한 피드를 전부 가져온다.")
+    @DisplayName("사용자가 작성한 댓글을 전부 가져온다.")
     @Test
     void my_reply_find_all_test() {
         // given
@@ -93,6 +94,23 @@ public class MyPageAcceptanceTest extends AcceptanceTest {
 
         // then
         사용자_댓글_조회_응답_확인(사용자_댓글_조회_응답);
+    }
+
+    @DisplayName("다른 사용자의 프로필을 조회한다.")
+    @Test
+    public void find_other_user_info() {
+        // given
+        String accessToken = 로그인_되어_있음(USER_EMAIL, USER_PASSWORD);
+
+        var 베어러_로그인_응답 = 베어러_인증으로_내_회원_정보_조회_요청(accessToken);
+
+        String userId = 회원_정보_조회(베어러_로그인_응답, USER_EMAIL, NAME);
+
+        // when
+        var 사용자_프로필_조회_응답 = 사용자_프로필_조회(accessToken, userId);
+
+        // then
+        회원_정보_조회(사용자_프로필_조회_응답, USER_EMAIL, NAME);
     }
 
     /**
