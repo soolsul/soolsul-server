@@ -3,6 +3,7 @@ package com.soolsul.soolsulserver.post.business;
 import com.soolsul.soolsulserver.bar.common.dto.response.BarLookupResponse;
 import com.soolsul.soolsulserver.bar.exception.BarNotFoundException;
 import com.soolsul.soolsulserver.bar.persistence.BarQueryRepository;
+import com.soolsul.soolsulserver.user.auth.exception.UserInvalidIdException;
 import com.soolsul.soolsulserver.post.common.dto.request.PostCreateRequest;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.domain.PostPhoto;
@@ -66,7 +67,7 @@ public class PostCommandService {
 
     public void likePost(String userId, String postId) {
         if (isInvalidUserId(userId)) {
-            throw new RuntimeException();
+            throw new UserInvalidIdException();
         }
 
         Post findPost = postRepository.findById(postId)
@@ -77,7 +78,7 @@ public class PostCommandService {
 
     public void unlikePost(String userId, String postId) {
         if (isInvalidUserId(userId)) {
-            throw new RuntimeException();
+            throw new UserInvalidIdException();
         }
 
         Post findPost = postRepository.findById(postId)
