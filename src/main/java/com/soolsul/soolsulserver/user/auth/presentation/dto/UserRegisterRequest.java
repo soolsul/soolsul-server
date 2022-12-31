@@ -1,32 +1,14 @@
 package com.soolsul.soolsulserver.user.auth.presentation.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-@Builder
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-public class UserRegisterRequest {
+public record UserRegisterRequest(
 
-    @Email
-    @NotBlank
-    private String email;
-
-    @NotBlank
-    private String password;
-
-    @NotBlank
-    private String phone;
-
-    @NotBlank
-    private String name;
-
-    @NotBlank
-    private String nickname;
+        @Email @NotBlank String email,
+        @NotBlank String password,
+        @NotBlank String phone,
+        @NotBlank String name,
+        @NotBlank String nickname
+) {
 }

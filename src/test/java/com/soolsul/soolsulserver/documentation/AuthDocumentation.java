@@ -37,14 +37,7 @@ public class AuthDocumentation extends Documentation {
     @DisplayName("문서화 : 사용자 회원 가입")
     @Test
     public void user_register() throws Exception {
-        UserRegisterRequest registerRequest = UserRegisterRequest
-                .builder()
-                .email("test@email.com")
-                .password("password")
-                .phone("010-1234-5678")
-                .name("test_user")
-                .nickname("test_nickname")
-                .build();
+        UserRegisterRequest registerRequest = new UserRegisterRequest("test@email.com", "password", "010-1234-5678", "test_user", "test_nickname");
 
         doNothing().when(userDetailsService).register(any());
 

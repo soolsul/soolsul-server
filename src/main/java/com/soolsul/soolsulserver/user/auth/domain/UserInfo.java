@@ -42,9 +42,9 @@ public class UserInfo {
 
     public static UserInfo of(String userId, UserRegisterRequest request) {
         return new UserInfo(userId,
-                request.getPhone(),
-                request.getNickname(),
-                request.getName());
+                request.phone(),
+                request.nickname(),
+                request.name());
     }
 
     public void editNickNameAndImage(String nickName, String profileImage) {
