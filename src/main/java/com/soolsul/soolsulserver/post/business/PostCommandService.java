@@ -3,14 +3,15 @@ package com.soolsul.soolsulserver.post.business;
 import com.soolsul.soolsulserver.bar.common.dto.response.BarLookupResponse;
 import com.soolsul.soolsulserver.bar.exception.BarNotFoundException;
 import com.soolsul.soolsulserver.bar.persistence.BarQueryRepository;
+import com.soolsul.soolsulserver.user.auth.exception.UserInvalidIdException;
 import com.soolsul.soolsulserver.post.common.dto.request.PostCreateRequest;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.domain.PostPhoto;
 import com.soolsul.soolsulserver.post.domain.PostRepository;
 import com.soolsul.soolsulserver.post.domain.PostScrap;
 import com.soolsul.soolsulserver.post.domain.PostScrapRepository;
-import com.soolsul.soolsulserver.post.exception.PostNotFoundException;
 import com.soolsul.soolsulserver.post.exception.InvalidPostOwnerException;
+import com.soolsul.soolsulserver.post.exception.PostNotFoundException;
 import com.soolsul.soolsulserver.user.auth.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -64,6 +65,28 @@ public class PostCommandService {
         postRepository.deleteById(findPost.getId());
     }
 
+    public void likePost(String userId, String postId) {
+        if (isInvalidUserId(userId)) {
+            throw new UserInvalidIdException();
+        }
+
+        Post findPost = postRepository.findById(postId)
+                .orElseThrow(PostNotFoundException::new);
+
+        findPost.like(userId);
+    }
+
+    public void unlikePost(String userId, String postId) {
+        if (isInvalidUserId(userId)) {
+            throw new UserInvalidIdException();
+        }
+
+        Post findPost = postRepository.findById(postId)
+                .orElseThrow(PostNotFoundException::new);
+
+        findPost.undoLike(userId);
+    }
+
     private List<PostPhoto> convertPhotoList(PostCreateRequest request, BarLookupResponse findBar) {
         return request.getImages()
                 .stream()
@@ -73,19 +96,5 @@ public class PostCommandService {
 
     private boolean isInvalidUserId(String userId) {
         return !StringUtils.hasText(userId);
-    }
-
-    public void likePost(String userId, String postId) {
-        Post findPost = postRepository.findById(postId)
-                .orElseThrow(PostNotFoundException::new);
-
-        findPost.like(userId);
-    }
-
-    public void unlikePost(String userId, String postId) {
-        Post findPost = postRepository.findById(postId)
-                .orElseThrow(PostNotFoundException::new);
-
-        findPost.undoLike(userId);
     }
 }

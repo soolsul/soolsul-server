@@ -1,8 +1,10 @@
 package com.soolsul.soolsulserver.curation.common.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public record CurationsLookupResponse(
-        List<CurationListLookupResponse> curationListLookupResponses
+        @JsonProperty("curationList") List<CurationListLookupResponse> curationListLookupResponses
 ) {
 }

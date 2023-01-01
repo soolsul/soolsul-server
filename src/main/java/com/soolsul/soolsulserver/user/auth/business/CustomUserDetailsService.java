@@ -43,9 +43,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public void register(UserRegisterRequest userRegisterRequest) {
-        checkAlreadyExistsUser(userRegisterRequest.getEmail(), userRegisterRequest.getNickname());
+        checkAlreadyExistsUser(userRegisterRequest.email(), userRegisterRequest.nickname());
 
-        CustomUser newUser = createUser(userRegisterRequest.getPassword(), userRegisterRequest.getEmail());
+        CustomUser newUser = createUser(userRegisterRequest.password(), userRegisterRequest.email());
 
         CustomUser savedUser = userRepository.save(newUser);
         userInfoRepository.save(UserInfo.of(savedUser.getId(), userRegisterRequest));

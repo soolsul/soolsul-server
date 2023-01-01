@@ -27,6 +27,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static com.soolsul.soolsulserver.documentation.Constants.MAP_LEVEL_DESCRIPTION;
+import static com.soolsul.soolsulserver.documentation.Constants.X_DESCRIPTION;
+import static com.soolsul.soolsulserver.documentation.Constants.Y_DESCRIPTION;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -231,9 +234,9 @@ public class PostDocumentation extends Documentation {
 
     private Snippet findAllPostRequestParam() {
         return requestParameters(
-                parameterWithName("longitude").description("위도"),
-                parameterWithName("latitude").description("경도"),
-                parameterWithName("level").description("지도 레밸"),
+                parameterWithName("longitude").description(Y_DESCRIPTION),
+                parameterWithName("latitude").description(X_DESCRIPTION),
+                parameterWithName("level").description(MAP_LEVEL_DESCRIPTION),
                 parameterWithName("page").description("요청 페이지")
         );
     }
