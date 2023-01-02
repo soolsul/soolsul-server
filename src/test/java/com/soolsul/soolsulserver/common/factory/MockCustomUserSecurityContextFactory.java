@@ -23,6 +23,17 @@ public class MockCustomUserSecurityContextFactory implements WithSecurityContext
         String username = StringUtils.hasLength(annotation.username()) ? annotation.username() : annotation.value();
         Assert.notNull(username, () -> annotation + " cannot have null username on both username and value properties");
 
+        List<GrantedAuthority> authorities = settingRole(annotation);
+        CustomUser customUser = new CustomUser(username, annotation.password());
+        Authentication authentication = UsernamePasswordAuthenticationToken.authenticated(customUser, "", authorities);
+
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(authentication);
+
+        return securityContext;
+    }
+
+    private List<GrantedAuthority> settingRole(MockCustomUser annotation) {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
         for (String role : annotation.roles()) {
@@ -30,11 +41,6 @@ public class MockCustomUserSecurityContextFactory implements WithSecurityContext
             grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role));
         }
 
-        CustomUser customUser = new CustomUser(username, annotation.password());
-
-        Authentication authentication = UsernamePasswordAuthenticationToken.authenticated(customUser, "", customUser.getAuthorities());
-        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-        securityContext.setAuthentication(authentication);
-        return securityContext;
+        return grantedAuthorities;
     }
 }
