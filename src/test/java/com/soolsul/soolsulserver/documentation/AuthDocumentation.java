@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.documentation;
 
+import com.soolsul.soolsulserver.common.annotation.MockCustomUser;
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
 import com.soolsul.soolsulserver.user.auth.presentation.AuthController;
 import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
@@ -56,6 +57,7 @@ public class AuthDocumentation extends Documentation {
     }
 
     @DisplayName("문서화 : 사용자 회원 탈퇴")
+    @MockCustomUser
     @Test
     public void user_delete() throws Exception {
 
