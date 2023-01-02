@@ -7,7 +7,7 @@ import com.soolsul.soolsulserver.reply.common.dto.request.ReplyModifyRequest;
 import com.soolsul.soolsulserver.reply.common.dto.response.PostRepliesResponse;
 import com.soolsul.soolsulserver.reply.facade.ReplyFacadeGateway;
 import com.soolsul.soolsulserver.user.auth.annotation.CurrentUser;
-import com.soolsul.soolsulserver.user.auth.domain.CustomUser;
+import com.soolsul.soolsulserver.user.auth.vo.CurrentUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -34,9 +34,9 @@ public class ReplyController {
     public ResponseEntity<BaseResponse<Void>> createReply(
             @Valid @RequestBody ReplyCreateRequest request,
             @PathVariable String postId,
-            @CurrentUser CustomUser currentUser
+            @CurrentUser CurrentUserDto currentUserDto
     ) {
-        replyFacadeGateway.create(currentUser.getId(), postId, request);
+        replyFacadeGateway.create(currentUserDto.id(), postId, request);
         return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.REPLY_CREATE_SUCCESS, null));
     }
 
@@ -54,9 +54,9 @@ public class ReplyController {
             @PathVariable String postId,
             @PathVariable String replyId,
             @RequestBody ReplyModifyRequest modifyRequest,
-            @CurrentUser CustomUser currentUser
+            @CurrentUser CurrentUserDto currentUserDto
     ) {
-        replyFacadeGateway.modify(currentUser.getId(), postId, replyId, modifyRequest);
+        replyFacadeGateway.modify(currentUserDto.id(), postId, replyId, modifyRequest);
         return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.REPLY_UPDATE_SUCCESS, null));
     }
 
@@ -64,9 +64,9 @@ public class ReplyController {
     public ResponseEntity<BaseResponse<Void>> deleteReply(
             @PathVariable String postId,
             @PathVariable String replyId,
-            @CurrentUser CustomUser currentUser
+            @CurrentUser CurrentUserDto currentUserDto
     ) {
-        replyFacadeGateway.delete(currentUser.getId(), postId, replyId);
+        replyFacadeGateway.delete(currentUserDto.id(), postId, replyId);
         return ResponseEntity.ok(new BaseResponse<>(ResponseCodeAndMessages.REPLY_DELETE_SUCCESS, null));
     }
 }

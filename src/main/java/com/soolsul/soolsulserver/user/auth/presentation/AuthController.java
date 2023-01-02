@@ -2,9 +2,9 @@ package com.soolsul.soolsulserver.user.auth.presentation;
 
 import com.soolsul.soolsulserver.common.response.BaseResponse;
 import com.soolsul.soolsulserver.user.auth.annotation.CurrentUser;
-import com.soolsul.soolsulserver.user.auth.domain.CustomUser;
 import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
 import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
+import com.soolsul.soolsulserver.user.auth.vo.CurrentUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +33,8 @@ public class AuthController {
     }
 
     @DeleteMapping
-    public ResponseEntity<BaseResponse<Void>> deleteUser(@CurrentUser CustomUser currentUser) {
-        userDetailsService.delete(currentUser.getId());
+    public ResponseEntity<BaseResponse<Void>> deleteUser(@CurrentUser CurrentUserDto currentUserDto) {
+        userDetailsService.delete(currentUserDto.id());
         return new ResponseEntity<>(new BaseResponse<>(USER_DELETE_SUCCESS, null), HttpStatus.OK);
     }
 }
