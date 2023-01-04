@@ -7,7 +7,6 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -29,16 +28,7 @@ public class CurrentUserDtoArgumentResolver implements HandlerMethodArgumentReso
             return null;
         }
 
-        Object principal = authentication.getPrincipal(); // principal은 CustomUser타입
-        CurrentUser annotation = findMethodAnnotation(CurrentUser.class, parameter);
-
-        if (annotation.errorOnInvalidType()) { // Type검증 용도
-            if (!ClassUtils.isAssignable(parameter.getParameterType(), principal.getClass())) {
-                throw new ClassCastException("Can not convert to " + parameter.getParameterType());
-            }
-        }
-
-        CustomUser customUser = (CustomUser) principal; // CustomUser타입으로 변환
+        CustomUser customUser = (CustomUser) authentication.getPrincipal(); // principal을 CustomUser타입으로 변환
 
         return new CurrentUserDto(customUser.getId(), customUser.getEmail()); // CustomUserDto 타입으로 반환
     }
@@ -48,6 +38,7 @@ public class CurrentUserDtoArgumentResolver implements HandlerMethodArgumentReso
         if (annotation != null) {
             return annotation;
         }
+
         Annotation[] annotationsToSearch = parameter.getParameterAnnotations();
         for (Annotation toSearch : annotationsToSearch) {
             annotation = AnnotationUtils.findAnnotation(toSearch.annotationType(), annotationClass);
@@ -55,6 +46,7 @@ public class CurrentUserDtoArgumentResolver implements HandlerMethodArgumentReso
                 return annotation;
             }
         }
+
         return null;
     }
 }
