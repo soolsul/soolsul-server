@@ -2,9 +2,9 @@ package com.soolsul.soolsulserver.user.mypage.presentation;
 
 import com.soolsul.soolsulserver.common.response.BaseResponse;
 import com.soolsul.soolsulserver.user.auth.annotation.CurrentUser;
-import com.soolsul.soolsulserver.user.auth.domain.CustomUser;
 import com.soolsul.soolsulserver.user.auth.persistence.dto.response.UserEditFormResponse;
 import com.soolsul.soolsulserver.user.auth.persistence.dto.response.UserLookUpResponse;
+import com.soolsul.soolsulserver.user.auth.vo.CurrentUserDto;
 import com.soolsul.soolsulserver.user.mypage.common.dto.reqeust.UserInfoEditRequest;
 import com.soolsul.soolsulserver.user.mypage.common.dto.response.ScrapedPostListLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.common.dto.response.UserPostListLookUpResponse;
@@ -38,44 +38,44 @@ public class MyPageController {
     private final MyPageCommandFacade myPageCommandFacade;
 
     @GetMapping("/me")
-    public ResponseEntity<BaseResponse<UserLookUpResponse>> searchMe(@CurrentUser CustomUser currentUser) {
-        UserLookUpResponse userLookUpResponse = myPageQueryFacade.findUserWithDetailInfo(currentUser.getId());
+    public ResponseEntity<BaseResponse<UserLookUpResponse>> searchMe(@CurrentUser CurrentUserDto currentUserDto) {
+        UserLookUpResponse userLookUpResponse = myPageQueryFacade.findUserWithDetailInfo(currentUserDto.id());
         return ResponseEntity.ok(new BaseResponse<>(USER_LOOK_UP_SUCCESS, userLookUpResponse));
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<BaseResponse<UserLookUpResponse>> searchUser(@PathVariable String userId, @CurrentUser CustomUser currentUser) {
+    public ResponseEntity<BaseResponse<UserLookUpResponse>> searchUser(@PathVariable String userId) {
         UserLookUpResponse userLookUpResponse = myPageQueryFacade.findUserWithDetailInfo(userId);
         return ResponseEntity.ok(new BaseResponse<>(USER_LOOK_UP_SUCCESS, userLookUpResponse));
     }
 
     @GetMapping("/scraps")
-    public ResponseEntity<BaseResponse<ScrapedPostListLookUpResponse>> findAllScrapedPost(@CurrentUser CustomUser currentUser) {
-        ScrapedPostListLookUpResponse scrapedPostListResponse = myPageQueryFacade.findAllScrapedPost(currentUser.getId());
+    public ResponseEntity<BaseResponse<ScrapedPostListLookUpResponse>> findAllScrapedPost(@CurrentUser CurrentUserDto currentUserDto) {
+        ScrapedPostListLookUpResponse scrapedPostListResponse = myPageQueryFacade.findAllScrapedPost(currentUserDto.id());
         return ResponseEntity.ok(new BaseResponse<>(FEED_FIND_ALL_SCRAP_SUCCESS, scrapedPostListResponse));
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<BaseResponse<UserPostListLookUpResponse>> findAllUserPost(@CurrentUser CustomUser currentUser) {
-        UserPostListLookUpResponse userPostListLookUpResponse = myPageQueryFacade.findAllUserPost(currentUser.getId());
+    public ResponseEntity<BaseResponse<UserPostListLookUpResponse>> findAllUserPost(@CurrentUser CurrentUserDto currentUserDto) {
+        UserPostListLookUpResponse userPostListLookUpResponse = myPageQueryFacade.findAllUserPost(currentUserDto.id());
         return ResponseEntity.ok(new BaseResponse<>(MYPAGE_POSTS_FIND_SUCCESS, userPostListLookUpResponse));
     }
 
     @GetMapping("/replies")
-    public ResponseEntity<BaseResponse<UserReplyListLookUpResponse>> findAllUserReply(@CurrentUser CustomUser currentUser) {
-        UserReplyListLookUpResponse userReplyListLookUpResponse = myPageQueryFacade.findAllUserReplies(currentUser.getId());
+    public ResponseEntity<BaseResponse<UserReplyListLookUpResponse>> findAllUserReply(@CurrentUser CurrentUserDto currentUserDto) {
+        UserReplyListLookUpResponse userReplyListLookUpResponse = myPageQueryFacade.findAllUserReplies(currentUserDto.id());
         return ResponseEntity.ok(new BaseResponse<>(MYPAGE_REPLIES_FIND_SUCCESS, userReplyListLookUpResponse));
     }
 
     @GetMapping("/edit")
-    public ResponseEntity<BaseResponse<UserEditFormResponse>> findUserEditForm(@CurrentUser CustomUser currentUser) {
-        UserEditFormResponse userEditForm = myPageQueryFacade.findUserEditForm(currentUser.getId());
+    public ResponseEntity<BaseResponse<UserEditFormResponse>> findUserEditForm(@CurrentUser CurrentUserDto currentUserDto) {
+        UserEditFormResponse userEditForm = myPageQueryFacade.findUserEditForm(currentUserDto.id());
         return ResponseEntity.ok(new BaseResponse<>(MYPAGE_USER_INFO_FIND_SUCCESS, userEditForm));
     }
 
     @PatchMapping("/edit")
-    public ResponseEntity<BaseResponse<Void>> editUserInfo(@Valid @RequestBody UserInfoEditRequest editRequest, @CurrentUser CustomUser currentUser) {
-        myPageCommandFacade.editUserInfo(editRequest, currentUser.getId());
+    public ResponseEntity<BaseResponse<Void>> editUserInfo(@Valid @RequestBody UserInfoEditRequest editRequest, @CurrentUser CurrentUserDto currentUserDto) {
+        myPageCommandFacade.editUserInfo(editRequest, currentUserDto.id());
         return ResponseEntity.ok(new BaseResponse<>(MYPAGE_USER_INFO_EDIT_SUCCESS, null));
     }
 }

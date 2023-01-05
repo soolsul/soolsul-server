@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.documentation;
 
+import com.soolsul.soolsulserver.common.annotation.MockCustomUser;
 import com.soolsul.soolsulserver.reply.common.dto.request.ReplyCreateRequest;
 import com.soolsul.soolsulserver.reply.common.dto.request.ReplyModifyRequest;
 import com.soolsul.soolsulserver.reply.common.dto.response.PostRepliesResponse;
@@ -44,6 +45,7 @@ public class ReplyDocumentation extends Documentation {
     ReplyFacadeGateway replyFacadeGateway;
 
     @DisplayName("문서화 : Reply 생성")
+    @MockCustomUser
     @Test
     void create_reply_success() throws Exception {
         ReplyCreateRequest replyRequest = new ReplyCreateRequest("this is reply contents");
@@ -87,6 +89,7 @@ public class ReplyDocumentation extends Documentation {
     }
 
     @DisplayName("문서화 : Reply 수정")
+    @MockCustomUser
     @Test
     void modify_reply_success() throws Exception {
         ReplyModifyRequest modifyRequest = new ReplyModifyRequest("modify contents");
@@ -107,6 +110,7 @@ public class ReplyDocumentation extends Documentation {
     }
 
     @DisplayName("문서화 : Reply 삭제")
+    @MockCustomUser
     @Test
     void delete_reply_success() throws Exception {
 

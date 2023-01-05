@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.documentation;
 
+import com.soolsul.soolsulserver.common.annotation.MockCustomUser;
 import com.soolsul.soolsulserver.post.common.dto.response.ScrapedPostLookUpResponse;
 import com.soolsul.soolsulserver.post.common.dto.response.UserPostLookUpResponse;
 import com.soolsul.soolsulserver.post.common.dto.response.UserReplyLookUpResponse;
@@ -49,6 +50,7 @@ public class MyPageDocumentation extends Documentation {
     MyPageCommandFacade myPageCommandFacade;
 
     @DisplayName("문서화 : 유저 정보 상세조회")
+    @MockCustomUser
     @Test
     public void find_user_detail_info() throws Exception {
         UserLookUpResponse userLookUpResponse = new UserLookUpResponse(
@@ -99,6 +101,7 @@ public class MyPageDocumentation extends Documentation {
     }
 
     @DisplayName("문서화 : 사용자 작성 리뷰 전체 조회")
+    @MockCustomUser
     @Test
     public void find_all_post() throws Exception {
         UserPostLookUpResponse postOne = new UserPostLookUpResponse("post_id_1", "url_1");
@@ -118,6 +121,7 @@ public class MyPageDocumentation extends Documentation {
     }
 
     @DisplayName("문서화 : 사용자 작성 댓글 전체 조회")
+    @MockCustomUser
     @Test
     public void find_all_reply() throws Exception {
         UserReplyLookUpResponse replyOne = new UserReplyLookUpResponse("post_id_1", "댓글 1");
@@ -137,6 +141,7 @@ public class MyPageDocumentation extends Documentation {
     }
 
     @DisplayName("문서화 : 사용자 스크랩한 피드 전체 조회")
+    @MockCustomUser
     @Test
     public void find_all_scrap() throws Exception {
         ScrapedPostLookUpResponse scrapOne = new ScrapedPostLookUpResponse("post_id_1", "image_url_1");
@@ -156,6 +161,7 @@ public class MyPageDocumentation extends Documentation {
     }
 
     @DisplayName("문서화 : 사용자 정보 수정 폼 요청")
+    @MockCustomUser
     @Test
     public void request_modify_user_form() throws Exception {
         UserEditFormResponse userEditFormResponse = new UserEditFormResponse("origin_image_url", "origin_nick_name", "origin@test.com");
@@ -173,6 +179,7 @@ public class MyPageDocumentation extends Documentation {
     }
 
     @DisplayName("문서화 : 사용자 정보 수정 요청")
+    @MockCustomUser
     @Test
     public void send_modified_user_data() throws Exception {
         UserInfoEditRequest editRequest = new UserInfoEditRequest("edit_image_url", "edit_nick_name", "change@test.com");

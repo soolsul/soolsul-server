@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.documentation;
 
+import com.soolsul.soolsulserver.common.annotation.MockCustomUser;
 import com.soolsul.soolsulserver.post.common.dto.request.PostCreateRequest;
 import com.soolsul.soolsulserver.post.common.dto.request.PostScrapRequest;
 import com.soolsul.soolsulserver.post.common.dto.response.PostDetailLikeResponse;
@@ -21,7 +22,6 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -53,7 +53,7 @@ public class PostDocumentation extends Documentation {
     PostFacadeGateway postFacadeGateway;
 
     @DisplayName("문서화 : Post 생성")
-    @WithMockUser
+    @MockCustomUser
     @Test
     void create_post_success() throws Exception {
         List<String> imagesUrl = List.of("url1", "url2", "url3");
@@ -77,7 +77,7 @@ public class PostDocumentation extends Documentation {
     }
 
     @DisplayName("문서화 : Post 단건 조회")
-    @WithMockUser
+    @MockCustomUser
     @Test
     void find_post_success() throws Exception {
         List<String> imagesUrl = List.of("url1", "url2", "url3");
@@ -102,7 +102,7 @@ public class PostDocumentation extends Documentation {
     }
 
     @DisplayName("문서화 : Post 목록 조회")
-    @WithMockUser
+    @MockCustomUser
     @Test
     void find_post_list_success() throws Exception {
         List<String> imagesUrl = List.of("url1", "url2", "url3");
@@ -140,7 +140,7 @@ public class PostDocumentation extends Documentation {
     }
 
     @DisplayName("문서화 : Post 스크랩")
-    @WithMockUser
+    @MockCustomUser
     @Test
     void post_scrap_success() throws Exception {
         PostScrapRequest scrapRequest = new PostScrapRequest("post_id");
@@ -161,7 +161,7 @@ public class PostDocumentation extends Documentation {
     }
 
     @DisplayName("문서화 : Post 삭제")
-    @WithMockUser
+    @MockCustomUser
     @Test
     void post_delete_success() throws Exception {
 
@@ -179,7 +179,7 @@ public class PostDocumentation extends Documentation {
     }
 
     @DisplayName("문서화 : Post 좋아요")
-    @WithMockUser
+    @MockCustomUser
     @Test
     void post_like_success() throws Exception {
 
@@ -197,7 +197,7 @@ public class PostDocumentation extends Documentation {
     }
 
     @DisplayName("문서화 : Post 좋아요 취소")
-    @WithMockUser
+    @MockCustomUser
     @Test
     void post_unlike_success() throws Exception {
 
