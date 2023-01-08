@@ -1,12 +1,12 @@
 package com.soolsul.soolsulserver.user.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.soolsul.soolsulserver.common.response.BaseResponse;
 import com.soolsul.soolsulserver.user.auth.domain.CustomUser;
 import com.soolsul.soolsulserver.user.auth.jwt.JwtToken;
 import com.soolsul.soolsulserver.user.auth.jwt.JwtTokenFactory;
-import com.soolsul.soolsulserver.common.response.BaseResponse;
-import com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -20,14 +20,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
+
+import static com.soolsul.soolsulserver.common.response.ResponseCodes.USER_LOGIN_SUCCESS;
 
 public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private JwtTokenFactory tokenProvider;
+
+    @Autowired
+    private MessageSource messageSource;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -49,7 +56,9 @@ public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessH
                 .refreshToken(tokenProvider.createRefreshToken(user.getId()))
                 .build();
 
-        BaseResponse<JwtToken> tokenResponse = new BaseResponse<>(ResponseCodeAndMessages.USER_LOGIN_SUCCESS, jwtToken);
+        String message = messageSource.getMessage(USER_LOGIN_SUCCESS.getCode(), new String[]{}, Locale.getDefault());
+
+        BaseResponse<JwtToken> tokenResponse = new BaseResponse<>(USER_LOGIN_SUCCESS.getCode(), message, jwtToken);
 
         objectMapper.writeValue(response.getWriter(), tokenResponse);
     }
