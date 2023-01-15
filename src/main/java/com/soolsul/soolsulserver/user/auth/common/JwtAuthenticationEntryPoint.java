@@ -2,6 +2,7 @@ package com.soolsul.soolsulserver.user.auth.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soolsul.soolsulserver.common.response.BaseResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
@@ -17,7 +18,8 @@ import static com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages.
 
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {

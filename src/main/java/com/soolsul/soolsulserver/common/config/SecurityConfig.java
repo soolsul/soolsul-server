@@ -65,12 +65,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .accessDecisionManager(affirmativeBased())
                 .and()
-                .addFilterAt(firstLoginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAt(loginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter(), LoginAuthenticationFilter.class);
 
         http
                 .exceptionHandling()
-                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+                .authenticationEntryPoint(authenticationEntryPoint())
                 .accessDeniedHandler(jwtDeniedHandler());
 
         http
@@ -78,6 +78,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/api/auth/logout")
                 .addLogoutHandler(jwtLogoutHandler())
                 .logoutSuccessHandler(jwtLogoutSuccessHandler());
+    }
+
+    @Bean
+    public JwtAuthenticationEntryPoint authenticationEntryPoint() {
+        return new JwtAuthenticationEntryPoint();
     }
 
     @Override
@@ -91,21 +96,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public LoginAuthenticationFilter firstLoginAuthenticationFilter() throws Exception {
+    public LoginAuthenticationFilter loginAuthenticationFilter() throws Exception {
         LoginAuthenticationFilter loginAuthenticationFilter = new LoginAuthenticationFilter();
         loginAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
-        loginAuthenticationFilter.setAuthenticationSuccessHandler(firstLoginAuthenticationSuccessHandler());
-        loginAuthenticationFilter.setAuthenticationFailureHandler(firstLoginAuthenticationFailureHandler());
+        loginAuthenticationFilter.setAuthenticationSuccessHandler(loginAuthenticationSuccessHandler());
+        loginAuthenticationFilter.setAuthenticationFailureHandler(loginAuthenticationFailureHandler());
         return loginAuthenticationFilter;
     }
 
     @Bean
-    public LoginAuthenticationSuccessHandler firstLoginAuthenticationSuccessHandler() {
+    public LoginAuthenticationSuccessHandler loginAuthenticationSuccessHandler() {
         return new LoginAuthenticationSuccessHandler();
     }
 
     @Bean
-    public LoginAuthenticationFailureHandler firstLoginAuthenticationFailureHandler() {
+    public LoginAuthenticationFailureHandler loginAuthenticationFailureHandler() {
         return new LoginAuthenticationFailureHandler();
     }
 

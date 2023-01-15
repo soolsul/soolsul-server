@@ -3,6 +3,7 @@ package com.soolsul.soolsulserver.user.auth.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soolsul.soolsulserver.common.response.BaseResponse;
 import com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -16,7 +17,8 @@ import java.nio.charset.StandardCharsets;
 
 public class JwtLogoutSuccessHandler implements LogoutSuccessHandler {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {

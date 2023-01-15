@@ -24,7 +24,8 @@ import java.util.stream.Collectors;
 
 public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private JwtTokenFactory tokenProvider;
