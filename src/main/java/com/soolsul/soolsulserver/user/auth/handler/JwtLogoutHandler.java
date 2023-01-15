@@ -1,7 +1,7 @@
 package com.soolsul.soolsulserver.user.auth.handler;
 
-import com.soolsul.soolsulserver.user.auth.jwt.JwtTokenFactory;
 import com.soolsul.soolsulserver.user.auth.business.RedisCachingService;
+import com.soolsul.soolsulserver.user.auth.jwt.JwtTokenFactory;
 import com.soolsul.soolsulserver.user.auth.util.AuthorizationExtractor;
 import com.soolsul.soolsulserver.user.auth.util.AuthorizationType;
 import lombok.extern.slf4j.Slf4j;

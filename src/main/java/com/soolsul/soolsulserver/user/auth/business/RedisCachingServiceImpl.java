@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
-public class RedisCachingService {
+public class RedisCachingServiceImpl implements RedisCachingService {
 
     private static final String LOGOUT_KEY = "logout";
     private final RedisTemplate<String, String> redisTemplate;
