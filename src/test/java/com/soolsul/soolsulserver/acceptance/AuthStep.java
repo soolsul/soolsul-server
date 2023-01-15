@@ -22,7 +22,6 @@ public class AuthStep {
 
         return RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header("X-Requested-With", "JSONLoginHttpRequest")
                 .body(params)
                 .when().post("/api/auth/login")
                 .then().log().all()

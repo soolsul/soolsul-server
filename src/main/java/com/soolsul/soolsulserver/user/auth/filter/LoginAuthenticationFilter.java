@@ -3,7 +3,9 @@ package com.soolsul.soolsulserver.user.auth.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soolsul.soolsulserver.user.auth.filter.dto.UserDto;
 import com.soolsul.soolsulserver.user.auth.token.LoginAuthenticationToken;
+import org.apache.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -26,7 +28,7 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        if (!isJsonLogin(request)) {
+        if (!isContentTypeJson(request)) {
             throw new IllegalStateException("Authentication is not supportes");
         }
 
@@ -44,11 +46,9 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
         return ObjectUtils.isEmpty(userDto.getEmail()) || ObjectUtils.isEmpty(userDto.getPassword());
     }
 
-    private boolean isJsonLogin(HttpServletRequest request) {
-        if ("JSONLoginHttpRequest".equals(request.getHeader("X-Requested-With"))) {
-            return true;
-        }
-
-        return false;
+    private boolean isContentTypeJson(HttpServletRequest request) {
+        String header = request.getHeader(HttpHeaders.CONTENT_TYPE);
+        return (header != null) && header.contains(MediaType.APPLICATION_JSON_VALUE);
     }
+
 }
