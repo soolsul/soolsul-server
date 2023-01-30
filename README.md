@@ -1,5 +1,12 @@
 # soosul-server
 
+## Soolsul Project 문서
+
+- 서비스 컨셉 : https://lake-peach-ffa.notion.site/3a8195ee70bc4ea6a00b279a90c154ef
+- 백엔드 문서 : https://www.notion.so/Server-c226c803444d4fbabb268f1db652deac
+
+<br>
+
 ## Backend Members
 
 |cooper|Shine|
