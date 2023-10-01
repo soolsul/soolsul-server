@@ -38,16 +38,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = MyPageController.class,
-        excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = WebSecurityConfigurer.class)},
-        excludeAutoConfiguration = {SecurityAutoConfiguration.class})
-public class MyPageDocumentation extends Documentation {
-
-    @MockBean
-    MyPageQueryFacade myPageQueryFacade;
-
-    @MockBean
-    MyPageCommandFacade myPageCommandFacade;
+class MyPageDocumentation extends Documentation {
 
     @DisplayName("문서화 : 유저 정보 상세조회")
     @MockCustomUser

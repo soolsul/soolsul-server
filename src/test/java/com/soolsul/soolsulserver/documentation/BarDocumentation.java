@@ -33,13 +33,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = BarQueryController.class,
-        excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = WebSecurityConfigurer.class)},
-        excludeAutoConfiguration = {SecurityAutoConfiguration.class})
-public class BarDocumentation extends Documentation {
-
-    @MockBean
-    BarQueryFacade barQueryFacade;
+class BarDocumentation extends Documentation {
 
     @DisplayName("문서화 : Bar 목록 조회")
     @WithMockUser

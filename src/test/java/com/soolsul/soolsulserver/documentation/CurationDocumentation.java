@@ -39,13 +39,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = CurationQueryController.class,
-        excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = WebSecurityConfigurer.class)},
-        excludeAutoConfiguration = {SecurityAutoConfiguration.class})
-public class CurationDocumentation extends Documentation {
-
-    @MockBean
-    CurationQueryFacade curationQueryFacade;
+class CurationDocumentation extends Documentation {
 
     @DisplayName("문서화 : Curation 목록 조회")
     @Test

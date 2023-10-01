@@ -44,13 +44,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.requestP
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = PostController.class,
-        excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = WebSecurityConfigurer.class)},
-        excludeAutoConfiguration = {SecurityAutoConfiguration.class})
-public class PostDocumentation extends Documentation {
-
-    @MockBean
-    PostFacadeGateway postFacadeGateway;
+class PostDocumentation extends Documentation {
 
     @DisplayName("문서화 : Post 생성")
     @MockCustomUser

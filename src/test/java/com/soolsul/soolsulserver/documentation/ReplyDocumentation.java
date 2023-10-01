@@ -36,13 +36,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = ReplyController.class,
-        excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = WebSecurityConfigurer.class)},
-        excludeAutoConfiguration = {SecurityAutoConfiguration.class})
-public class ReplyDocumentation extends Documentation {
-
-    @MockBean
-    ReplyFacadeGateway replyFacadeGateway;
+class ReplyDocumentation extends Documentation {
 
     @DisplayName("문서화 : Reply 생성")
     @MockCustomUser

@@ -27,13 +27,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = AuthController.class,
-        excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = WebSecurityConfigurer.class)},
-        excludeAutoConfiguration = {SecurityAutoConfiguration.class})
-public class AuthDocumentation extends Documentation {
-
-    @MockBean
-    CustomUserDetailsService userDetailsService;
+class AuthDocumentation extends Documentation {
 
     @DisplayName("문서화 : 사용자 회원 가입")
     @Test
