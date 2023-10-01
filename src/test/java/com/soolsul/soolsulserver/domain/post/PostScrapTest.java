@@ -1,5 +1,6 @@
-package com.soolsul.soolsulserver.post.domain;
+package com.soolsul.soolsulserver.domain.post;
 
+import com.soolsul.soolsulserver.post.domain.PostScrap;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,7 @@
-package com.soolsul.soolsulserver.user.auth.domain;
+package com.soolsul.soolsulserver.domain.auth;
 
 
+import com.soolsul.soolsulserver.user.auth.domain.Authority;
 import com.soolsul.soolsulserver.user.auth.vo.Role;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

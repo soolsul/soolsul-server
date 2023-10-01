@@ -1,5 +1,7 @@
-package com.soolsul.soolsulserver.post.domain;
+package com.soolsul.soolsulserver.domain.post;
 
+import com.soolsul.soolsulserver.post.domain.Post;
+import com.soolsul.soolsulserver.post.domain.PostPhoto;
 import com.soolsul.soolsulserver.post.exception.MinimumPhotoCountException;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.BeforeEach;

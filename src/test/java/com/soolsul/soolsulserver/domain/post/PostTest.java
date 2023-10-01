@@ -1,5 +1,6 @@
-package com.soolsul.soolsulserver.post.domain;
+package com.soolsul.soolsulserver.domain.post;
 
+import com.soolsul.soolsulserver.post.domain.Post;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;

@@ -1,5 +1,6 @@
-package com.soolsul.soolsulserver.user.auth.domain;
+package com.soolsul.soolsulserver.domain.auth;
 
+import com.soolsul.soolsulserver.user.auth.domain.UserInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
