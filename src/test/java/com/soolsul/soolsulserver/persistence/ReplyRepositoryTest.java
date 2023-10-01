@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.reply.persistence;
+package com.soolsul.soolsulserver.persistence;
 
 import com.soolsul.soolsulserver.common.config.QueryDslConfig;
 import com.soolsul.soolsulserver.post.domain.Post;
@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 )
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Transactional
-public class ReplyPersistenceTest {
+public class ReplyRepositoryTest {
 
     @Autowired
     private ReplyRepository replyRepository;

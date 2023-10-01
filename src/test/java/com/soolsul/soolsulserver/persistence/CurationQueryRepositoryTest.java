@@ -1,45 +1,24 @@
-package com.soolsul.soolsulserver.curation.persistence;
+package com.soolsul.soolsulserver.persistence;
 
 import com.soolsul.soolsulserver.bar.domain.Bar;
 import com.soolsul.soolsulserver.bar.domain.BarAlcoholTag;
 import com.soolsul.soolsulserver.bar.domain.BarMoodTag;
 import com.soolsul.soolsulserver.bar.domain.StreetNameAddress;
-import com.soolsul.soolsulserver.common.config.QueryDslConfig;
-import com.soolsul.soolsulserver.curation.domain.Curation;
 import com.soolsul.soolsulserver.curation.common.dto.response.CurationListLookupResponse;
 import com.soolsul.soolsulserver.curation.common.dto.response.CurationLookupResponse;
+import com.soolsul.soolsulserver.curation.domain.Curation;
 import com.soolsul.soolsulserver.location.common.dto.response.LocationSquareRangeCondition;
 import com.soolsul.soolsulserver.region.domain.Location;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@Import(QueryDslConfig.class)
-@DataJpaTest(
-        includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = CurationQueryRepository.class)
-)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Transactional
-class CurationQueryRepositoryTest {
-
-    @Autowired
-    private CurationQueryRepository curationQueryRepository;
-
-    @Autowired
-    private TestEntityManager testEntityManager;
+class CurationQueryRepositoryTest extends RepositoryTest {
 
     @BeforeEach
     void init() {

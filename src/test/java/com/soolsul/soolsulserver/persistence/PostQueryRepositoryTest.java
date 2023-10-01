@@ -1,6 +1,5 @@
-package com.soolsul.soolsulserver.post.domain.query;
+package com.soolsul.soolsulserver.persistence;
 
-import com.soolsul.soolsulserver.common.config.QueryDslConfig;
 import com.soolsul.soolsulserver.curation.common.dto.response.CurationPostLookupResponse;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.domain.PostPhoto;
@@ -9,33 +8,13 @@ import com.soolsul.soolsulserver.user.auth.domain.UserInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@Import(QueryDslConfig.class)
-@DataJpaTest(
-        includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = PostQueryRepositoryImpl.class)
-)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Transactional
-class PostQueryRepositoryImplTest {
-
-    @Autowired
-    private PostQueryRepositoryImpl postQueryRepository;
-
-    @Autowired
-    private TestEntityManager testEntityManager;
+class PostQueryRepositoryTest extends RepositoryTest {
 
     @BeforeEach
     void init() {

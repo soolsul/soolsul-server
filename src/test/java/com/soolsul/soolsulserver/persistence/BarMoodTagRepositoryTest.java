@@ -1,29 +1,17 @@
-package com.soolsul.soolsulserver.bar.persistence;
+package com.soolsul.soolsulserver.persistence;
 
 import com.soolsul.soolsulserver.bar.domain.BarMoodTag;
 import com.soolsul.soolsulserver.bar.domain.MoodTag;
-import com.soolsul.soolsulserver.common.config.QueryDslConfig;
+import com.soolsul.soolsulserver.bar.persistence.BarMoodTagRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Import(QueryDslConfig.class)
-@DataJpaTest(
-        includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = BarMoodTagRepository.class)
-)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Transactional
-class BarMoodTagRepositoryTest {
+class BarMoodTagRepositoryTest extends RepositoryTest {
 
     @Autowired
     private BarMoodTagRepository barMoodTagRepository;
