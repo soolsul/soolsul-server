@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.curation.presentation;
+package com.soolsul.soolsulserver.presentation;
 
 import com.soolsul.soolsulserver.bar.common.dto.response.BarSnackMenuResponse;
 import com.soolsul.soolsulserver.bar.common.dto.response.BarStreetNameAddressResponse;
@@ -7,18 +7,9 @@ import com.soolsul.soolsulserver.curation.common.dto.response.CurationDetailLook
 import com.soolsul.soolsulserver.curation.common.dto.response.CurationPostLookupResponse;
 import com.soolsul.soolsulserver.curation.common.dto.response.CurationsLookupResponse;
 import com.soolsul.soolsulserver.curation.common.dto.response.PostPhotoImageResponse;
-import com.soolsul.soolsulserver.curation.facade.CurationQueryFacade;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalTime;
@@ -31,17 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(value = CurationQueryController.class,
-        excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = WebSecurityConfigurer.class)}, //security 설정을 종료하기 위한 설정
-        excludeAutoConfiguration = SecurityAutoConfiguration.class //security auto configuration 을 종료하기 위한 설정
-)
-class CurationQueryControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
-    private CurationQueryFacade curationQueryFacade;
+class CurationQueryControllerTest extends ControllerTest {
 
     @DisplayName("큐레이션 목록 조회 요청에 관한 응답을 확인한다")
     @Test
