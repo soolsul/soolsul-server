@@ -1,4 +1,4 @@
-package com.soolsul.soolsulserver.bar.businees.client;
+package com.soolsul.soolsulserver.business;
 
 import com.soolsul.soolsulserver.bar.businees.client.kakao.KakaoPlaceApiService;
 import com.soolsul.soolsulserver.bar.common.dto.response.AddressConvertResponse;

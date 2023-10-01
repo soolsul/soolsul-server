@@ -1,5 +1,6 @@
-package com.soolsul.soolsulserver.curation.business;
+package com.soolsul.soolsulserver.business;
 
+import com.soolsul.soolsulserver.curation.business.CurationQueryService;
 import com.soolsul.soolsulserver.curation.common.dto.response.CurationListLookupResponse;
 import com.soolsul.soolsulserver.curation.persistence.CurationQueryRepository;
 import com.soolsul.soolsulserver.location.common.dto.response.LocationSquareRangeCondition;
@@ -7,8 +8,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +23,11 @@ import static org.mockito.BDDMockito.given;
 @ExtendWith(MockitoExtension.class)
 class CurationQueryServiceTest {
 
+    @InjectMocks
     private CurationQueryService curationQueryService;
 
     @Mock
     private CurationQueryRepository curationQueryRepository;
-
-    @BeforeEach
-    void init() {
-        this.curationQueryService = new CurationQueryService(curationQueryRepository);
-    }
 
     @DisplayName("단일 무드, 술 태그를 조회하는 로직을 조회한다")
     @Test

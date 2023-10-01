@@ -1,5 +1,6 @@
-package com.soolsul.soolsulserver.location.business;
+package com.soolsul.soolsulserver.business;
 
+import com.soolsul.soolsulserver.location.business.LocationRangeService;
 import com.soolsul.soolsulserver.location.domain.LocationMagnificationLevel;
 import com.soolsul.soolsulserver.location.persistence.LocationMagnificationLevelRepositoryDsl;
 import com.soolsul.soolsulserver.location.common.dto.request.LocationSquareRangeRequest;

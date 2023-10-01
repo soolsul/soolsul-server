@@ -1,5 +1,6 @@
-package com.soolsul.soolsulserver.post.business;
+package com.soolsul.soolsulserver.business;
 
+import com.soolsul.soolsulserver.post.business.PostQueryService;
 import com.soolsul.soolsulserver.user.auth.domain.CustomUser;
 import com.soolsul.soolsulserver.user.auth.persistence.dto.response.UserLookUpResponse;
 import com.soolsul.soolsulserver.bar.persistence.BarQueryRepository;
