@@ -32,6 +32,7 @@ services:
     volumes:
       - '../../var/lib:/var/lib/mysql'
     environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
       - MYSQL_USER=soolsul-user
       - MYSQL_PASSWORD=20221201
       - MYSQL_DATABASE=soolsul
