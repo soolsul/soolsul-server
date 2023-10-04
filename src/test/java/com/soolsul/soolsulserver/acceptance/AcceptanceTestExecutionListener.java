@@ -10,7 +10,7 @@ import org.springframework.test.context.support.AbstractTestExecutionListener;
 public class AcceptanceTestExecutionListener extends AbstractTestExecutionListener {
 
 	@Override
-	public void afterTestMethod(final TestContext testContext) {
+	public void beforeTestMethod(final TestContext testContext) {
 		final JdbcTemplate jdbcTemplate = getJdbcTemplate(testContext);
 		final List<String> truncateQueries = getTruncateQueries(jdbcTemplate);
 		truncateTables(jdbcTemplate, truncateQueries);
