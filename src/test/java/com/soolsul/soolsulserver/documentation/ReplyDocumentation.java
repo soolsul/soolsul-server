@@ -1,30 +1,5 @@
 package com.soolsul.soolsulserver.documentation;
 
-import com.soolsul.soolsulserver.common.annotation.MockCustomUser;
-import com.soolsul.soolsulserver.reply.common.dto.request.ReplyCreateRequest;
-import com.soolsul.soolsulserver.reply.common.dto.request.ReplyModifyRequest;
-import com.soolsul.soolsulserver.reply.common.dto.response.PostRepliesResponse;
-import com.soolsul.soolsulserver.reply.common.dto.response.ReplyDetailResponse;
-import com.soolsul.soolsulserver.reply.facade.ReplyFacadeGateway;
-import com.soolsul.soolsulserver.reply.presentation.ReplyController;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.cloud.contract.spec.internal.MediaTypes;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.SliceImpl;
-import org.springframework.http.MediaType;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.snippet.Snippet;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
-
-import java.util.List;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
@@ -36,7 +11,30 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.contract.spec.internal.MediaTypes;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.SliceImpl;
+import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.snippet.Snippet;
+
+import com.soolsul.soolsulserver.common.annotation.MockCustomUser;
+import com.soolsul.soolsulserver.reply.common.dto.request.ReplyCreateRequest;
+import com.soolsul.soolsulserver.reply.common.dto.request.ReplyModifyRequest;
+import com.soolsul.soolsulserver.reply.common.dto.response.PostRepliesResponse;
+import com.soolsul.soolsulserver.reply.common.dto.response.ReplyDetailResponse;
+import com.soolsul.soolsulserver.reply.facade.ReplyFacadeGateway;
+
 class ReplyDocumentation extends Documentation {
+
+    @Autowired
+    private ReplyFacadeGateway replyFacadeGateway;
 
     @DisplayName("문서화 : Reply 생성")
     @MockCustomUser

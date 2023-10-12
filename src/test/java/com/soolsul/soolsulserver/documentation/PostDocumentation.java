@@ -1,32 +1,5 @@
 package com.soolsul.soolsulserver.documentation;
 
-import com.soolsul.soolsulserver.common.annotation.MockCustomUser;
-import com.soolsul.soolsulserver.post.common.dto.request.PostCreateRequest;
-import com.soolsul.soolsulserver.post.common.dto.request.PostScrapRequest;
-import com.soolsul.soolsulserver.post.common.dto.response.PostDetailLikeResponse;
-import com.soolsul.soolsulserver.post.common.dto.response.PostDetailResponse;
-import com.soolsul.soolsulserver.post.common.dto.response.PostDetailStoreResponse;
-import com.soolsul.soolsulserver.post.common.dto.response.PostDetailUserResponse;
-import com.soolsul.soolsulserver.post.common.dto.response.PostListResponse;
-import com.soolsul.soolsulserver.post.facade.PostFacadeGateway;
-import com.soolsul.soolsulserver.post.presentation.PostController;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.cloud.contract.spec.internal.MediaTypes;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.snippet.Snippet;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-
 import static com.soolsul.soolsulserver.documentation.Constants.MAP_LEVEL_DESCRIPTION;
 import static com.soolsul.soolsulserver.documentation.Constants.X_DESCRIPTION;
 import static com.soolsul.soolsulserver.documentation.Constants.Y_DESCRIPTION;
@@ -44,7 +17,32 @@ import static org.springframework.restdocs.request.RequestDocumentation.requestP
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.contract.spec.internal.MediaTypes;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.snippet.Snippet;
+
+import com.soolsul.soolsulserver.common.annotation.MockCustomUser;
+import com.soolsul.soolsulserver.post.common.dto.request.PostCreateRequest;
+import com.soolsul.soolsulserver.post.common.dto.request.PostScrapRequest;
+import com.soolsul.soolsulserver.post.common.dto.response.PostDetailLikeResponse;
+import com.soolsul.soolsulserver.post.common.dto.response.PostDetailResponse;
+import com.soolsul.soolsulserver.post.common.dto.response.PostDetailStoreResponse;
+import com.soolsul.soolsulserver.post.common.dto.response.PostDetailUserResponse;
+import com.soolsul.soolsulserver.post.common.dto.response.PostListResponse;
+import com.soolsul.soolsulserver.post.facade.PostFacadeGateway;
+
 class PostDocumentation extends Documentation {
+
+    @Autowired
+    private PostFacadeGateway postFacadeGateway;
 
     @DisplayName("문서화 : Post 생성")
     @MockCustomUser

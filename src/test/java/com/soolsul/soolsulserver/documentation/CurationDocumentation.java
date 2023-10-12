@@ -1,31 +1,5 @@
 package com.soolsul.soolsulserver.documentation;
 
-import com.soolsul.soolsulserver.bar.common.dto.response.BarSnackMenuResponse;
-import com.soolsul.soolsulserver.bar.common.dto.response.BarStreetNameAddressResponse;
-import com.soolsul.soolsulserver.curation.common.dto.response.BarOpeningHoursResponse;
-import com.soolsul.soolsulserver.curation.common.dto.response.CurationDetailLookupResponse;
-import com.soolsul.soolsulserver.curation.common.dto.response.CurationListLookupResponse;
-import com.soolsul.soolsulserver.curation.common.dto.response.CurationPostLookupResponse;
-import com.soolsul.soolsulserver.curation.common.dto.response.CurationsLookupResponse;
-import com.soolsul.soolsulserver.curation.common.dto.response.PostPhotoImageResponse;
-import com.soolsul.soolsulserver.curation.facade.CurationQueryFacade;
-import com.soolsul.soolsulserver.curation.presentation.CurationQueryController;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.cloud.contract.spec.internal.MediaTypes;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.snippet.Snippet;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
-
-import java.time.LocalTime;
-import java.util.List;
-
 import static com.soolsul.soolsulserver.documentation.Constants.MAP_LEVEL_DESCRIPTION;
 import static com.soolsul.soolsulserver.documentation.Constants.X_DESCRIPTION;
 import static com.soolsul.soolsulserver.documentation.Constants.Y_DESCRIPTION;
@@ -39,7 +13,31 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.LocalTime;
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.contract.spec.internal.MediaTypes;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.snippet.Snippet;
+
+import com.soolsul.soolsulserver.bar.common.dto.response.BarSnackMenuResponse;
+import com.soolsul.soolsulserver.bar.common.dto.response.BarStreetNameAddressResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.BarOpeningHoursResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationDetailLookupResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationListLookupResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationPostLookupResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationsLookupResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.PostPhotoImageResponse;
+import com.soolsul.soolsulserver.curation.facade.CurationQueryFacade;
+
 class CurationDocumentation extends Documentation {
+
+    @Autowired
+    private CurationQueryFacade curationQueryFacade;
 
     @DisplayName("문서화 : Curation 목록 조회")
     @Test

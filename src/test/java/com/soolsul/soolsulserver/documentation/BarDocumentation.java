@@ -1,26 +1,5 @@
 package com.soolsul.soolsulserver.documentation;
 
-import com.soolsul.soolsulserver.bar.common.dto.response.FilteredBarLookupResponse;
-import com.soolsul.soolsulserver.bar.common.dto.response.FilteredBarsLookupResponse;
-import com.soolsul.soolsulserver.bar.facade.BarQueryFacade;
-import com.soolsul.soolsulserver.bar.presentation.BarQueryController;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.cloud.contract.spec.internal.MediaTypes;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.snippet.Snippet;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
-import org.springframework.security.test.context.support.WithMockUser;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
 import static com.soolsul.soolsulserver.documentation.Constants.MAP_LEVEL_DESCRIPTION;
 import static com.soolsul.soolsulserver.documentation.Constants.X_DESCRIPTION;
 import static com.soolsul.soolsulserver.documentation.Constants.Y_DESCRIPTION;
@@ -33,7 +12,26 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.contract.spec.internal.MediaTypes;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.snippet.Snippet;
+import org.springframework.security.test.context.support.WithMockUser;
+
+import com.soolsul.soolsulserver.bar.common.dto.response.FilteredBarLookupResponse;
+import com.soolsul.soolsulserver.bar.common.dto.response.FilteredBarsLookupResponse;
+import com.soolsul.soolsulserver.bar.facade.BarQueryFacade;
+
 class BarDocumentation extends Documentation {
+
+    @Autowired
+    private BarQueryFacade barQueryFacade;
 
     @DisplayName("문서화 : Bar 목록 조회")
     @WithMockUser

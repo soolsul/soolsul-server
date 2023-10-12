@@ -1,22 +1,5 @@
 package com.soolsul.soolsulserver.documentation;
 
-import com.soolsul.soolsulserver.common.annotation.MockCustomUser;
-import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
-import com.soolsul.soolsulserver.user.auth.presentation.AuthController;
-import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.cloud.contract.spec.internal.MediaTypes;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.http.MediaType;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.snippet.Snippet;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -27,7 +10,22 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.requestF
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.contract.spec.internal.MediaTypes;
+import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.snippet.Snippet;
+
+import com.soolsul.soolsulserver.common.annotation.MockCustomUser;
+import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
+import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
+
 class AuthDocumentation extends Documentation {
+
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
 
     @DisplayName("문서화 : 사용자 회원 가입")
     @Test

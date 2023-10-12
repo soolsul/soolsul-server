@@ -1,5 +1,25 @@
 package com.soolsul.soolsulserver.documentation;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.contract.spec.internal.MediaTypes;
+import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.snippet.Snippet;
+
 import com.soolsul.soolsulserver.common.annotation.MockCustomUser;
 import com.soolsul.soolsulserver.post.common.dto.response.ScrapedPostLookUpResponse;
 import com.soolsul.soolsulserver.post.common.dto.response.UserPostLookUpResponse;
@@ -12,33 +32,14 @@ import com.soolsul.soolsulserver.user.mypage.common.dto.response.UserPostListLoo
 import com.soolsul.soolsulserver.user.mypage.common.dto.response.UserReplyListLookUpResponse;
 import com.soolsul.soolsulserver.user.mypage.facade.MyPageCommandFacade;
 import com.soolsul.soolsulserver.user.mypage.facade.MyPageQueryFacade;
-import com.soolsul.soolsulserver.user.mypage.presentation.MyPageController;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.cloud.contract.spec.internal.MediaTypes;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.http.MediaType;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.snippet.Snippet;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
-
-import java.util.List;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class MyPageDocumentation extends Documentation {
+
+    @Autowired
+    private MyPageQueryFacade myPageQueryFacade;
+
+    @Autowired
+    private MyPageCommandFacade myPageCommandFacade;
 
     @DisplayName("문서화 : 유저 정보 상세조회")
     @MockCustomUser
