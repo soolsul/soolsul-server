@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>KakaoPlaceApiService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">soolsul-server</a> &gt; <a href="index.source.html" class="el_package">com.soolsul.soolsulserver.bar.businees.client.kakao</a> &gt; <span class="el_source">KakaoPlaceApiService.java</span></div><h1>KakaoPlaceApiService.java</h1><pre class="source lang-java linenums">package com.soolsul.soolsulserver.bar.businees.client.kakao;
+
+import com.soolsul.soolsulserver.bar.businees.client.PlaceApiService;
+import com.soolsul.soolsulserver.bar.businees.client.dto.KakaoAddressResponse;
+import com.soolsul.soolsulserver.bar.businees.client.dto.KakaoSearchAddressResponse;
+import com.soolsul.soolsulserver.bar.businees.client.dto.KakaoSearchRoadAddressResponse;
+import com.soolsul.soolsulserver.bar.common.dto.response.AddressConvertResponse;
+import com.soolsul.soolsulserver.bar.common.dto.response.AddressLookupResponse;
+import com.soolsul.soolsulserver.bar.common.dto.response.AddressResponse;
+import com.soolsul.soolsulserver.bar.exception.InvalidAddressException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class KakaoPlaceApiService implements PlaceApiService {
+
+    private final KakaoAddressSearchClient addressSearchClient;
+
+    @Override
+    public AddressLookupResponse searchAddress(String query) {
+<span class="fc" id="L24">        validateAddressName(query);</span>
+<span class="fc" id="L25">        KakaoAddressResponse addressResponse = addressSearchClient.searchAddress(query);</span>
+<span class="fc" id="L26">        return new AddressLookupResponse(buildAddressResponseList(addressResponse));</span>
+    }
+
+    @Override
+    public AddressConvertResponse convertAddress(double longitude, double latitude) {
+<span class="fc" id="L31">        KakaoAddressResponse convertResponse = addressSearchClient.convertAddress(longitude, latitude);</span>
+<span class="fc" id="L32">        return new AddressConvertResponse(buildAddressResponseList(convertResponse));</span>
+    }
+
+    private void validateAddressName(String addressName) {
+<span class="pc bpc" id="L36" title="2 of 4 branches missed.">        if (addressName == null || addressName.isBlank()) {</span>
+<span class="nc" id="L37">            throw new InvalidAddressException();</span>
+        }
+<span class="fc" id="L39">    }</span>
+
+    private List&lt;AddressResponse&gt; buildAddressResponseList(
+            KakaoAddressResponse addressResponse) {
+<span class="fc" id="L43">        return addressResponse.getDocuments()</span>
+<span class="fc" id="L44">                .stream()</span>
+<span class="fc" id="L45">                .map(document -&gt; getAddressResponse(document.getAddress(), document.getRoadAddress()))</span>
+<span class="fc" id="L46">                .toList();</span>
+    }
+
+    private AddressResponse getAddressResponse(KakaoSearchAddressResponse address, KakaoSearchRoadAddressResponse roadAddress) {
+<span class="fc" id="L50">        return AddressResponse.builder()</span>
+<span class="fc" id="L51">                .addressName(address.getAddressName())</span>
+<span class="fc" id="L52">                .roadAddressName(roadAddress.getAddressName())</span>
+<span class="fc" id="L53">                .region1DepthName(address.getRegion1DepthName())</span>
+<span class="fc" id="L54">                .region2DepthName(address.getRegion2DepthName())</span>
+<span class="fc" id="L55">                .region3DepthName(address.getRegion3DepthName())</span>
+<span class="fc" id="L56">                .region3DepthHName(address.getRegion3DepthHName())</span>
+<span class="fc" id="L57">                .mainAddressNo(address.getMainAddressNo())</span>
+<span class="fc" id="L58">                .subAddressNo(address.getSubAddressNo())</span>
+<span class="fc" id="L59">                .roadName(roadAddress.getRoadName())</span>
+<span class="fc" id="L60">                .mainBuildingNo(roadAddress.getMainBuildingNo())</span>
+<span class="fc" id="L61">                .subBuildingNo(roadAddress.getSubBuildingNo())</span>
+<span class="fc" id="L62">                .build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

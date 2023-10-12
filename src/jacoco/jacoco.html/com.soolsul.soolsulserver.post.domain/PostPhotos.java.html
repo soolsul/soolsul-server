@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostPhotos.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">soolsul-server</a> &gt; <a href="index.source.html" class="el_package">com.soolsul.soolsulserver.post.domain</a> &gt; <span class="el_source">PostPhotos.java</span></div><h1>PostPhotos.java</h1><pre class="source lang-java linenums">package com.soolsul.soolsulserver.post.domain;
+
+import com.soolsul.soolsulserver.post.exception.MinimumPhotoCountException;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Embeddable;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+@Embeddable
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+public class PostPhotos {
+
+    private static final int MINIMUM_PHOTO_COUNT = 1;
+
+    @OneToMany(mappedBy = &quot;post&quot;, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    private List&lt;PostPhoto&gt; photos = new ArrayList&lt;&gt;();
+
+    public void addPhoto(PostPhoto photo) {
+<span class="fc" id="L24">        this.photos.add(photo);</span>
+<span class="fc" id="L25">    }</span>
+
+    public List&lt;PostPhoto&gt; getPhotos() {
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        if (photos.isEmpty()) {</span>
+<span class="fc" id="L29">            return Collections.emptyList();</span>
+        }
+
+<span class="fc" id="L32">        return Collections.unmodifiableList(photos);</span>
+    }
+
+    public void delete(PostPhoto photo) {
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        if (this.photos.size() &lt;= MINIMUM_PHOTO_COUNT) {</span>
+<span class="fc" id="L37">            throw new MinimumPhotoCountException();</span>
+        }
+<span class="fc" id="L39">        this.photos.remove(photo);</span>
+<span class="fc" id="L40">    }</span>
+
+    public void clear() {
+<span class="fc" id="L43">        this.photos.clear();</span>
+<span class="fc" id="L44">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

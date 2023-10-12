@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LocationRangeService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">soolsul-server</a> &gt; <a href="index.source.html" class="el_package">com.soolsul.soolsulserver.location.business</a> &gt; <span class="el_source">LocationRangeService.java</span></div><h1>LocationRangeService.java</h1><pre class="source lang-java linenums">package com.soolsul.soolsulserver.location.business;
+
+import com.soolsul.soolsulserver.location.domain.LocationMagnificationLevel;
+import com.soolsul.soolsulserver.location.persistence.LocationMagnificationLevelRepositoryDsl;
+import com.soolsul.soolsulserver.location.common.dto.request.LocationSquareRangeRequest;
+import com.soolsul.soolsulserver.location.common.dto.response.LocationSquareRangeCondition;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import javax.validation.Valid;
+
+import static java.lang.Math.abs;
+import static java.lang.Math.cos;
+import static java.lang.Math.toRadians;
+
+@Service
+@RequiredArgsConstructor
+public class LocationRangeService {
+
+    private static final double EARTH_RADIUS = 6371; // meter 당 위도,경도를 구할때 사용하는 상수
+    private static final int ONE_LATITUDE = 1; // 위도 1도
+    private static final int ONE_LONGITUDE = 1; // 경도 1도
+    private static final int METER_PER_KILOMETER = 1000; // 1000m / 1km
+
+    private final LocationMagnificationLevelRepositoryDsl locationMagnificationLevelRepositoryDsl;
+
+    public LocationSquareRangeCondition calculateLocationSquareRange (
+            @Valid LocationSquareRangeRequest locationRangeRequest
+    ) {
+<span class="fc" id="L30">        LocationMagnificationLevel magnificationLevel = locationMagnificationLevelRepositoryDsl.findByMagnificationLevel(</span>
+<span class="fc" id="L31">                locationRangeRequest.level());</span>
+<span class="fc" id="L32">        int meterAssignedLevel = magnificationLevel.getMeter();</span>
+
+<span class="fc" id="L34">        double meterForLatitude = calculateMeterForLatitude();</span>
+<span class="fc" id="L35">        double meterForLongitude = calculateMeterForLongitude(locationRangeRequest.longitude());</span>
+
+<span class="fc" id="L37">        double southWestLatitude = calculateMinPoint(locationRangeRequest.latitude(), meterAssignedLevel, meterForLatitude);</span>
+<span class="fc" id="L38">        double southWestLongitude = calculateMinPoint(locationRangeRequest.longitude(), meterAssignedLevel, meterForLongitude);</span>
+
+<span class="fc" id="L40">        double northEastLatitude = calculateMaxPoint(locationRangeRequest.latitude(), meterAssignedLevel, meterForLatitude);</span>
+<span class="fc" id="L41">        double northEastLongitude = calculateMaxPoint(locationRangeRequest.longitude(), meterAssignedLevel, meterForLongitude);</span>
+
+<span class="fc" id="L43">        return new LocationSquareRangeCondition(southWestLatitude, northEastLatitude, southWestLongitude, northEastLongitude);</span>
+    }
+
+    private double calculateMeterForLatitude() {
+<span class="fc" id="L47">        return (ONE_LATITUDE / toRadians(EARTH_RADIUS)) / METER_PER_KILOMETER;</span>
+    }
+
+    private double calculateMeterForLongitude(double longitude) {
+<span class="fc" id="L51">        return (ONE_LONGITUDE / abs(toRadians(EARTH_RADIUS) * cos(toRadians(longitude)))) / METER_PER_KILOMETER;</span>
+    }
+
+    private double calculateMaxPoint(double point, int radiusMeter, double meterForPoint) {
+<span class="fc" id="L55">        return point + (radiusMeter * meterForPoint);</span>
+    }
+
+    private double calculateMinPoint(double point, int radiusMeter, double meterForPoint) {
+<span class="fc" id="L59">        return point - (radiusMeter * meterForPoint);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

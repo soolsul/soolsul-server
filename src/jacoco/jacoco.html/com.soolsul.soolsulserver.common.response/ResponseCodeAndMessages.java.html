@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResponseCodeAndMessages.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">soolsul-server</a> &gt; <a href="index.source.html" class="el_package">com.soolsul.soolsulserver.common.response</a> &gt; <span class="el_source">ResponseCodeAndMessages.java</span></div><h1>ResponseCodeAndMessages.java</h1><pre class="source lang-java linenums">package com.soolsul.soolsulserver.common.response;
+
+<span class="fc" id="L3">public enum ResponseCodeAndMessages {</span>
+    /* USER */
+<span class="fc" id="L5">    USER_CREATE_SUCCESS(&quot;U001&quot;, &quot;유저 생성에 성공했습니다.&quot;),</span>
+<span class="fc" id="L6">    USER_LOGIN_SUCCESS(&quot;U002&quot;, &quot;로그인에 성공했습니다.&quot;),</span>
+<span class="fc" id="L7">    USER_DELETE_SUCCESS(&quot;U003&quot;, &quot;유저 삭제에 성공했습니다.&quot;),</span>
+<span class="fc" id="L8">    USER_UNAUTHENTICATED(&quot;U004&quot;, &quot;해당 유저는 인증되지 않았습니다.&quot;),</span>
+<span class="fc" id="L9">    USER_UNAUTHORIZED(&quot;U005&quot;, &quot;해당 유저는 권한이 없습니다.&quot;),</span>
+<span class="fc" id="L10">    USER_LOOK_UP_SUCCESS(&quot;U006&quot;, &quot;해당 유저 정보를 찾는데 성공했습니다.&quot;),</span>
+<span class="fc" id="L11">    USER_LOGOUT_SUCCESS(&quot;U007&quot;, &quot;로그아웃에 성공하였습니다.&quot;),</span>
+<span class="fc" id="L12">    USER_DUPLICATED(&quot;U008&quot;, &quot;이미 가입된 회원 입니다.&quot;),</span>
+
+    /* MYPAGE */
+<span class="fc" id="L15">    MYPAGE_POSTS_FIND_SUCCESS(&quot;M001&quot;, &quot;유저의 피드 조회에 성공했습니다.&quot;),</span>
+<span class="fc" id="L16">    MYPAGE_REPLIES_FIND_SUCCESS(&quot;M002&quot;, &quot;유저의 댓글 조회에 성공했습니다.&quot;),</span>
+<span class="fc" id="L17">    MYPAGE_USER_INFO_FIND_SUCCESS(&quot;M003&quot;, &quot;유저의 기본 정보 조회에 성공했습니다.&quot;),</span>
+<span class="fc" id="L18">    MYPAGE_USER_INFO_EDIT_SUCCESS(&quot;M004&quot;, &quot;유저의 기본 정보 수정에 성공했습니다.&quot;),</span>
+
+    /* FEED */
+<span class="fc" id="L21">    FEED_CREATE_SUCCESS(&quot;P001&quot;, &quot;피드 생성 성공했습니다.&quot;),</span>
+<span class="fc" id="L22">    FEED_FIND_SUCCESS(&quot;P002&quot;, &quot;피드 찾기에 성공하였습니다.&quot;),</span>
+    // POO2 : update
+<span class="fc" id="L24">    FEED_DELETE_SUCCESS(&quot;P003&quot;, &quot;피드 삭제에 성공하였습니다.&quot;),</span>
+<span class="fc" id="L25">    FEED_FIND_ALL_SUCCESS(&quot;P004&quot;, &quot;모든 피드를 찾는데 성공하였습니다.&quot;),</span>
+<span class="fc" id="L26">    FEED_SCRAP_SUCCESS(&quot;P005&quot;, &quot;피드 스크랩을 성공했습니다.&quot;),</span>
+<span class="fc" id="L27">    FEED_FIND_ALL_SCRAP_SUCCESS(&quot;P006&quot;, &quot;모든 스크랩 된 피드를 찾는데 성공하였습니다.&quot;),</span>
+<span class="fc" id="L28">    FEED_LIKE_SUCCESS(&quot;P007&quot;, &quot;피드 좋아요에 성공하였습니다.&quot;),</span>
+<span class="fc" id="L29">    FEED_UNLIKE_SUCCESS(&quot;P008&quot;, &quot;피드 좋아요 취소에 성공하였습니다.&quot;),</span>
+
+    /* BAR */
+<span class="fc" id="L32">    BAR_LOOK_UP_SUCCESS(&quot;B001&quot;, &quot;술집 목록 조회에 성공하였습니다.&quot;),</span>
+
+    /* CURATION */
+<span class="fc" id="L35">    CURATIONS_LOOK_UP_SUCCESS(&quot;C001&quot;, &quot;큐레이션 목록 조회에 성공하였습니다.&quot;),</span>
+<span class="fc" id="L36">    CURATION_DETAILS_LOOK_UP_SUCCESS(&quot;C002&quot;, &quot;큐레이션 상세 조회를 성공하였습니다&quot;),</span>
+
+    /* REPLY */
+<span class="fc" id="L39">    REPLY_CREATE_SUCCESS(&quot;R001&quot;, &quot;댓글을 추가하는데 성공하였습니다.&quot;),</span>
+<span class="fc" id="L40">    REPLY_READ_SUCCESS(&quot;R002&quot;, &quot;댓글을 읽는데 성공하였습니다.&quot;),</span>
+<span class="fc" id="L41">    REPLY_UPDATE_SUCCESS(&quot;R003&quot;, &quot;댓글을 수정하는데 성공하였습니다.&quot;),</span>
+<span class="fc" id="L42">    REPLY_DELETE_SUCCESS(&quot;R004&quot;, &quot;댓글을 삭제하는데 성공하였습니다.&quot;);</span>
+
+    private final String code;
+    private final String message;
+
+<span class="fc" id="L47">    ResponseCodeAndMessages(String code, String message) {</span>
+<span class="fc" id="L48">        this.code = code;</span>
+<span class="fc" id="L49">        this.message = message;</span>
+<span class="fc" id="L50">    }</span>
+
+    public String getCode() {
+<span class="fc" id="L53">        return code;</span>
+    }
+
+    public String getMessage() {
+<span class="fc" id="L57">        return message;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

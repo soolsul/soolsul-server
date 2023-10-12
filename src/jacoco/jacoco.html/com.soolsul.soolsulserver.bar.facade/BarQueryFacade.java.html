@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BarQueryFacade.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">soolsul-server</a> &gt; <a href="index.source.html" class="el_package">com.soolsul.soolsulserver.bar.facade</a> &gt; <span class="el_source">BarQueryFacade.java</span></div><h1>BarQueryFacade.java</h1><pre class="source lang-java linenums">package com.soolsul.soolsulserver.bar.facade;
+
+import com.soolsul.soolsulserver.bar.businees.BarAlcoholTagService;
+import com.soolsul.soolsulserver.bar.businees.BarMoodTagService;
+import com.soolsul.soolsulserver.bar.businees.BarQueryService;
+import com.soolsul.soolsulserver.bar.common.dto.request.BarLookupServiceConditionRequest;
+import com.soolsul.soolsulserver.bar.common.dto.request.BarLookupConditionRequest;
+import com.soolsul.soolsulserver.bar.common.dto.response.FilteredBarsLookupResponse;
+import com.soolsul.soolsulserver.location.common.dto.request.LocationSquareRangeRequest;
+import com.soolsul.soolsulserver.location.common.dto.response.LocationSquareRangeCondition;
+import com.soolsul.soolsulserver.location.business.LocationRangeService;
+import com.soolsul.soolsulserver.menu.alcohol.service.AlcoholCategoryService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+@Transactional(readOnly = true)
+@Component
+@RequiredArgsConstructor
+public class BarQueryFacade {
+
+    private static final String TAG_NAME_DELIMITER = &quot;,&quot;;
+
+    private final BarQueryService barQueryService;
+    private final BarAlcoholTagService barAlcoholTagService;
+    private final BarMoodTagService barMoodTarService;
+    private final AlcoholCategoryService alcoholCategoryService;
+    private final LocationRangeService locationRangeService;
+
+    public FilteredBarsLookupResponse findBarFilteredByConditions(BarLookupConditionRequest barLookupConditionRequest) {
+<span class="fc" id="L36">        LocationSquareRangeRequest locationSquareRangeRequest = new LocationSquareRangeRequest(</span>
+<span class="fc" id="L37">                barLookupConditionRequest.latitude(),</span>
+<span class="fc" id="L38">                barLookupConditionRequest.longitude(),</span>
+<span class="fc" id="L39">                barLookupConditionRequest.level()</span>
+        );
+
+<span class="fc" id="L42">        LocationSquareRangeCondition locationSquareRangeCondition = locationRangeService.calculateLocationSquareRange(</span>
+                locationSquareRangeRequest
+        );
+
+<span class="fc" id="L46">        BarLookupServiceConditionRequest barLookupServiceConditionRequest = new BarLookupServiceConditionRequest(</span>
+<span class="fc" id="L47">                locationSquareRangeCondition.southWestLatitude(),</span>
+<span class="fc" id="L48">                locationSquareRangeCondition.southWestLongitude(),</span>
+<span class="fc" id="L49">                locationSquareRangeCondition.northEastLatitude(),</span>
+<span class="fc" id="L50">                locationSquareRangeCondition.northEastLongitude(),</span>
+<span class="fc" id="L51">                getBarMoodTagIds(barLookupConditionRequest.barMoodTagNames()),</span>
+<span class="fc" id="L52">                getBarAlcoholTagIds(barLookupConditionRequest.barAlcoholTagNames())</span>
+        );
+
+<span class="fc" id="L55">        return barQueryService.findBarFilteredByConditions(barLookupServiceConditionRequest);</span>
+    }
+
+    private List&lt;String&gt; getBarMoodTagIds(String barMoodTagNames) {
+<span class="fc" id="L59">        List&lt;String&gt; parsedMoodTagNames = parseTagNames(barMoodTagNames);</span>
+<span class="fc" id="L60">        return barMoodTarService.findBarAlcoholTagIdsByAlcoholNames(parsedMoodTagNames);</span>
+    }
+
+    private List&lt;String&gt; getBarAlcoholTagIds(@NotEmpty String alcoholTagNames) {
+<span class="fc" id="L64">        List&lt;String&gt; alcoholCategoryNames = parseTagNames(alcoholTagNames);</span>
+<span class="fc" id="L65">        List&lt;String&gt; alcoholCategoryIds = alcoholCategoryService.findAlcoholCategoryIdsByAlcoholCategoryNames(</span>
+                alcoholCategoryNames
+        );
+<span class="fc" id="L68">        return barAlcoholTagService.findBarAlcoholTagIdsByAlcoholCategoryIds(alcoholCategoryIds);</span>
+    }
+
+    private List&lt;String&gt; parseTagNames(String tagNames) {
+<span class="pc bpc" id="L72" title="2 of 4 branches missed.">        if(tagNames == null || tagNames.isEmpty()) {</span>
+<span class="fc" id="L73">            return new ArrayList&lt;&gt;();</span>
+        }
+<span class="nc" id="L75">        return Arrays.stream(tagNames.split(TAG_NAME_DELIMITER)).toList();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

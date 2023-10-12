@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomUserDetailsService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">soolsul-server</a> &gt; <a href="index.source.html" class="el_package">com.soolsul.soolsulserver.user.auth.business</a> &gt; <span class="el_source">CustomUserDetailsService.java</span></div><h1>CustomUserDetailsService.java</h1><pre class="source lang-java linenums">package com.soolsul.soolsulserver.user.auth.business;
+
+import com.soolsul.soolsulserver.user.auth.domain.CustomUser;
+import com.soolsul.soolsulserver.user.auth.vo.UserContext;
+import com.soolsul.soolsulserver.user.auth.domain.UserInfo;
+import com.soolsul.soolsulserver.user.auth.exception.UserAlreadyExistsException;
+import com.soolsul.soolsulserver.user.auth.exception.UserNicknameDuplicatedException;
+import com.soolsul.soolsulserver.user.auth.exception.UserNotFoundException;
+import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
+import com.soolsul.soolsulserver.user.auth.persistence.UserInfoRepository;
+import com.soolsul.soolsulserver.user.auth.persistence.UserRepository;
+import com.soolsul.soolsulserver.user.auth.persistence.dto.response.UserLookUpResponse;
+import com.soolsul.soolsulserver.user.mypage.common.dto.reqeust.UserInfoEditRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class CustomUserDetailsService implements UserDetailsService {
+
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final UserInfoRepository userInfoRepository;
+
+    @Transactional(readOnly = true)
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+<span class="fc" id="L39">        CustomUser user = userRepository.findByEmail(email)</span>
+<span class="fc" id="L40">                .orElseThrow(() -&gt; new UsernameNotFoundException(&quot;No user found with email: &quot; + email));</span>
+
+<span class="fc" id="L42">        return new UserContext(user, buildAuthorities(user));</span>
+    }
+
+    public void register(UserRegisterRequest userRegisterRequest) {
+<span class="fc" id="L46">        checkAlreadyExistsUser(userRegisterRequest.email(), userRegisterRequest.nickname());</span>
+
+<span class="fc" id="L48">        CustomUser newUser = createUser(userRegisterRequest.password(), userRegisterRequest.email());</span>
+
+<span class="fc" id="L50">        CustomUser savedUser = userRepository.save(newUser);</span>
+<span class="fc" id="L51">        userInfoRepository.save(UserInfo.of(savedUser.getId(), userRegisterRequest));</span>
+<span class="fc" id="L52">    }</span>
+
+    public void delete(String userId) {
+<span class="fc" id="L55">        userInfoRepository.deleteByUserId(userId);</span>
+<span class="fc" id="L56">        userRepository.deleteById(userId);</span>
+<span class="fc" id="L57">    }</span>
+
+    @Transactional(readOnly = true)
+    public UserLookUpResponse findUserWithDetailInfo(String userId) {
+<span class="fc" id="L61">        return userRepository.findUserDetailInfoById(userId)</span>
+<span class="fc" id="L62">                .orElseThrow(UserNotFoundException::new);</span>
+    }
+
+    @Transactional(readOnly = true)
+    public CustomUser findUserForAuthentication(String userId) {
+<span class="fc" id="L67">        return userRepository.findById(userId)</span>
+<span class="fc" id="L68">                .orElseThrow(UserNotFoundException::new);</span>
+    }
+
+    public void editUserInformation(UserInfoEditRequest editRequest, String userId) {
+<span class="fc" id="L72">        edit(editRequest, userId);</span>
+<span class="fc" id="L73">    }</span>
+
+    private void edit(UserInfoEditRequest editRequest, String userId) {
+<span class="fc" id="L76">        CustomUser findUser = userRepository.findById(userId)</span>
+<span class="fc" id="L77">                .orElseThrow(UserNotFoundException::new);</span>
+
+<span class="fc" id="L79">        UserInfo findUserInfo = userInfoRepository.findByUserId(userId)</span>
+<span class="fc" id="L80">                .orElseThrow(UserNotFoundException::new);</span>
+
+<span class="fc" id="L82">        checkAlreadyExistsUser(editRequest.email(), editRequest.nickName());</span>
+
+<span class="fc" id="L84">        findUser.editEmail(editRequest.email());</span>
+<span class="fc" id="L85">        findUserInfo.editNickNameAndImage(editRequest.nickName(), editRequest.imageUrl());</span>
+<span class="fc" id="L86">    }</span>
+
+    private void checkAlreadyExistsUser(String email, String nickname) {
+<span class="fc" id="L89">        checkAlreadyExistsEmail(email);</span>
+<span class="fc" id="L90">        checkAlreadyExistsNickName(nickname);</span>
+<span class="fc" id="L91">    }</span>
+
+    private void checkAlreadyExistsNickName(String nickname) {
+<span class="fc" id="L94">        userInfoRepository.findByNickname(nickname)</span>
+<span class="fc" id="L95">                .ifPresent(user -&gt; {</span>
+<span class="fc" id="L96">                    throw new UserNicknameDuplicatedException();</span>
+                });
+<span class="fc" id="L98">    }</span>
+
+    private void checkAlreadyExistsEmail(String email) {
+<span class="fc" id="L101">        userRepository.findByEmail(email)</span>
+<span class="fc" id="L102">                .ifPresent(user -&gt; {</span>
+<span class="fc" id="L103">                    throw new UserAlreadyExistsException();</span>
+                });
+<span class="fc" id="L105">    }</span>
+
+    private CustomUser createUser(final String password, final String email) {
+<span class="fc" id="L108">        String encodedPassword = passwordEncoder.encode(password);</span>
+<span class="fc" id="L109">        return CustomUser.createWithRoleUser(email, encodedPassword);</span>
+    }
+
+    private List&lt;GrantedAuthority&gt; buildAuthorities(CustomUser user) {
+<span class="fc" id="L113">        return user.getAuthorities()</span>
+<span class="fc" id="L114">                .stream()</span>
+<span class="fc" id="L115">                .map(userRole -&gt; new SimpleGrantedAuthority(userRole.getAuthority()))</span>
+<span class="fc" id="L116">                .collect(Collectors.toList());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

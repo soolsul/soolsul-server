@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BarOpenTime.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">soolsul-server</a> &gt; <a href="index.source.html" class="el_package">com.soolsul.soolsulserver.bar.domain</a> &gt; <span class="el_source">BarOpenTime.java</span></div><h1>BarOpenTime.java</h1><pre class="source lang-java linenums">package com.soolsul.soolsulserver.bar.domain;
+
+import com.soolsul.soolsulserver.common.domain.BaseTimeEntity;
+import com.soolsul.soolsulserver.common.domain.OpeningHours;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+import java.util.Objects;
+
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class BarOpenTime extends BaseTimeEntity {
+
+    @Id
+    @GeneratedValue(generator = &quot;uuid&quot;)
+    @GenericGenerator(name = &quot;uuid&quot;, strategy = &quot;uuid&quot;)
+    private String id;
+
+    @Column(nullable = false)
+    private String barId;
+
+    @Embedded
+    private OpeningHours openingHours;
+
+<span class="nc" id="L29">    public BarOpenTime(String barId, OpeningHours openingHours) {</span>
+<span class="nc" id="L30">        this.barId = barId;</span>
+<span class="nc" id="L31">        this.openingHours = openingHours;</span>
+<span class="nc" id="L32">    }</span>
+
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L36" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L37" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc" id="L38">        BarOpenTime that = (BarOpenTime) o;</span>
+<span class="nc" id="L39">        return Objects.equals(this.id, that.id);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L44">        return Objects.hash(this.id);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

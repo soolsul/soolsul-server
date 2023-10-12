@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SetupDataLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">soolsul-server</a> &gt; <a href="index.source.html" class="el_package">com.soolsul.soolsulserver.user.auth.listener</a> &gt; <span class="el_source">SetupDataLoader.java</span></div><h1>SetupDataLoader.java</h1><pre class="source lang-java linenums">package com.soolsul.soolsulserver.user.auth.listener;
+
+import com.soolsul.soolsulserver.user.auth.domain.RoleHierarchy;
+import com.soolsul.soolsulserver.user.auth.persistence.RoleHierarchyRepository;
+import com.soolsul.soolsulserver.user.auth.vo.Role;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+@Component
+@RequiredArgsConstructor
+public class SetupDataLoader implements ApplicationListener&lt;ContextRefreshedEvent&gt; {
+
+    private final RoleHierarchyRepository roleHierarchyRepository;
+    private boolean alreadySetup = false;
+
+    @Override
+    @Transactional
+    public void onApplicationEvent(final ContextRefreshedEvent event) {
+<span class="fc bfc" id="L22" title="All 2 branches covered.">        if (alreadySetup) {</span>
+<span class="fc" id="L23">            return;</span>
+        }
+
+<span class="fc" id="L26">        setupSecurityResources();</span>
+<span class="fc" id="L27">        alreadySetup = true;</span>
+<span class="fc" id="L28">    }</span>
+
+    @Transactional
+    public void createRoleHierarchyIfNotFound(Role childRole, Role parentRole) {
+<span class="fc" id="L32">        RoleHierarchy roleHierarchy = roleHierarchyRepository.findByChildName(parentRole.getRole())</span>
+<span class="fc" id="L33">                .orElseGet(() -&gt; RoleHierarchy.builder().childName(parentRole.getRole()).build());</span>
+
+<span class="fc" id="L35">        RoleHierarchy parentRoleHierarchy = roleHierarchyRepository.save(roleHierarchy);</span>
+
+<span class="fc" id="L37">        roleHierarchy = roleHierarchyRepository.findByChildName(childRole.getRole())</span>
+<span class="fc" id="L38">                .orElseGet(() -&gt; RoleHierarchy.builder().childName(childRole.getRole()).build());</span>
+
+<span class="fc" id="L40">        RoleHierarchy childRoleHierarchy = roleHierarchyRepository.save(roleHierarchy);</span>
+<span class="fc" id="L41">        childRoleHierarchy.setParentName(parentRoleHierarchy);</span>
+<span class="fc" id="L42">    }</span>
+
+    private void setupSecurityResources() {
+<span class="fc" id="L45">        createRoleHierarchyIfNotFound(Role.USER, Role.ADMIN);</span>
+<span class="fc" id="L46">        createRoleHierarchyIfNotFound(Role.ANONYMOUS, Role.USER);</span>
+<span class="fc" id="L47">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

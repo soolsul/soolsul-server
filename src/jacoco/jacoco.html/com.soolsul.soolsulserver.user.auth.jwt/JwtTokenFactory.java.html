@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JwtTokenFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">soolsul-server</a> &gt; <a href="index.source.html" class="el_package">com.soolsul.soolsulserver.user.auth.jwt</a> &gt; <span class="el_source">JwtTokenFactory.java</span></div><h1>JwtTokenFactory.java</h1><pre class="source lang-java linenums">package com.soolsul.soolsulserver.user.auth.jwt;
+
+import com.soolsul.soolsulserver.user.auth.business.RedisCachingService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.time.Duration;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+@Component
+public class JwtTokenFactory implements TokenFactorySpec {
+
+    private final RedisCachingService redisCachingService;
+    private final Key accessPrivateKey;
+    private final Key refreshPrivateKey;
+
+    @Value(&quot;${jwt.expire-length}&quot;)
+    private Long accessExpirationMillis;
+
+    @Value(&quot;${jwt.refresh-length}&quot;)
+    private Long refreshExpirationMillis;
+
+    public JwtTokenFactory(
+            @Value(&quot;${jwt.access.private}&quot;) String accessPrivateKey,
+            @Value(&quot;${jwt.refresh.private}&quot;) String refreshPrivateKey,
+            RedisCachingService redisCachingService)
+<span class="fc" id="L45">            throws NoSuchAlgorithmException, InvalidKeySpecException {</span>
+<span class="fc" id="L46">        this.accessPrivateKey = getPrivateKey(accessPrivateKey);</span>
+<span class="fc" id="L47">        this.refreshPrivateKey = getPrivateKey(refreshPrivateKey);</span>
+<span class="fc" id="L48">        this.redisCachingService = redisCachingService;</span>
+<span class="fc" id="L49">    }</span>
+
+    @Override
+    public JwtToken issue(String userId, List&lt;GrantedAuthority&gt; roles) {
+<span class="nc" id="L53">        return JwtToken.builder()</span>
+<span class="nc" id="L54">                .accessToken(createAccessToken(userId, roles))</span>
+<span class="nc" id="L55">                .refreshToken(createRefreshToken(userId))</span>
+<span class="nc" id="L56">                .build();</span>
+    }
+
+    @Override
+    public JwtToken getTokenFromHeader(HttpServletRequest request) {
+<span class="nc" id="L61">        return JwtToken.builder()</span>
+<span class="nc" id="L62">                .accessToken(request.getHeader(&quot;authorization&quot;))</span>
+<span class="nc" id="L63">                .refreshToken(request.getHeader(&quot;x-refresh-token&quot;))</span>
+<span class="nc" id="L64">                .build();</span>
+    }
+
+    @Override
+    public String getUserIdFromToken(String accessToken) {
+<span class="fc" id="L69">        return (String) Jwts.parserBuilder()</span>
+<span class="fc" id="L70">                .setSigningKey(accessPrivateKey)</span>
+<span class="fc" id="L71">                .build()</span>
+<span class="fc" id="L72">                .parseClaimsJws(accessToken).getBody().get(&quot;userId&quot;);</span>
+    }
+
+    // 출처 : https://velog.io/@tlatldms/서버개발캠프-Spring-security-refreshing-JWT-DB접근없이-인증과-파싱하기
+    @Override
+    public Collection&lt;GrantedAuthority&gt; getRolesFromToken(String accessToken) {
+<span class="fc" id="L78">        List&lt;String&gt; roles = (List) Jwts.parserBuilder()</span>
+<span class="fc" id="L79">                .setSigningKey(accessPrivateKey)</span>
+<span class="fc" id="L80">                .build()</span>
+<span class="fc" id="L81">                .parseClaimsJws(accessToken).getBody().get(&quot;roles&quot;);</span>
+
+<span class="fc" id="L83">        return roles.stream()</span>
+<span class="fc" id="L84">                .map(SimpleGrantedAuthority::new)</span>
+<span class="fc" id="L85">                .collect(Collectors.toList());</span>
+    }
+
+    public Map&lt;String, Object&gt; getUserParseInfo(String accessToken) {
+<span class="nc" id="L89">        Claims parseInfo = Jwts.parserBuilder()</span>
+<span class="nc" id="L90">                .setSigningKey(accessPrivateKey)</span>
+<span class="nc" id="L91">                .build()</span>
+<span class="nc" id="L92">                .parseClaimsJws(accessToken).getBody();</span>
+
+<span class="nc" id="L94">        Map&lt;String, Object&gt; result = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L95">        result.put(&quot;userId&quot;, parseInfo.get(&quot;userId&quot;));</span>
+<span class="nc" id="L96">        result.put(&quot;roles&quot;, parseInfo.get(&quot;roles&quot;, List.class));</span>
+<span class="nc" id="L97">        return result;</span>
+    }
+
+    @Override
+    public boolean isValidRefreshToken(String refreshToken) {
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        if (StringUtils.hasText(refreshToken)) {</span>
+            try {
+<span class="nc" id="L104">                Jws&lt;Claims&gt; claims = Jwts.parserBuilder().setSigningKey(refreshPrivateKey).build()</span>
+<span class="nc" id="L105">                        .parseClaimsJws(refreshToken);</span>
+
+<span class="nc bnc" id="L107" title="All 2 branches missed.">                return !claims.getBody().getExpiration().before(new Date());</span>
+<span class="nc" id="L108">            } catch (ExpiredJwtException e) {</span>
+<span class="nc" id="L109">                return false;</span>
+            }
+        }
+<span class="nc" id="L112">        return false;</span>
+    }
+
+    @Override
+    public boolean isValidAccessToken(String accessToken) {
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">        if (StringUtils.hasText(accessToken)) {</span>
+            try {
+<span class="fc" id="L119">                Jws&lt;Claims&gt; claims = Jwts.parserBuilder().setSigningKey(accessPrivateKey).build()</span>
+<span class="fc" id="L120">                        .parseClaimsJws(accessToken);</span>
+
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">                return !claims.getBody().getExpiration().before(new Date());</span>
+<span class="nc" id="L123">            } catch (ExpiredJwtException e) {</span>
+<span class="nc" id="L124">                return false;</span>
+            }
+        }
+<span class="nc" id="L127">        return false;</span>
+    }
+
+    @Override
+    public String createAccessToken(String userId, List&lt;GrantedAuthority&gt; roles) {
+<span class="fc" id="L132">        Date createdDate = new Date();</span>
+<span class="fc" id="L133">        Date expirationDate = new Date(createdDate.getTime() + accessExpirationMillis);</span>
+
+<span class="fc" id="L135">        Map&lt;String, Object&gt; claims = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L136">        List&lt;String&gt; roleList = roles.stream()</span>
+<span class="fc" id="L137">                .map(role -&gt; role.getAuthority())</span>
+<span class="fc" id="L138">                .collect(Collectors.toList());</span>
+
+<span class="fc" id="L140">        claims.put(&quot;roles&quot;, roleList);</span>
+<span class="fc" id="L141">        claims.put(&quot;userId&quot;, userId);</span>
+
+<span class="fc" id="L143">        return Jwts.builder()</span>
+<span class="fc" id="L144">                .setSubject(userId)</span>
+<span class="fc" id="L145">                .setClaims(claims)</span>
+<span class="fc" id="L146">                .setIssuedAt(createdDate)</span>
+<span class="fc" id="L147">                .setExpiration(expirationDate)</span>
+<span class="fc" id="L148">                .signWith(accessPrivateKey)</span>
+<span class="fc" id="L149">                .compact();</span>
+    }
+
+    @Override
+    public String createRefreshToken(String userId) {
+<span class="fc" id="L154">        Date createdDate = new Date();</span>
+<span class="fc" id="L155">        Date expirationDate = new Date(createdDate.getTime() + refreshExpirationMillis);</span>
+
+<span class="fc" id="L157">        String refreshToken = Jwts.builder()</span>
+<span class="fc" id="L158">                .setIssuedAt(createdDate)</span>
+<span class="fc" id="L159">                .setExpiration(expirationDate)</span>
+<span class="fc" id="L160">                .signWith(refreshPrivateKey)</span>
+<span class="fc" id="L161">                .compact();</span>
+
+<span class="fc" id="L163">        redisCachingService.setValuesWithDuration(userId, refreshToken, Duration.ofMillis(refreshExpirationMillis));</span>
+
+<span class="fc" id="L165">        return refreshToken;</span>
+    }
+
+    private Key getPrivateKey(String privateKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
+<span class="fc" id="L169">        return Keys.hmacShaKeyFor(privateKey.getBytes(StandardCharsets.UTF_8));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

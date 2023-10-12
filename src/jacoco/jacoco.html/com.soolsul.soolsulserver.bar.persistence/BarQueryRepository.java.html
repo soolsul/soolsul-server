@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BarQueryRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">soolsul-server</a> &gt; <a href="index.source.html" class="el_package">com.soolsul.soolsulserver.bar.persistence</a> &gt; <span class="el_source">BarQueryRepository.java</span></div><h1>BarQueryRepository.java</h1><pre class="source lang-java linenums">package com.soolsul.soolsulserver.bar.persistence;
+
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.soolsul.soolsulserver.bar.common.dto.request.BarLookupServiceConditionRequest;
+import com.soolsul.soolsulserver.bar.common.dto.response.BarStreetNameAddressResponse;
+import com.soolsul.soolsulserver.bar.common.dto.response.FilteredBarLookupResponse;
+import com.soolsul.soolsulserver.bar.common.dto.response.BarLookupResponse;
+import com.soolsul.soolsulserver.bar.common.dto.response.LocationLookupResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.BarOpeningHoursResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import static com.soolsul.soolsulserver.bar.domain.QBar.bar;
+import static com.soolsul.soolsulserver.bar.domain.QBarAlcoholTag.barAlcoholTag;
+import static com.soolsul.soolsulserver.bar.domain.QBarMoodTag.barMoodTag;
+import static com.soolsul.soolsulserver.bar.domain.QBarOpenTime.barOpenTime;
+
+@Repository
+@RequiredArgsConstructor
+public class BarQueryRepository {
+
+    private final JPAQueryFactory jpaQueryFactory;
+
+    //TODO service, controller 전용 dto 분리에 관한 부분 검토
+    // - 이유 : web dto 에 관한 요구사항이 repository 까지 영향을 미친다 (비슷한 로직이고 필드만  다른 로직이 계속 생겨남)
+    // - 객체 전체를 조회하는 DTO 를 통해 조회하고 service에서 web 전용으로 주입하는 방법에 관해 검토
+    public Optional&lt;BarLookupResponse&gt; findById(String barId) {
+<span class="fc" id="L33">        BarLookupResponse barLookupResponse = jpaQueryFactory.select(Projections.constructor(BarLookupResponse.class,</span>
+                                bar.id,
+                                bar.regionId,
+                                bar.barCategoryId,
+                                bar.name,
+                                bar.description,
+                                bar.phoneNumber,
+<span class="fc" id="L40">                                Projections.constructor(BarStreetNameAddressResponse.class,</span>
+<span class="fc" id="L41">                                        bar.streetNameAddress.regionName.as(&quot;regionName&quot;),</span>
+<span class="fc" id="L42">                                        bar.streetNameAddress.city.as(&quot;city&quot;),</span>
+<span class="fc" id="L43">                                        bar.streetNameAddress.district.as(&quot;district&quot;),</span>
+<span class="fc" id="L44">                                        bar.streetNameAddress.roadName.as(&quot;roadName&quot;),</span>
+<span class="fc" id="L45">                                        bar.streetNameAddress.roadNumber.as(&quot;roadNumber&quot;),</span>
+<span class="fc" id="L46">                                        bar.streetNameAddress.roadNumberDetail.as(&quot;roadNumberDetail&quot;),</span>
+<span class="fc" id="L47">                                        bar.streetNameAddress.locationDetail.as(&quot;locationDetail&quot;)),</span>
+<span class="fc" id="L48">                                Projections.constructor(BarOpeningHoursResponse.class,</span>
+                                        barOpenTime.openingHours.openTime,
+                                        barOpenTime.openingHours.closeTime),
+<span class="fc" id="L51">                                Projections.constructor(LocationLookupResponse.class,</span>
+                                        bar.location.latitude,
+                                        bar.location.longitude)
+                        ))
+<span class="fc" id="L55">                .from(bar)</span>
+<span class="fc" id="L56">                .leftJoin(barOpenTime).on(bar.id.eq(barOpenTime.barId))// TODO 조인을 제거할 필요 고민.</span>
+<span class="fc" id="L57">                .where(bar.id.eq(barId))</span>
+<span class="fc" id="L58">                .fetchOne();</span>
+
+<span class="fc" id="L60">        return Optional.ofNullable(barLookupResponse);</span>
+    }
+
+    public List&lt;FilteredBarLookupResponse&gt; findBarFilteredByConditions(BarLookupServiceConditionRequest barLookupServiceConditionRequest) {
+<span class="fc" id="L64">        double southWestLatitude = barLookupServiceConditionRequest.southWestLatitude(); // minY</span>
+<span class="fc" id="L65">        double southWestLongitude = barLookupServiceConditionRequest.southWestLongitude(); // minX</span>
+<span class="fc" id="L66">        double northEastLatitude = barLookupServiceConditionRequest.northEastLatitude(); // maxY</span>
+<span class="fc" id="L67">        double northEastLongitude = barLookupServiceConditionRequest.northEastLongitude(); // maxX</span>
+
+<span class="fc" id="L69">        List&lt;String&gt; barAlcoholTagIds = barLookupServiceConditionRequest.barAlcoholTagIds();</span>
+<span class="fc" id="L70">        List&lt;String&gt; barMoodTagIds = barLookupServiceConditionRequest.barMoodTagIds();</span>
+
+<span class="fc" id="L72">        return jpaQueryFactory.select(Projections.constructor(FilteredBarLookupResponse.class,</span>
+                        bar.id,
+                        bar.name,
+                        bar.description,
+                        bar.location.latitude,
+                        bar.location.longitude,
+                        barAlcoholTag.id,
+                        barAlcoholTag.alcoholCategoryName,
+                        barMoodTag.id,
+                        barMoodTag.name,
+                        bar.createdAt
+                ))
+<span class="fc" id="L84">                .from(bar)</span>
+<span class="fc" id="L85">                .leftJoin(barAlcoholTag).on(bar.id.eq(barAlcoholTag.barId))</span>
+<span class="fc" id="L86">                .leftJoin(barMoodTag).on(bar.id.eq(barMoodTag.barId))</span>
+<span class="fc" id="L87">                .where(</span>
+<span class="fc" id="L88">                        bar.location.longitude.between(southWestLongitude, northEastLongitude),</span>
+<span class="fc" id="L89">                        bar.location.latitude.between(southWestLatitude, northEastLatitude),</span>
+<span class="fc" id="L90">                        inBarAlcoholTagIds(barAlcoholTagIds),</span>
+<span class="fc" id="L91">                        inBarMoodTagIds(barMoodTagIds)</span>
+<span class="fc" id="L92">                ).fetch();</span>
+    }
+
+    private BooleanExpression inBarAlcoholTagIds(List&lt;String&gt; barAlcoholTagIds) {
+<span class="pc bpc" id="L96" title="2 of 4 branches missed.">        if (barAlcoholTagIds == null || barAlcoholTagIds.isEmpty()) {</span>
+<span class="fc" id="L97">            return null;</span>
+        }
+<span class="nc" id="L99">        return barAlcoholTag.id.in(barAlcoholTagIds);</span>
+    }
+
+    private BooleanExpression inBarMoodTagIds(List&lt;String&gt; barMoodTagIds) {
+<span class="pc bpc" id="L103" title="2 of 4 branches missed.">        if (barMoodTagIds == null || barMoodTagIds.isEmpty()) {</span>
+<span class="fc" id="L104">            return null;</span>
+        }
+<span class="nc" id="L106">        return barMoodTag.id.in(barMoodTagIds);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

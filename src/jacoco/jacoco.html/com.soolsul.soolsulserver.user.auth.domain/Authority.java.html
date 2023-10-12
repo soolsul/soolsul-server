@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Authority.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">soolsul-server</a> &gt; <a href="index.source.html" class="el_package">com.soolsul.soolsulserver.user.auth.domain</a> &gt; <span class="el_source">Authority.java</span></div><h1>Authority.java</h1><pre class="source lang-java linenums">package com.soolsul.soolsulserver.user.auth.domain;
+
+import com.soolsul.soolsulserver.user.auth.vo.Role;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Authority implements GrantedAuthority {
+
+    @Id
+    @GeneratedValue(generator = &quot;uuid&quot;)
+    @GenericGenerator(name = &quot;uuid&quot;, strategy = &quot;uuid&quot;)
+    private String id;
+
+    @Enumerated(value = EnumType.STRING)
+    private Role authority;
+
+<span class="fc" id="L35">    public Authority(Role authority) {</span>
+<span class="fc" id="L36">        this.authority = authority;</span>
+<span class="fc" id="L37">    }</span>
+
+    @Override
+    public String getAuthority() {
+<span class="fc" id="L41">        return authority.getRole();</span>
+    }
+
+<span class="fc" id="L44">    @ManyToMany(fetch = FetchType.LAZY, mappedBy = &quot;userRoles&quot;)</span>
+    private Set&lt;CustomUser&gt; customUserDetails = new HashSet&lt;&gt;();
+
+    @Override
+    public boolean equals(Object o) {
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        if (this == o) return true;</span>
+<span class="pc bpc" id="L50" title="2 of 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="fc" id="L51">        Authority authority1 = (Authority) o;</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        return getAuthority() == authority1.getAuthority();</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L57">        return Objects.hash(getAuthority());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

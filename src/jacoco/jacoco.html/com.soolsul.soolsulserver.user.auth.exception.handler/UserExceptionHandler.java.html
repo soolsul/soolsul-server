@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserExceptionHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">soolsul-server</a> &gt; <a href="index.source.html" class="el_package">com.soolsul.soolsulserver.user.auth.exception.handler</a> &gt; <span class="el_source">UserExceptionHandler.java</span></div><h1>UserExceptionHandler.java</h1><pre class="source lang-java linenums">package com.soolsul.soolsulserver.user.auth.exception.handler;
+
+import com.soolsul.soolsulserver.common.response.BaseResponse;
+import com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages;
+import com.soolsul.soolsulserver.user.auth.exception.UserAlreadyExistsException;
+import com.soolsul.soolsulserver.user.auth.exception.UserInvalidIdException;
+import com.soolsul.soolsulserver.user.auth.exception.UserNicknameDuplicatedException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+<span class="fc" id="L14">@Slf4j</span>
+@RestControllerAdvice
+<span class="fc" id="L16">public class UserExceptionHandler {</span>
+
+    @ExceptionHandler
+    public ResponseEntity&lt;BaseResponse&lt;Void&gt;&gt; duplicatedUser(UserAlreadyExistsException exception) {
+<span class="fc" id="L20">        log.info(&quot;[UserAlreadyExistsException] Handler calling&quot;);</span>
+<span class="fc" id="L21">        return new ResponseEntity(new BaseResponse&lt;&gt;(ResponseCodeAndMessages.USER_DUPLICATED, null), HttpStatus.CONFLICT);</span>
+    }
+
+    @ExceptionHandler
+    public ResponseEntity&lt;BaseResponse&lt;Void&gt;&gt; duplicatedNickname(UserNicknameDuplicatedException exception) {
+<span class="fc" id="L26">        log.info(&quot;[UserNicknameDuplicatedException] Handler calling&quot;);</span>
+<span class="fc" id="L27">        return new ResponseEntity(new BaseResponse&lt;&gt;(ResponseCodeAndMessages.USER_DUPLICATED.getCode(), exception.getMessage(), null), HttpStatus.CONFLICT);</span>
+    }
+
+    @ExceptionHandler
+    public ResponseEntity&lt;BaseResponse&lt;Void&gt;&gt; invalidId(UserInvalidIdException exception) {
+<span class="nc" id="L32">        log.info(&quot;[UserInvalidIdException] Handler calling&quot;);</span>
+<span class="nc" id="L33">        return new ResponseEntity(new BaseResponse&lt;&gt;(ResponseCodeAndMessages.USER_UNAUTHENTICATED.getCode(), exception.getMessage(), null), HttpStatus.CONFLICT);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

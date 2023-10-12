@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CurationQueryService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">soolsul-server</a> &gt; <a href="index.source.html" class="el_package">com.soolsul.soolsulserver.curation.business</a> &gt; <span class="el_source">CurationQueryService.java</span></div><h1>CurationQueryService.java</h1><pre class="source lang-java linenums">package com.soolsul.soolsulserver.curation.business;
+
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationListLookupResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationLookupResponse;
+import com.soolsul.soolsulserver.curation.persistence.CurationQueryRepository;
+import com.soolsul.soolsulserver.location.common.dto.response.LocationSquareRangeCondition;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class CurationQueryService {
+
+    private final CurationQueryRepository curationQueryRepository;
+
+    public List&lt;CurationListLookupResponse&gt; findAllSingleTagCurationsByLocationRange(
+            LocationSquareRangeCondition locationSquareRangeCondition
+    ) {
+<span class="fc" id="L26">        List&lt;CurationListLookupResponse&gt; curationListLookupResponses</span>
+<span class="fc" id="L27">                = curationQueryRepository.findAllCurationsInLocationRange(locationSquareRangeCondition);</span>
+
+<span class="fc" id="L29">        Map&lt;String, Boolean&gt; curationIdMap = createCurationIdMap(curationListLookupResponses);</span>
+<span class="fc" id="L30">        return getFilteredSingleTagCuration(curationListLookupResponses, curationIdMap);</span>
+    }
+
+    private List&lt;CurationListLookupResponse&gt; getFilteredSingleTagCuration(
+            List&lt;CurationListLookupResponse&gt; curationListLookupRespons,
+            Map&lt;String, Boolean&gt; curationIdMap
+    ) {
+<span class="fc" id="L37">        List&lt;CurationListLookupResponse&gt; filteredSingleTagNameCurations = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        for (CurationListLookupResponse curationListLookupResponse : curationListLookupRespons) {</span>
+<span class="fc" id="L40">            String curationId = curationListLookupResponse.curationId();</span>
+<span class="fc" id="L41">            Boolean alreadyAddedCuration = curationIdMap.get(curationId);</span>
+
+<span class="fc bfc" id="L43" title="All 2 branches covered.">            if(!alreadyAddedCuration) {</span>
+<span class="fc" id="L44">                filteredSingleTagNameCurations.add(curationListLookupResponse);</span>
+<span class="fc" id="L45">                curationIdMap.put(curationId, true);</span>
+            }
+<span class="fc" id="L47">        }</span>
+
+<span class="fc" id="L49">        return filteredSingleTagNameCurations;</span>
+    }
+
+    // createCurationIdMap : 단일 태그 큐레이션을 추가하기 위한 함수 (key : curationId, Boolean : curation 추가 여부를 확인하는 변수)
+    private Map&lt;String, Boolean&gt; createCurationIdMap(List&lt;CurationListLookupResponse&gt; curationListLookupResponses) {
+<span class="fc" id="L54">        Map&lt;String, Boolean&gt; curationIdMap = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        for (CurationListLookupResponse curationListLookupResponse : curationListLookupResponses) {</span>
+<span class="fc" id="L56">            curationIdMap.putIfAbsent(curationListLookupResponse.curationId(), false);</span>
+<span class="fc" id="L57">        }</span>
+<span class="fc" id="L58">        return curationIdMap;</span>
+    }
+
+    public CurationLookupResponse findCurationByCurationId(String curationId) {
+<span class="nc" id="L62">        return curationQueryRepository.findById(curationId);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

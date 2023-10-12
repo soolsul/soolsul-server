@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CurationQueryFacade.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">soolsul-server</a> &gt; <a href="index.source.html" class="el_package">com.soolsul.soolsulserver.curation.facade</a> &gt; <span class="el_source">CurationQueryFacade.java</span></div><h1>CurationQueryFacade.java</h1><pre class="source lang-java linenums">package com.soolsul.soolsulserver.curation.facade;
+
+import com.soolsul.soolsulserver.bar.businees.BarQueryService;
+import com.soolsul.soolsulserver.bar.businees.BarSnackMenuService;
+import com.soolsul.soolsulserver.bar.common.dto.response.BarSnackMenuResponse;
+import com.soolsul.soolsulserver.bar.common.dto.response.BarLookupResponse;
+import com.soolsul.soolsulserver.curation.business.CurationQueryService;
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationDetailLookupResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationListLookupResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationLookupResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationPostLookupResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationsLookupResponse;
+import com.soolsul.soolsulserver.location.common.dto.request.LocationSquareRangeRequest;
+import com.soolsul.soolsulserver.location.common.dto.response.LocationSquareRangeCondition;
+import com.soolsul.soolsulserver.location.business.LocationRangeService;
+import com.soolsul.soolsulserver.post.business.PostQueryService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Component
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class CurationQueryFacade {
+
+    private final LocationRangeService locationRangeService;
+    private final CurationQueryService curationQueryService;
+    private final BarQueryService barQueryService;
+    private final BarSnackMenuService barSnackMenuService;
+    private final PostQueryService postQueryService;
+
+    public CurationsLookupResponse findAllCurationsByLocationRange(LocationSquareRangeRequest locationSquareRangeRequest) {
+<span class="nc" id="L35">        LocationSquareRangeCondition locationSquareRangeCondition = locationRangeService.calculateLocationSquareRange(</span>
+                locationSquareRangeRequest);
+
+<span class="nc" id="L38">        List&lt;CurationListLookupResponse&gt; singleTagCurationListLookupRespons</span>
+<span class="nc" id="L39">                = curationQueryService.findAllSingleTagCurationsByLocationRange(locationSquareRangeCondition);</span>
+
+<span class="nc" id="L41">        return new CurationsLookupResponse(singleTagCurationListLookupRespons);</span>
+    }
+
+    public CurationDetailLookupResponse findCurationDetailsByCurationId(String curationId) {
+<span class="nc" id="L45">        CurationLookupResponse curationLookupResponse = curationQueryService.findCurationByCurationId(curationId);</span>
+<span class="nc" id="L46">        BarLookupResponse barLookupResponse = barQueryService.findById(curationLookupResponse.barId());</span>
+<span class="nc" id="L47">        List&lt;BarSnackMenuResponse&gt; barSnackMenuResponses = barSnackMenuService.findAllBarSnackMenuByBarId(barLookupResponse.id());</span>
+<span class="nc" id="L48">        List&lt;CurationPostLookupResponse&gt; curationPostLookupResponses = postQueryService.findAllPostByBarId(barLookupResponse.id());</span>
+
+<span class="nc" id="L50">        return new CurationDetailLookupResponse(</span>
+<span class="nc" id="L51">                curationLookupResponse.curationTitle(),</span>
+<span class="nc" id="L52">                curationLookupResponse.curationContent(),</span>
+<span class="nc" id="L53">                barLookupResponse.phoneNumber(),</span>
+<span class="nc" id="L54">                barLookupResponse.barStreetNameAddressResponse(),</span>
+<span class="nc" id="L55">                barLookupResponse.barOpeningHoursResponse(),</span>
+                barSnackMenuResponses,
+                curationPostLookupResponses
+        );
+
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

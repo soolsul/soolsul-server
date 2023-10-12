@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JwtLogoutHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">soolsul-server</a> &gt; <a href="index.source.html" class="el_package">com.soolsul.soolsulserver.user.auth.handler</a> &gt; <span class="el_source">JwtLogoutHandler.java</span></div><h1>JwtLogoutHandler.java</h1><pre class="source lang-java linenums">package com.soolsul.soolsulserver.user.auth.handler;
+
+import com.soolsul.soolsulserver.user.auth.business.RedisCachingService;
+import com.soolsul.soolsulserver.user.auth.jwt.JwtTokenFactory;
+import com.soolsul.soolsulserver.user.auth.util.AuthorizationExtractor;
+import com.soolsul.soolsulserver.user.auth.util.AuthorizationType;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.util.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+<span class="fc" id="L18">@Slf4j</span>
+<span class="fc" id="L19">public class JwtLogoutHandler implements LogoutHandler {</span>
+
+    @Value(&quot;${jwt.expire-length}&quot;)
+    private Long accessExpirationMillis;
+
+    @Autowired
+    private JwtTokenFactory jwtTokenFactory;
+
+    @Autowired
+    private RedisCachingService redisCachingService;
+
+    @Override
+    public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+<span class="fc" id="L32">        String accessToken = convert(request);</span>
+<span class="fc" id="L33">        log.info(&quot;[AccessToken] : {}&quot;, accessToken);</span>
+
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">        if (isInvalidAccessToken(accessToken)) {</span>
+<span class="nc" id="L36">            return;</span>
+        }
+
+<span class="fc" id="L39">        String userIdFromToken = jwtTokenFactory.getUserIdFromToken(accessToken);</span>
+<span class="pc bpc" id="L40" title="2 of 4 branches missed.">        if (StringUtils.hasText(userIdFromToken) &amp;&amp; isHasRefreshToken(userIdFromToken)) {</span>
+            // delete refresh token
+<span class="fc" id="L42">            redisCachingService.deleteValues(userIdFromToken);</span>
+
+            // accessToken add black list
+<span class="fc" id="L45">            redisCachingService.addBlackList(accessToken, accessExpirationMillis);</span>
+
+<span class="fc" id="L47">            SecurityContextHolder.clearContext();</span>
+        }
+<span class="fc" id="L49">    }</span>
+
+    private boolean isHasRefreshToken(String userIdFromToken) {
+<span class="fc" id="L52">        return StringUtils.hasText(redisCachingService.getValues(userIdFromToken));</span>
+    }
+
+    private boolean isInvalidAccessToken(String accessToken) {
+<span class="pc bpc" id="L56" title="2 of 4 branches missed.">        return !StringUtils.hasText(accessToken) || !jwtTokenFactory.isValidAccessToken(accessToken);</span>
+    }
+
+    private String convert(HttpServletRequest request) {
+<span class="fc" id="L60">        return AuthorizationExtractor.extract(request, AuthorizationType.BEARER);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

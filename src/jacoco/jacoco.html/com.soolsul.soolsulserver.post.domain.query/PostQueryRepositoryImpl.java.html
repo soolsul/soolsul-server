@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostQueryRepositoryImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">soolsul-server</a> &gt; <a href="index.source.html" class="el_package">com.soolsul.soolsulserver.post.domain.query</a> &gt; <span class="el_source">PostQueryRepositoryImpl.java</span></div><h1>PostQueryRepositoryImpl.java</h1><pre class="source lang-java linenums">package com.soolsul.soolsulserver.post.domain.query;
+
+import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.list;
+import static com.soolsul.soolsulserver.post.domain.QPost.post;
+import static com.soolsul.soolsulserver.post.domain.QPostPhoto.postPhoto;
+import static com.soolsul.soolsulserver.user.auth.domain.QUserInfo.userInfo;
+
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
+import org.springframework.stereotype.Repository;
+
+import com.querydsl.core.Tuple;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationPostLookupResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.QCurationPostLookupResponse;
+import com.soolsul.soolsulserver.curation.common.dto.response.QPostPhotoImageResponse;
+import com.soolsul.soolsulserver.post.common.dto.response.FilteredPostLookupResponse;
+import com.soolsul.soolsulserver.post.common.dto.response.QFilteredPostLookupResponse;
+import com.soolsul.soolsulserver.post.common.dto.response.QUserPostLookUpResponse;
+import com.soolsul.soolsulserver.post.common.dto.response.UserPostLookUpResponse;
+import com.soolsul.soolsulserver.post.domain.QPostPhoto;
+
+import lombok.RequiredArgsConstructor;
+
+@Repository
+@RequiredArgsConstructor
+public class PostQueryRepositoryImpl implements PostQueryRepository {
+
+    private final JPAQueryFactory queryFactory;
+
+    @Override
+    public Slice&lt;FilteredPostLookupResponse&gt; findPostListByLocation(List&lt;String&gt; barIds, Pageable pageable) {
+<span class="fc" id="L39">        List&lt;FilteredPostLookupResponse&gt; postList = queryFactory</span>
+<span class="fc" id="L40">                .select(new QFilteredPostLookupResponse(post, userInfo))</span>
+<span class="fc" id="L41">                .from(post).innerJoin(userInfo)</span>
+<span class="fc" id="L42">                .on(post.ownerId.eq(userInfo.userId))</span>
+<span class="fc" id="L43">                .where(post.barId.in(barIds))</span>
+<span class="fc" id="L44">                .offset(pageable.getOffset())</span>
+<span class="fc" id="L45">                .limit(pageable.getPageSize())</span>
+<span class="fc" id="L46">                .fetch();</span>
+
+<span class="fc" id="L48">        return checkEndPage(postList, pageable);</span>
+    }
+
+    @Override
+    public List&lt;CurationPostLookupResponse&gt; findAllPostByBarId(String barId) {
+<span class="fc" id="L53">        return queryFactory</span>
+<span class="fc" id="L54">                .from(post)</span>
+<span class="fc" id="L55">                .leftJoin(postPhoto).on(post.id.eq(postPhoto.post.id))</span>
+<span class="fc" id="L56">                .innerJoin(userInfo).on(userInfo.userId.eq(post.ownerId))</span>
+<span class="fc" id="L57">                .where(post.barId.eq(barId))</span>
+<span class="fc" id="L58">                .transform(</span>
+<span class="fc" id="L59">                        groupBy(post.id).list(new QCurationPostLookupResponse(</span>
+<span class="fc" id="L60">                                post.contents.as(&quot;content&quot;),</span>
+<span class="fc" id="L61">                                userInfo.name.as(&quot;userName&quot;),</span>
+<span class="fc" id="L62">                                list(new QPostPhotoImageResponse(postPhoto.uuidFileUrl).as(&quot;postPhotoImageUrl&quot;)),</span>
+<span class="fc" id="L63">                                post.likes.likeUsers.size().as(&quot;userLikes&quot;)))</span>
+                );
+    }
+
+    public List&lt;UserPostLookUpResponse&gt; findAllUserPost(String userId) {
+<span class="fc" id="L68">        QPostPhoto subPhoto = new QPostPhoto(&quot;subPhoto&quot;);</span>
+
+<span class="fc" id="L70">        JPQLQuery&lt;Tuple&gt; subQuery = JPAExpressions</span>
+<span class="fc" id="L71">                .select(subPhoto.post.id, subPhoto.uuidFileUrl.min())</span>
+<span class="fc" id="L72">                .from(subPhoto)</span>
+<span class="fc" id="L73">                .groupBy(subPhoto.post.id)</span>
+<span class="fc" id="L74">                .having(postPhoto.uuidFileUrl.eq(subPhoto.uuidFileUrl.min()));</span>
+
+<span class="fc" id="L76">        return queryFactory</span>
+<span class="fc" id="L77">                .select(new QUserPostLookUpResponse(post.id, postPhoto.uuidFileUrl))</span>
+<span class="fc" id="L78">                .from(post).join(postPhoto)</span>
+<span class="fc" id="L79">                .on(post.id.eq(postPhoto.post.id))</span>
+<span class="fc" id="L80">                .where(</span>
+<span class="fc" id="L81">                        post.ownerId.eq(userId),</span>
+<span class="fc" id="L82">                        subQuery.exists()</span>
+                )
+<span class="fc" id="L84">                .orderBy(post.createdAt.desc())</span>
+<span class="fc" id="L85">                .fetch();</span>
+    }
+
+    private Slice&lt;FilteredPostLookupResponse&gt; checkEndPage(List&lt;FilteredPostLookupResponse&gt; results, Pageable pageable) {
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">        if (hasNextPage(results, pageable)) {</span>
+<span class="nc" id="L90">            results.remove(pageable.getPageSize()); //한개더 가져왔으니 더 가져온 데이터 삭제</span>
+<span class="nc" id="L91">            return new SliceImpl&lt;&gt;(results, pageable, true);</span>
+        }
+
+<span class="fc" id="L94">        return new SliceImpl&lt;&gt;(results, pageable, false);</span>
+    }
+
+    private boolean hasNextPage(List&lt;FilteredPostLookupResponse&gt; results, Pageable pageable) {
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">        return results.size() &gt; pageable.getPageSize();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

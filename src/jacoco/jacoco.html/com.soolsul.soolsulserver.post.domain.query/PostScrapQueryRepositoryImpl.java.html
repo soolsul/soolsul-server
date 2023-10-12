@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostScrapQueryRepositoryImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">soolsul-server</a> &gt; <a href="index.source.html" class="el_package">com.soolsul.soolsulserver.post.domain.query</a> &gt; <span class="el_source">PostScrapQueryRepositoryImpl.java</span></div><h1>PostScrapQueryRepositoryImpl.java</h1><pre class="source lang-java linenums">package com.soolsul.soolsulserver.post.domain.query;
+
+import com.querydsl.core.Tuple;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.soolsul.soolsulserver.post.common.dto.response.QScrapedPostLookUpResponse;
+import com.soolsul.soolsulserver.post.common.dto.response.ScrapedPostLookUpResponse;
+import com.soolsul.soolsulserver.post.domain.QPostPhoto;
+import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
+import static com.soolsul.soolsulserver.post.domain.QPostPhoto.postPhoto;
+import static com.soolsul.soolsulserver.post.domain.QPostScrap.postScrap;
+
+@RequiredArgsConstructor
+public class PostScrapQueryRepositoryImpl implements PostScrapQueryRepository {
+
+    private final JPAQueryFactory queryFactory;
+
+    @Override
+    public List&lt;ScrapedPostLookUpResponse&gt; findAllScrapedPost(String userId) {
+<span class="fc" id="L24">        QPostPhoto subPhoto = new QPostPhoto(&quot;subPhoto&quot;);</span>
+
+<span class="fc" id="L26">        JPQLQuery&lt;Tuple&gt; subQuery = JPAExpressions</span>
+<span class="fc" id="L27">                .select(subPhoto.post.id, subPhoto.uuidFileUrl.min())</span>
+<span class="fc" id="L28">                .from(subPhoto)</span>
+<span class="fc" id="L29">                .groupBy(subPhoto.post.id);</span>
+
+<span class="fc" id="L31">        return queryFactory</span>
+<span class="fc" id="L32">                .select(new QScrapedPostLookUpResponse(postScrap.postId, postPhoto.uuidFileUrl))</span>
+<span class="fc" id="L33">                .from(postScrap).join(postPhoto)</span>
+<span class="fc" id="L34">                .on(postScrap.postId.eq(postPhoto.post.id))</span>
+<span class="fc" id="L35">                .where(</span>
+<span class="fc" id="L36">                        postScrap.ownerId.eq(userId),</span>
+<span class="fc" id="L37">                        subQuery.having(postPhoto.uuidFileUrl.eq(subPhoto.uuidFileUrl.min())).exists()</span>
+                )
+<span class="fc" id="L39">                .orderBy(postScrap.createdAt.desc())</span>
+<span class="fc" id="L40">                .fetch();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

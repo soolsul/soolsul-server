@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MyPageController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">soolsul-server</a> &gt; <a href="index.source.html" class="el_package">com.soolsul.soolsulserver.user.mypage.presentation</a> &gt; <span class="el_source">MyPageController.java</span></div><h1>MyPageController.java</h1><pre class="source lang-java linenums">package com.soolsul.soolsulserver.user.mypage.presentation;
+
+import com.soolsul.soolsulserver.common.response.BaseResponse;
+import com.soolsul.soolsulserver.user.auth.annotation.CurrentUser;
+import com.soolsul.soolsulserver.user.auth.persistence.dto.response.UserEditFormResponse;
+import com.soolsul.soolsulserver.user.auth.persistence.dto.response.UserLookUpResponse;
+import com.soolsul.soolsulserver.user.auth.vo.CurrentUserDto;
+import com.soolsul.soolsulserver.user.mypage.common.dto.reqeust.UserInfoEditRequest;
+import com.soolsul.soolsulserver.user.mypage.common.dto.response.ScrapedPostListLookUpResponse;
+import com.soolsul.soolsulserver.user.mypage.common.dto.response.UserPostListLookUpResponse;
+import com.soolsul.soolsulserver.user.mypage.common.dto.response.UserReplyListLookUpResponse;
+import com.soolsul.soolsulserver.user.mypage.facade.MyPageCommandFacade;
+import com.soolsul.soolsulserver.user.mypage.facade.MyPageQueryFacade;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+
+import static com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages.FEED_FIND_ALL_SCRAP_SUCCESS;
+import static com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages.MYPAGE_POSTS_FIND_SUCCESS;
+import static com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages.MYPAGE_REPLIES_FIND_SUCCESS;
+import static com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages.MYPAGE_USER_INFO_EDIT_SUCCESS;
+import static com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages.MYPAGE_USER_INFO_FIND_SUCCESS;
+import static com.soolsul.soolsulserver.common.response.ResponseCodeAndMessages.USER_LOOK_UP_SUCCESS;
+
+@RequiredArgsConstructor
+@RestController
+@RequestMapping(&quot;/api/mypages&quot;)
+public class MyPageController {
+
+    private final MyPageQueryFacade myPageQueryFacade;
+    private final MyPageCommandFacade myPageCommandFacade;
+
+    @GetMapping(&quot;/me&quot;)
+    public ResponseEntity&lt;BaseResponse&lt;UserLookUpResponse&gt;&gt; searchMe(@CurrentUser CurrentUserDto currentUserDto) {
+<span class="fc" id="L42">        UserLookUpResponse userLookUpResponse = myPageQueryFacade.findUserWithDetailInfo(currentUserDto.id());</span>
+<span class="fc" id="L43">        return ResponseEntity.ok(new BaseResponse&lt;&gt;(USER_LOOK_UP_SUCCESS, userLookUpResponse));</span>
+    }
+
+    @GetMapping(&quot;/{userId}&quot;)
+    public ResponseEntity&lt;BaseResponse&lt;UserLookUpResponse&gt;&gt; searchUser(@PathVariable String userId) {
+<span class="fc" id="L48">        UserLookUpResponse userLookUpResponse = myPageQueryFacade.findUserWithDetailInfo(userId);</span>
+<span class="fc" id="L49">        return ResponseEntity.ok(new BaseResponse&lt;&gt;(USER_LOOK_UP_SUCCESS, userLookUpResponse));</span>
+    }
+
+    @GetMapping(&quot;/scraps&quot;)
+    public ResponseEntity&lt;BaseResponse&lt;ScrapedPostListLookUpResponse&gt;&gt; findAllScrapedPost(@CurrentUser CurrentUserDto currentUserDto) {
+<span class="fc" id="L54">        ScrapedPostListLookUpResponse scrapedPostListResponse = myPageQueryFacade.findAllScrapedPost(currentUserDto.id());</span>
+<span class="fc" id="L55">        return ResponseEntity.ok(new BaseResponse&lt;&gt;(FEED_FIND_ALL_SCRAP_SUCCESS, scrapedPostListResponse));</span>
+    }
+
+    @GetMapping(&quot;/posts&quot;)
+    public ResponseEntity&lt;BaseResponse&lt;UserPostListLookUpResponse&gt;&gt; findAllUserPost(@CurrentUser CurrentUserDto currentUserDto) {
+<span class="fc" id="L60">        UserPostListLookUpResponse userPostListLookUpResponse = myPageQueryFacade.findAllUserPost(currentUserDto.id());</span>
+<span class="fc" id="L61">        return ResponseEntity.ok(new BaseResponse&lt;&gt;(MYPAGE_POSTS_FIND_SUCCESS, userPostListLookUpResponse));</span>
+    }
+
+    @GetMapping(&quot;/replies&quot;)
+    public ResponseEntity&lt;BaseResponse&lt;UserReplyListLookUpResponse&gt;&gt; findAllUserReply(@CurrentUser CurrentUserDto currentUserDto) {
+<span class="fc" id="L66">        UserReplyListLookUpResponse userReplyListLookUpResponse = myPageQueryFacade.findAllUserReplies(currentUserDto.id());</span>
+<span class="fc" id="L67">        return ResponseEntity.ok(new BaseResponse&lt;&gt;(MYPAGE_REPLIES_FIND_SUCCESS, userReplyListLookUpResponse));</span>
+    }
+
+    @GetMapping(&quot;/edit&quot;)
+    public ResponseEntity&lt;BaseResponse&lt;UserEditFormResponse&gt;&gt; findUserEditForm(@CurrentUser CurrentUserDto currentUserDto) {
+<span class="fc" id="L72">        UserEditFormResponse userEditForm = myPageQueryFacade.findUserEditForm(currentUserDto.id());</span>
+<span class="fc" id="L73">        return ResponseEntity.ok(new BaseResponse&lt;&gt;(MYPAGE_USER_INFO_FIND_SUCCESS, userEditForm));</span>
+    }
+
+    @PatchMapping(&quot;/edit&quot;)
+    public ResponseEntity&lt;BaseResponse&lt;Void&gt;&gt; editUserInfo(@Valid @RequestBody UserInfoEditRequest editRequest, @CurrentUser CurrentUserDto currentUserDto) {
+<span class="fc" id="L78">        myPageCommandFacade.editUserInfo(editRequest, currentUserDto.id());</span>
+<span class="fc" id="L79">        return ResponseEntity.ok(new BaseResponse&lt;&gt;(MYPAGE_USER_INFO_EDIT_SUCCESS, null));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

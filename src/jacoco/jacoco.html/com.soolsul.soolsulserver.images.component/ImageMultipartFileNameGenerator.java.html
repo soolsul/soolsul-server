@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImageMultipartFileNameGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">soolsul-server</a> &gt; <a href="index.source.html" class="el_package">com.soolsul.soolsulserver.images.component</a> &gt; <span class="el_source">ImageMultipartFileNameGenerator.java</span></div><h1>ImageMultipartFileNameGenerator.java</h1><pre class="source lang-java linenums">package com.soolsul.soolsulserver.images.component;
+
+import com.soolsul.soolsulserver.images.vo.ImageExtension;
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.UUID;
+
+@Component
+<span class="fc" id="L11">public class ImageMultipartFileNameGenerator {</span>
+
+    private static final String FILE_NAME_FORMAT = &quot;%s-%s.%s&quot;;
+    private static final String EXTENSION_DELIMITER = &quot;.&quot;;
+    private static final String DASH = &quot;-&quot;;
+
+    public String generateFileName(MultipartFile multipartFile) {
+<span class="pc bpc" id="L18" title="2 of 4 branches missed.">        if(isMultipartFileEmpty(multipartFile) || multipartFile.getOriginalFilename() == null) {</span>
+<span class="nc" id="L19">            throw new MultipartException(&quot;multipartFile is invalid&quot;);</span>
+        }
+
+<span class="fc" id="L22">        String originalFilename = multipartFile.getOriginalFilename();</span>
+<span class="fc" id="L23">        int extensionIndex = originalFilename.lastIndexOf(EXTENSION_DELIMITER);</span>
+
+<span class="fc" id="L25">        String imageFileName = getFileName(originalFilename, extensionIndex);</span>
+<span class="fc" id="L26">        ImageExtension imageExtension = ImageExtension.parseImageExtensionFromFilename(originalFilename);</span>
+<span class="fc" id="L27">        String uuid = UUID.randomUUID().toString().replaceAll(DASH, &quot;&quot;);</span>
+
+<span class="fc" id="L29">        return String.format(FILE_NAME_FORMAT, imageFileName, uuid, imageExtension.getLowercaseName());</span>
+    }
+
+    private boolean isMultipartFileEmpty(MultipartFile multipartFile) {
+<span class="pc bpc" id="L33" title="2 of 4 branches missed.">        return (multipartFile == null || multipartFile.isEmpty())</span>
+<span class="pc bpc" id="L34" title="2 of 4 branches missed.">                || (multipartFile.getOriginalFilename() == null || multipartFile.getOriginalFilename().isEmpty());</span>
+    }
+
+    private String getFileName(String originalFilename, int extensionIndex) {
+<span class="fc" id="L38">        int fileStartIndex = 0;</span>
+<span class="fc" id="L39">        return originalFilename.substring(fileStartIndex, extensionIndex);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

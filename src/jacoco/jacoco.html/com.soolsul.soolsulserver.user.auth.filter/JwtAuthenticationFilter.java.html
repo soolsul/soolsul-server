@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ko"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JwtAuthenticationFilter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">soolsul-server</a> &gt; <a href="index.source.html" class="el_package">com.soolsul.soolsulserver.user.auth.filter</a> &gt; <span class="el_source">JwtAuthenticationFilter.java</span></div><h1>JwtAuthenticationFilter.java</h1><pre class="source lang-java linenums">package com.soolsul.soolsulserver.user.auth.filter;
+
+import com.soolsul.soolsulserver.user.auth.business.RedisCachingService;
+import com.soolsul.soolsulserver.user.auth.domain.CustomUser;
+import com.soolsul.soolsulserver.user.auth.vo.Role;
+import com.soolsul.soolsulserver.user.auth.business.CustomUserDetailsService;
+import com.soolsul.soolsulserver.user.auth.exception.UserUnauthorizedException;
+import com.soolsul.soolsulserver.user.auth.jwt.JwtTokenFactory;
+import com.soolsul.soolsulserver.user.auth.util.AuthorizationExtractor;
+import com.soolsul.soolsulserver.user.auth.util.AuthorizationType;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
+import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.ContentCachingRequestWrapper;
+import org.springframework.web.util.ContentCachingResponseWrapper;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Collection;
+
+<span class="fc" id="L30">@Slf4j</span>
+<span class="fc" id="L31">public class JwtAuthenticationFilter extends OncePerRequestFilter {</span>
+
+    @Autowired
+    private JwtTokenFactory jwtTokenFactory;
+
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+
+    @Autowired
+    private RedisCachingService redisCachingService;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+<span class="fc" id="L44">        ContentCachingRequestWrapper wrappingRequest = new ContentCachingRequestWrapper(request);</span>
+<span class="fc" id="L45">        ContentCachingResponseWrapper wrappingResponse = new ContentCachingResponseWrapper(response);</span>
+
+<span class="fc" id="L47">        String accessToken = convert(request);</span>
+<span class="fc" id="L48">        log.info(&quot;[AccessToken] : {}&quot;, accessToken);</span>
+
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        if (isAlreadyLogout(accessToken)) {</span>
+<span class="fc" id="L51">            throw new UserUnauthorizedException();</span>
+        }
+
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (isInvalidAccessToken(accessToken)) {</span>
+<span class="fc" id="L55">            SecurityContextHolder.getContext().setAuthentication(anonymousAuthentication());</span>
+<span class="fc" id="L56">            filterChain.doFilter(wrappingRequest, wrappingResponse);</span>
+<span class="fc" id="L57">            wrappingResponse.copyBodyToResponse();</span>
+<span class="fc" id="L58">            return;</span>
+        }
+
+<span class="fc" id="L61">        SecurityContextHolder.getContext().setAuthentication(buildAuthentication(accessToken));</span>
+<span class="fc" id="L62">        log.info(&quot;[Authentication 등록 완료]&quot;);</span>
+
+<span class="fc" id="L64">        filterChain.doFilter(wrappingRequest, wrappingResponse);</span>
+<span class="fc" id="L65">        wrappingResponse.copyBodyToResponse();</span>
+<span class="fc" id="L66">    }</span>
+
+    private boolean isInvalidAccessToken(String accessToken) {
+<span class="pc bpc" id="L69" title="1 of 4 branches missed.">        return !StringUtils.hasText(accessToken) || !jwtTokenFactory.isValidAccessToken(accessToken);</span>
+    }
+
+    private boolean isAlreadyLogout(String accessToken) {
+<span class="fc bfc" id="L73" title="All 4 branches covered.">        return StringUtils.hasText(accessToken) &amp;&amp; redisCachingService.getValues(accessToken) != null;</span>
+    }
+
+    private String convert(HttpServletRequest request) {
+<span class="fc" id="L77">        return AuthorizationExtractor.extract(request, AuthorizationType.BEARER);</span>
+    }
+
+    private UsernamePasswordAuthenticationToken buildAuthentication(String accessToken) {
+<span class="fc" id="L81">        String userIdFromToken = jwtTokenFactory.getUserIdFromToken(accessToken);</span>
+<span class="fc" id="L82">        Collection&lt;GrantedAuthority&gt; rolesFromToken = jwtTokenFactory.getRolesFromToken(accessToken);</span>
+<span class="fc" id="L83">        CustomUser findUser = userDetailsService.findUserForAuthentication(userIdFromToken);</span>
+<span class="fc" id="L84">        log.info(&quot;[User Info] : {}&quot;, findUser.getEmail());</span>
+<span class="fc" id="L85">        return new UsernamePasswordAuthenticationToken(findUser, &quot;&quot;, rolesFromToken);</span>
+    }
+
+    protected Authentication anonymousAuthentication() {
+<span class="fc" id="L89">        CustomUser anonymousUser = new CustomUser(&quot;&quot;, &quot;&quot;, &quot;&quot;);</span>
+<span class="fc" id="L90">        anonymousUser.addRole(Role.ANONYMOUS);</span>
+<span class="fc" id="L91">        return new AnonymousAuthenticationToken(&quot;anonymous&quot;, anonymousUser, anonymousUser.getAuthorities());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
