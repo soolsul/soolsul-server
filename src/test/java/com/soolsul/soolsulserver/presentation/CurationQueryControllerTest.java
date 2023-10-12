@@ -1,5 +1,22 @@
 package com.soolsul.soolsulserver.presentation;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+
 import com.soolsul.soolsulserver.bar.common.dto.response.BarSnackMenuResponse;
 import com.soolsul.soolsulserver.bar.common.dto.response.BarStreetNameAddressResponse;
 import com.soolsul.soolsulserver.curation.common.dto.response.BarOpeningHoursResponse;
@@ -7,22 +24,17 @@ import com.soolsul.soolsulserver.curation.common.dto.response.CurationDetailLook
 import com.soolsul.soolsulserver.curation.common.dto.response.CurationPostLookupResponse;
 import com.soolsul.soolsulserver.curation.common.dto.response.CurationsLookupResponse;
 import com.soolsul.soolsulserver.curation.common.dto.response.PostPhotoImageResponse;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.ResultActions;
+import com.soolsul.soolsulserver.curation.facade.CurationQueryFacade;
+import com.soolsul.soolsulserver.presentation.base.PresentationTest;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+@PresentationTest
+class CurationQueryControllerTest {
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+    @Autowired
+    protected MockMvc mockMvc;
 
-class CurationQueryControllerTest extends ControllerTest {
+    @Autowired
+    private CurationQueryFacade curationQueryFacade;
 
     @DisplayName("큐레이션 목록 조회 요청에 관한 응답을 확인한다")
     @Test

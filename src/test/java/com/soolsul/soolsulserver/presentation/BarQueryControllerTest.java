@@ -1,9 +1,14 @@
 package com.soolsul.soolsulserver.presentation;
 
 import com.soolsul.soolsulserver.bar.common.dto.response.FilteredBarsLookupResponse;
+import com.soolsul.soolsulserver.bar.facade.BarQueryFacade;
+import com.soolsul.soolsulserver.presentation.base.PresentationTest;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -15,7 +20,14 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class BarQueryControllerTest extends ControllerTest {
+@PresentationTest
+class BarQueryControllerTest {
+
+    @Autowired
+    protected MockMvc mockMvc;
+
+    @Autowired
+    private BarQueryFacade barQueryFacade;
 
     @DisplayName("지도상에 바 목록을 조회 요청에 관한 응답을 기다린다")
     @Test
