@@ -1,20 +1,32 @@
 package com.soolsul.soolsulserver.persistence;
 
-import com.soolsul.soolsulserver.curation.common.dto.response.CurationPostLookupResponse;
-import com.soolsul.soolsulserver.post.domain.Post;
-import com.soolsul.soolsulserver.post.domain.PostPhoto;
-import com.soolsul.soolsulserver.user.auth.domain.CustomUser;
-import com.soolsul.soolsulserver.user.auth.domain.UserInfo;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class PostQueryRepositoryTest extends RepositoryTest {
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+
+import com.soolsul.soolsulserver.curation.common.dto.response.CurationPostLookupResponse;
+import com.soolsul.soolsulserver.persistence.base.PersistenceTest;
+import com.soolsul.soolsulserver.post.domain.Post;
+import com.soolsul.soolsulserver.post.domain.PostPhoto;
+import com.soolsul.soolsulserver.post.domain.query.PostQueryRepositoryImpl;
+import com.soolsul.soolsulserver.user.auth.domain.CustomUser;
+import com.soolsul.soolsulserver.user.auth.domain.UserInfo;
+
+@PersistenceTest
+class PostQueryRepositoryTest {
+
+    @Autowired
+    private TestEntityManager testEntityManager;
+
+    @Autowired
+    private PostQueryRepositoryImpl postQueryRepository;
 
     @BeforeEach
     void init() {

@@ -1,14 +1,26 @@
 package com.soolsul.soolsulserver.persistence;
 
-import com.soolsul.soolsulserver.post.domain.Post;
-import com.soolsul.soolsulserver.post.domain.PostPhoto;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-class PostSoftDeleteTest extends RepositoryTest {
+import com.soolsul.soolsulserver.persistence.base.PersistenceTest;
+import com.soolsul.soolsulserver.post.domain.Post;
+import com.soolsul.soolsulserver.post.domain.PostPhoto;
+import com.soolsul.soolsulserver.post.domain.PostRepository;
+
+@PersistenceTest
+class PostSoftDeleteTest {
+
+    @Autowired
+    private TestEntityManager testEntityManager;
+
+    @Autowired
+    private PostRepository postRepository;
 
     @Test
     void delete_test() {

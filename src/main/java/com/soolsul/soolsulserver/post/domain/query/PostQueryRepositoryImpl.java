@@ -1,5 +1,18 @@
 package com.soolsul.soolsulserver.post.domain.query;
 
+import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.list;
+import static com.soolsul.soolsulserver.post.domain.QPost.post;
+import static com.soolsul.soolsulserver.post.domain.QPostPhoto.postPhoto;
+import static com.soolsul.soolsulserver.user.auth.domain.QUserInfo.userInfo;
+
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
+import org.springframework.stereotype.Repository;
+
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
@@ -12,19 +25,10 @@ import com.soolsul.soolsulserver.post.common.dto.response.QFilteredPostLookupRes
 import com.soolsul.soolsulserver.post.common.dto.response.QUserPostLookUpResponse;
 import com.soolsul.soolsulserver.post.common.dto.response.UserPostLookUpResponse;
 import com.soolsul.soolsulserver.post.domain.QPostPhoto;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 
-import java.util.List;
-
-import static com.querydsl.core.group.GroupBy.groupBy;
-import static com.querydsl.core.group.GroupBy.list;
-import static com.soolsul.soolsulserver.post.domain.QPost.post;
-import static com.soolsul.soolsulserver.post.domain.QPostPhoto.postPhoto;
-import static com.soolsul.soolsulserver.user.auth.domain.QUserInfo.userInfo;
-
+@Repository
 @RequiredArgsConstructor
 public class PostQueryRepositoryImpl implements PostQueryRepository {
 

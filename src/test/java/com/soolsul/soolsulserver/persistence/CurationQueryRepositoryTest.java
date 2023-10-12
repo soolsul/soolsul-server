@@ -1,5 +1,16 @@
 package com.soolsul.soolsulserver.persistence;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+
 import com.soolsul.soolsulserver.bar.domain.Bar;
 import com.soolsul.soolsulserver.bar.domain.BarAlcoholTag;
 import com.soolsul.soolsulserver.bar.domain.BarMoodTag;
@@ -7,18 +18,19 @@ import com.soolsul.soolsulserver.bar.domain.StreetNameAddress;
 import com.soolsul.soolsulserver.curation.common.dto.response.CurationListLookupResponse;
 import com.soolsul.soolsulserver.curation.common.dto.response.CurationLookupResponse;
 import com.soolsul.soolsulserver.curation.domain.Curation;
+import com.soolsul.soolsulserver.curation.persistence.CurationQueryRepository;
 import com.soolsul.soolsulserver.location.common.dto.response.LocationSquareRangeCondition;
+import com.soolsul.soolsulserver.persistence.base.PersistenceTest;
 import com.soolsul.soolsulserver.region.domain.Location;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
-import java.util.List;
+@PersistenceTest
+class CurationQueryRepositoryTest {
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+    @Autowired
+    private TestEntityManager testEntityManager;
 
-class CurationQueryRepositoryTest extends RepositoryTest {
+    @Autowired
+    private CurationQueryRepository curationQueryRepository;
 
     @BeforeEach
     void init() {

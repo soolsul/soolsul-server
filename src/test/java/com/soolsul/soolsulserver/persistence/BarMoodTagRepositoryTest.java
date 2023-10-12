@@ -1,17 +1,20 @@
 package com.soolsul.soolsulserver.persistence;
 
-import com.soolsul.soolsulserver.bar.domain.BarMoodTag;
-import com.soolsul.soolsulserver.bar.domain.MoodTag;
-import com.soolsul.soolsulserver.bar.persistence.BarMoodTagRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import java.util.List;
+import com.soolsul.soolsulserver.bar.domain.BarMoodTag;
+import com.soolsul.soolsulserver.bar.domain.MoodTag;
+import com.soolsul.soolsulserver.bar.persistence.BarMoodTagRepository;
+import com.soolsul.soolsulserver.persistence.base.PersistenceTest;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-class BarMoodTagRepositoryTest extends RepositoryTest {
+@PersistenceTest
+class BarMoodTagRepositoryTest {
 
     @Autowired
     private BarMoodTagRepository barMoodTagRepository;

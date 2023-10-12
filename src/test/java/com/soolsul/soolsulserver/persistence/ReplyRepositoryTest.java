@@ -1,6 +1,6 @@
 package com.soolsul.soolsulserver.persistence;
 
-import com.soolsul.soolsulserver.common.config.QueryDslConfig;
+import com.soolsul.soolsulserver.persistence.base.PersistenceTest;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.reply.common.dto.response.ReplyDetailResponse;
 import com.soolsul.soolsulserver.reply.domain.Reply;
@@ -11,26 +11,15 @@ import com.soolsul.soolsulserver.user.auth.presentation.dto.UserRegisterRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@Import(QueryDslConfig.class)
-@DataJpaTest(
-        includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = ReplyRepository.class)
-)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Transactional
+@PersistenceTest
 public class ReplyRepositoryTest {
 
     @Autowired

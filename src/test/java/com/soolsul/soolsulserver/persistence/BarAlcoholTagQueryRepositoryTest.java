@@ -1,13 +1,25 @@
 package com.soolsul.soolsulserver.persistence;
 
-import com.soolsul.soolsulserver.bar.domain.BarAlcoholTag;
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import java.util.List;
+import com.soolsul.soolsulserver.bar.domain.BarAlcoholTag;
+import com.soolsul.soolsulserver.bar.persistence.BarAlcoholTagQueryRepository;
+import com.soolsul.soolsulserver.persistence.base.PersistenceTest;
 
-class BarAlcoholTagQueryRepositoryTest extends RepositoryTest {
+@PersistenceTest
+class BarAlcoholTagQueryRepositoryTest {
+
+    @Autowired
+    private TestEntityManager testEntityManager;
+
+    @Autowired
+    private BarAlcoholTagQueryRepository barAlcoholTagQueryRepository;
 
     @DisplayName("알콜 카테고리 아이디를 통해 바-술종류 태그를 조회한다")
     @Test

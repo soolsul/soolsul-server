@@ -1,19 +1,31 @@
 package com.soolsul.soolsulserver.persistence;
 
-import com.soolsul.soolsulserver.bar.common.dto.response.BarSnackMenuResponse;
-import com.soolsul.soolsulserver.bar.domain.Bar;
-import com.soolsul.soolsulserver.bar.domain.StreetNameAddress;
-import com.soolsul.soolsulserver.menu.snack.domain.Snack;
-import com.soolsul.soolsulserver.menu.snack.domain.SnackMenu;
-import com.soolsul.soolsulserver.region.domain.Location;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-class BarSnackMenuRepositoryTest extends RepositoryTest {
+import com.soolsul.soolsulserver.bar.common.dto.response.BarSnackMenuResponse;
+import com.soolsul.soolsulserver.bar.domain.Bar;
+import com.soolsul.soolsulserver.bar.domain.StreetNameAddress;
+import com.soolsul.soolsulserver.bar.persistence.BarSnackMenuRepository;
+import com.soolsul.soolsulserver.menu.snack.domain.Snack;
+import com.soolsul.soolsulserver.menu.snack.domain.SnackMenu;
+import com.soolsul.soolsulserver.persistence.base.PersistenceTest;
+import com.soolsul.soolsulserver.region.domain.Location;
+
+@PersistenceTest
+class BarSnackMenuRepositoryTest {
+
+    @Autowired
+    private TestEntityManager testEntityManager;
+
+    @Autowired
+    private BarSnackMenuRepository barSnackMenuRepository;
 
     @DisplayName("술집 안주 메뉴를 제공한다")
     @Test
