@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.domain.post;
 
+import com.soolsul.soolsulserver.domain.base.DomainTest;
 import com.soolsul.soolsulserver.post.domain.Post;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,7 +9,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
-public class PostTest {
+@DomainTest
+class PostTest {
 
     @DisplayName("Post 생성 테스트")
     @Test

@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.domain.reply;
 
+import com.soolsul.soolsulserver.domain.base.DomainTest;
 import com.soolsul.soolsulserver.reply.domain.Reply;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
+@DomainTest
 class ReplyTest {
 
     @DisplayName("Reply 생성 테스트")

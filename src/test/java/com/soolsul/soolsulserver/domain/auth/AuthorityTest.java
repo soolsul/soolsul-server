@@ -1,15 +1,17 @@
 package com.soolsul.soolsulserver.domain.auth;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
 
-import com.soolsul.soolsulserver.user.auth.domain.Authority;
-import com.soolsul.soolsulserver.user.auth.vo.Role;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
+import com.soolsul.soolsulserver.domain.base.DomainTest;
+import com.soolsul.soolsulserver.user.auth.domain.Authority;
+import com.soolsul.soolsulserver.user.auth.vo.Role;
 
+@DomainTest
 class AuthorityTest {
 
     @DisplayName("Authority 생성 테스트")

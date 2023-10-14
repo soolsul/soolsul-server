@@ -1,13 +1,16 @@
 package com.soolsul.soolsulserver.domain.auth;
 
-import com.soolsul.soolsulserver.user.auth.domain.UserInfo;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
+import com.soolsul.soolsulserver.domain.base.DomainTest;
+import com.soolsul.soolsulserver.user.auth.domain.UserInfo;
 
+@DomainTest
 class UserInfoTest {
 
     @DisplayName("생성 테스트")

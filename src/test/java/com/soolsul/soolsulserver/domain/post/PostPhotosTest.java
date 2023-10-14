@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.domain.post;
 
+import com.soolsul.soolsulserver.domain.base.DomainTest;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.post.domain.PostPhoto;
 import com.soolsul.soolsulserver.post.exception.MinimumPhotoCountException;
@@ -13,7 +14,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class PostPhotosTest {
+@DomainTest
+class PostPhotosTest {
 
     private static final String BAR_ID = "1";
     private PostPhoto newPhoto1;

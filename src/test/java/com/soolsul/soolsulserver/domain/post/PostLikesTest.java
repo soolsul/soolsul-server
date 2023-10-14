@@ -1,5 +1,6 @@
 package com.soolsul.soolsulserver.domain.post;
 
+import com.soolsul.soolsulserver.domain.base.DomainTest;
 import com.soolsul.soolsulserver.post.domain.Post;
 import com.soolsul.soolsulserver.user.auth.domain.CustomUser;
 import org.junit.jupiter.api.DisplayName;
@@ -8,7 +9,8 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-public class PostLikesTest {
+@DomainTest
+class PostLikesTest {
 
     @DisplayName("사용자는 Post에 좋아요를 누를 수 있습니다")
     @Test
