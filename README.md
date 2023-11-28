@@ -4,7 +4,7 @@
 <h1 align="middle">SoolSul</h1>
 <p align="middle">술술 술이 들어가는 인기있는 술집을 찾자!</p>
 
-## 💌 프로젝트 소개
+## 프로젝트 소개
 
 혹시,
 늘 다니는 술집에 대한 깊은 회의감을 느끼신적이 있나요?    
@@ -16,7 +16,7 @@
 
 <br>
 
-## 👩‍👦‍👦 Backend Members
+## Backend Members
 
 |cooper|Shine|
 |:-:|:-:|
@@ -25,7 +25,7 @@
 
 <br>
 
-## 🛠 Skill Stack
+## Skill Stack
 
 | type    |                                                skiils                                                |
 |---------|:----------------------------------------------------------------------------------------------------:|
@@ -42,7 +42,7 @@
 
 <img width="700px" alt="Soolsul-CI" src="https://github.com/soolsul/soolsul-server/assets/48561660/e99cdc50-3a71-4ad3-906e-614cef4150cd">
 
-### 🔌 CI pipeline
+### CI pipeline
 
 <img width="700px" alt="Soolsul-CI" src="https://user-images.githubusercontent.com/60593969/215485428-cca9a6ed-975b-4092-b7f6-5b9d9f20bf3c.png">
 
