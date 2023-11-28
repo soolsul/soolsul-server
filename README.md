@@ -27,31 +27,24 @@
 
 ## 🛠 Skill Stack
 
-### Backend
+| type    |                                                skiils                                                |
+|---------|:----------------------------------------------------------------------------------------------------:|
+| Backend | Java 17 <br> Spring <br> SpringBoot <br> Spring Data JPA <br> Spring Data Redis <br> Spring Security |
+| Test    |                                JUnit5 <br> TestContainer <br> Jacoco                                 | 
+| CI/CD   |                                         Gradle <br> Jenkins                                          |
+| infra   |                                    AWS (EC2, RDS, Elastic Cache)                                     |
 
-- Java 17
-- Spring
-- SpringBoot
-- Spring Data JPA
-- Spring Data Redis
-- Spring Security
+### ERD
 
-### Test
-- JUnit5
-- TestContainer
+<img width="700px" alt="Soolsul-CI" src="https://github.com/soolsul/soolsul-server/assets/48561660/96dbf16b-3b54-4e10-880b-3cf0eeb6100c">
 
-### Build
+### Server architecture
 
-- Gradle
+<img width="700px" alt="Soolsul-CI" src="https://github.com/soolsul/soolsul-server/assets/48561660/e99cdc50-3a71-4ad3-906e-614cef4150cd">
 
-### CI/CD
+### 🔌 CI pipeline
 
-- AWS EC2
-- AWS RDS
-- AWS Elastic Cache
-- Jenkins
+<img width="700px" alt="Soolsul-CI" src="https://user-images.githubusercontent.com/60593969/215485428-cca9a6ed-975b-4092-b7f6-5b9d9f20bf3c.png">
 
-### 🔌 Infrastructures
 
-<img width="935" alt="Soolsul-CI" src="https://user-images.githubusercontent.com/60593969/215485428-cca9a6ed-975b-4092-b7f6-5b9d9f20bf3c.png">
 
