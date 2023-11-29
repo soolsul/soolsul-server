@@ -25,6 +25,17 @@
 
 <br>
 
+## 기능
+### 지도 메뉴
+![지도 메뉴 (2)](https://github.com/soolsul/soolsul-server/assets/48561660/7bbb0257-a206-495b-869f-40fef855cf94)
+
+### 검색 기능
+![검색 기능](https://github.com/soolsul/soolsul-server/assets/48561660/762ef4dd-4db5-4804-87c9-142d06732524)
+
+### 피드 & 마이페이지
+![큐레이션_피드기능](https://github.com/soolsul/soolsul-server/assets/48561660/706af1a3-5e65-4244-b409-74a162b42471)
+
+
 ## Skill Stack
 
 | type    |                                                skiils                                                |
